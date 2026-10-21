@@ -8,23 +8,47 @@ body {
     padding: 0;
     min-height: 100vh;
 
-    /* 薄いベージュの背景 */
-    background: #f8f3ee;
+    background: #ffe8d1;
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    color: #59483d;
+}
 
-    font-family: "Noto Sans JP", sans-serif;
-    color: #8f8179;
+/* サイドバーと検索画面を横並びにする */
+.page-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    align-items: stretch;
+}
+
+/* 左側のサイドバー */
+.sidebar {
+    width: 220px;
+    min-width: 220px;
+    flex-shrink: 0;
+}
+
+/* 右側の検索画面 */
+.main-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    padding: 26px;
 
     display: flex;
     justify-content: center;
     align-items: center;
+
+    box-sizing: border-box;
 }
 
 /* 外側の白いエリア */
 .container {
-    width: calc(100% - 48px);
+    width: 100%;
+    max-width: 1200px;
     min-height: calc(100vh - 52px);
 
-    background: #fcfaf8;
+    background: #fffdf8;
     border: 2px solid #eee5dd;
     border-radius: 24px;
 
@@ -33,16 +57,20 @@ body {
     align-items: center;
 
     padding: 30px;
+    margin: 0;
+
+    box-sizing: border-box;
 }
 
 /* 質問入力欄全体 */
 .question-box {
     width: 90%;
-    max-width: 1100px;
+    max-width: 900px;
     height: 96px;
 
     display: flex;
     align-items: center;
+    gap: 10px;
 
     background: #ffffff;
     border: 2px solid #f0eae5;
@@ -59,8 +87,7 @@ body {
 
 /* 入力欄にカーソルを合わせたとき */
 .question-box:focus-within {
-    box-shadow:
-        0 4px 12px rgba(120, 95, 75, 0.12);
+    box-shadow: 0 4px 12px rgba(120, 95, 75, 0.12);
 }
 
 /* ＋ボタン */
@@ -73,7 +100,7 @@ body {
     border-radius: 50%;
 
     background: #faf6f2;
-    color: #8f7e73;
+    color: #806b5d;
 
     font-size: 34px;
     font-weight: 300;
@@ -83,6 +110,7 @@ body {
     align-items: center;
 
     cursor: pointer;
+    flex-shrink: 0;
 
     transition: background 0.2s ease;
 }
@@ -100,7 +128,6 @@ body {
 
     border: none;
     outline: none;
-
     background: transparent;
 
     padding: 0 24px;
@@ -122,24 +149,19 @@ body {
     min-width: 66px;
     padding: 0;
 
-    /* マークを中央に配置 */
     display: flex;
     justify-content: center;
     align-items: center;
 
-    /* ＋ボタンと同じ丸型・色 */
     border: none;
     border-radius: 50%;
     background: #faf6f2;
-    color: #8f7e73;
+    color: #806b5d;
 
-    /* ＋ボタンと同じように影をつけない */
     box-shadow: none;
-
     cursor: pointer;
     flex-shrink: 0;
 
-    /* ブラウザ標準のボタン装飾を解除 */
     appearance: none;
     -webkit-appearance: none;
 
@@ -166,9 +188,14 @@ body {
 /* スマートフォン対応 */
 @media (max-width: 600px) {
 
+    /* 右側の検索画面 */
+    .main-content {
+        padding: 12px;
+    }
+
     /* 外側の白いエリア */
     .container {
-        width: calc(100% - 20px);
+        width: 100%;
         min-height: calc(100vh - 24px);
         padding: 16px;
         border-radius: 18px;
@@ -179,30 +206,31 @@ body {
         width: 100%;
         height: 72px;
         padding: 8px;
+        gap: 4px;
     }
 
     /* ＋ボタン */
     .plus-button {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
         font-size: 28px;
     }
 
     /* 質問入力欄の文字 */
     .question-input {
-        font-size: 17px;
-        padding: 0 14px;
+        font-size: 16px;
+        padding: 0 8px;
     }
 
     /* 紙飛行機の送信ボタン */
     .question-box .send-button {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
     }
 
-    /* スマートフォンでの紙飛行機の大きさ */
+    /* 紙飛行機の大きさ */
     .question-box .send-button svg {
         width: 20px;
         height: 20px;
