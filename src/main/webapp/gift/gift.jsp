@@ -1,9 +1,8 @@
-```jsp
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
 
-<!DOCTYPE html>
-<html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +18,7 @@
 
         <!-- ヘッダー -->
         <header class="gift-header">
-            <span class="gift-icon">🎁</span>
+            <span class="gift-icon"></span>
             <h1>ギフト</h1>
         </header>
 
@@ -27,7 +26,7 @@
         <section class="gift-message">
             <div class="message-text">
                 <p>大切な人に</p>
-                <p>「ありがとう」を届けよう <span>♡</span></p>
+                <p>「ありがとう」を届けよう <span></span></p>
             </div>
         </section>
 
@@ -40,7 +39,7 @@
             <div class="gift-grid">
 
                 <!-- 花束 -->
-                <a href="${pageContext.request.contextPath}/giftdetail.jsp?gift=flower"
+                <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=flower"
                    class="gift-card">
                     <div class="gift-placeholder">🌷</div>
                     <h3>花束</h3>
@@ -48,7 +47,7 @@
                 </a>
 
                 <!-- スイーツセット -->
-                <a href="${pageContext.request.contextPath}/giftdetail.jsp?gift=sweets"
+                <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=sweets"
                    class="gift-card">
                     <div class="gift-placeholder">🍪</div>
                     <h3>スイーツセット</h3>
@@ -56,7 +55,7 @@
                 </a>
 
                 <!-- カフェチケット -->
-                <a href="${pageContext.request.contextPath}/giftdetail.jsp?gift=cafe"
+                <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=cafe"
                    class="gift-card">
                     <div class="gift-placeholder">☕</div>
                     <h3>カフェチケット</h3>
@@ -64,7 +63,7 @@
                 </a>
 
                 <!-- ハンドクリーム -->
-                <a href="${pageContext.request.contextPath}/giftdetail.jsp?gift=handcream"
+                <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=handcream"
                    class="gift-card">
                     <div class="gift-placeholder">🧴</div>
                     <h3>ハンドクリーム</h3>
@@ -72,7 +71,7 @@
                 </a>
 
                 <!-- フォトフレーム -->
-                <a href="${pageContext.request.contextPath}/giftdetail.jsp?gift=photo"
+                <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=photo"
                    class="gift-card">
                     <div class="gift-placeholder">🖼️</div>
                     <h3>フォトフレーム</h3>
@@ -80,7 +79,7 @@
                 </a>
 
                 <!-- 雑貨セット -->
-                <a href="${pageContext.request.contextPath}/giftdetail.jsp?gift=goods"
+                <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=goods"
                    class="gift-card">
                     <div class="gift-placeholder">🍫</div>
                     <h3>雑貨セット</h3>
@@ -94,4 +93,3 @@
 
 </body>
 </html>
-```

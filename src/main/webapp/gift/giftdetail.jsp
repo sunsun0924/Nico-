@@ -32,8 +32,7 @@
     }
 %>
 
-<!DOCTYPE html>
-<html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,20 +40,13 @@
     <title>ギフト詳細</title>
 
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/giftDetail.css">
+          href="${pageContext.request.contextPath}/css/giftdetail.css">
 </head>
 <body>
 
     <main class="detail-container">
 
-        <!-- ヘッダー -->
-        <header class="detail-header">
-            <a href="${pageContext.request.contextPath}/gift.jsp"
-               class="back-link">
-                <span class="back-arrow">‹</span>
-                <span>ギフト</span>
-            </a>
-        </header>
+      
 
         <!-- ギフト詳細 -->
         <section class="gift-detail">
@@ -64,7 +56,7 @@
 
             <!-- 商品名 -->
             <div class="gift-name-area">
-                <span class="gift-flower">♡</span>
+                <span class="gift-flower"></span>
                 <h1><%= giftName %></h1>
             </div>
 
@@ -87,11 +79,11 @@
         <footer class="detail-footer">
 
             <!-- gift.jspに戻る -->
-            <a href="${pageContext.request.contextPath}/gift.jsp"
-               class="btn btn-back">
-                <span class="btn-arrow">←</span>
-                <span>戻る</span>
-            </a>
+           <a href="${pageContext.request.contextPath}/gift/gift.jsp"
+			   class="btn btn-back">
+			    <span class="btn-arrow">←</span>
+			    <span>戻る</span>
+			</a>
 
             <!-- 決定ボタン -->
             <form action="${pageContext.request.contextPath}/giftConfirm"
@@ -108,7 +100,7 @@
 
                 <button type="submit" class="btn btn-confirm">
                     <span>決定</span>
-                    <span class="gift-icon">🎁</span>
+                    <span class="gift-icon"></span>
                 </button>
 
             </form>
