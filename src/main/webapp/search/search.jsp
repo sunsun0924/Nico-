@@ -6,8 +6,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
 
-<!DOCTYPE html>
-<html lang="ja">
+
 <head>
     <meta charset="UTF-8">
 
@@ -42,4 +41,3 @@
 </div>
 
 </body>
-</html>
