@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+body {
+    background-color: #f7f3ed; /* 温かみのある背景色 */
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.mypage-container {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff9f5;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ヘッダー */
+.mypage-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    color: #6b5048;
+}
+
+.mypage-header .header-icon {
+    font-size: 1.5rem;
+}
+
+.mypage-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* プロフィールカード */
+.profile-card {
+    background-color: #ffffff;
+    border: 1px solid #f2e6de;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+/* ユーザーアイコン */
+.profile-avatar img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffe3d9;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* ユーザー名 */
+.user-name {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4a3b32;
+}
+
+/* プロフィール編集ボタン */
+.edit-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid #f7b2a9;
+    border-radius: 20px;
+    color: #e06d63;
+    background-color: #fff8f7;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background-color 0.2s;
+}
+
+.edit-profile-btn:hover {
+    background-color: #ffebe8;
+}
+
+/* メニューリスト共通 */
+.menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #f2e6de;
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #52433d;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: #fffaf7;
+}
+
+.menu-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menu-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* アイコン用丸枠 */
+.icon-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+/* ハートアイコン（いいね） */
+.heart-icon {
+    background-color: #ffebe9;
+    color: #e06d63;
+}
+
+/* 歯車アイコン（設定） */
+.gear-icon {
+    background-color: #f0ebf7;
+    color: #8e7bb0;
+}
+
+/* ログアウトアイコン */
+.logout-icon {
+    background-color: #ffebe9;
+    color: #e06d63;
+}
+
+.arrow-icon {
+    color: #c4b5ab;
+    font-size: 0.85rem;
+}
