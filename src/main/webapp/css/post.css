@@ -1,0 +1,139 @@
+
+/* 画面全体の基本設定 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    background-color: #ffe8d1;
+    color: #59483d;
+}
+
+/* 投稿画面全体 */
+.home-header {
+    width: 90%;
+    max-width: 900px;
+    min-height: 90vh;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
+}
+
+/* タイトル */
+.home-header h1 {
+    margin: 0 0 25px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #654b39;
+}
+
+/* 投稿一覧の見出し */
+.home-header h3 {
+    margin: 25px 0;
+    font-size: 22px;
+    color: #654b39;
+}
+
+/* 区切り線 */
+.home-header hr {
+    margin: 25px 0;
+    border: none;
+    border-top: 1px solid #eee4d8;
+}
+
+/* 新規投稿ボタン */
+.reserve-btn {
+    padding: 13px 25px;
+    border: none;
+    border-radius: 30px;
+    background-color: #ed947c;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.reserve-btn:hover {
+    background-color: #df8068;
+}
+
+/* 投稿一覧 */
+.post-item {
+    margin-bottom: 15px;
+    padding: 25px 22px;
+    background-color: #fffdf8;
+    border: 1px solid #f0e8de;
+    border-radius: 20px;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+}
+
+/* ユーザーID */
+.post-item strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #59483d;
+    font-size: 18px;
+}
+
+/* 投稿本文・コメント */
+.post-item p {
+    margin: 8px 0;
+    color: #75665c;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+/* 投稿日時 */
+.post-item p:first-of-type {
+    color: #a39a92;
+    font-size: 14px;
+}
+
+/* 投稿画像 */
+.post-item img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 15px 0;
+    border-radius: 15px;
+}
+
+/* スマートフォン向け */
+@media screen and (max-width: 600px) {
+    .home-header {
+        width: 96%;
+        margin: 10px auto;
+        padding: 18px 12px;
+        border-radius: 16px;
+    }
+
+    .home-header h1 {
+        font-size: 26px;
+    }
+
+    .home-header h3 {
+        font-size: 19px;
+    }
+
+    .post-item {
+        padding: 18px 14px;
+        border-radius: 15px;
+    }
+
+    .post-item strong {
+        font-size: 16px;
+    }
+
+    .post-item p {
+        font-size: 14px;
+    }
+
+    .reserve-btn {
+        font-size: 14px;
+    }
+}
