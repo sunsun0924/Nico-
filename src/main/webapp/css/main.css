@@ -1,0 +1,29 @@
+/* 画面全体の基本設定 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    background-color: #ffe8d1;
+    color: #59483d;
+}
+
+/* メニューと本文を横並びにする */
+.page-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* メインコンテンツ */
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+/* スマートフォン向け */
+@media screen and (max-width: 600px) {
+    .main-content {
+        padding: 15px;
+    }
+}

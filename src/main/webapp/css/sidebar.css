@@ -1,0 +1,103 @@
+/* 画面全体 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    background-color: #ffe8d1;
+    color: #59483d;
+}
+
+/* 左側メニュー */
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    width: 226px;
+    height: 100vh;
+    min-height: 500px;
+    background-color: #f0dfd2;
+    box-sizing: border-box;
+}
+
+/* メニュー一覧 */
+.menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 70px 25px 20px;
+}
+
+/* 各メニュー */
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 54px;
+    color: #8b796d;
+    font-size: 17px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+/* メニューアイコン */
+.menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    color: #e7a184;
+    font-size: 30px;
+}
+
+/* マウスを乗せたとき */
+.menu-item:hover {
+    color: #654b39;
+}
+
+/* マイページを下部に配置 */
+.menu-bottom {
+    margin-top: auto;
+    padding: 25px 20px 35px;
+    border-top: 1px solid rgba(150, 120, 100, 0.08);
+}
+
+/* マイページ */
+.mypage-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #8b796d;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+/* 丸いユーザーアイコン */
+.profile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #edaa8d;
+    border-radius: 50%;
+    font-size: 24px;
+}
+
+/* スマートフォン向け */
+@media screen and (max-width: 600px) {
+    .side-menu {
+        width: 100%;
+        height: 100vh;
+    }
+
+    .menu-list {
+        gap: 15px;
+        padding: 25px 20px;
+    }
+
+    .menu-bottom {
+        padding: 20px;
+    }
+}

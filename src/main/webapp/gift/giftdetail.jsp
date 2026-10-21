@@ -1,6 +1,6 @@
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ include file="../header.jsp" %>
 
 <%
     String gift = request.getParameter("gift");
@@ -32,82 +32,84 @@
     }
 %>
 
+<!-- ギフト詳細画面のCSS -->
+<link rel="stylesheet"
+      href="${pageContext.request.contextPath}/css/giftdetail.css">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- サイドバーと詳細画面を横並びにする -->
+<div class="page-layout">
 
-    <title>ギフト詳細</title>
+    <!-- 左側：サイドバー -->
+    <%@ include file="../sidebar.jsp" %>
 
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/giftdetail.css">
-</head>
-<body>
+    <!-- 右側：ギフト詳細画面 -->
+    <main class="main-content">
 
-    <main class="detail-container">
+        <div class="detail-container">
 
-      
+            <!-- ギフト詳細 -->
+            <section class="gift-detail">
 
-        <!-- ギフト詳細 -->
-        <section class="gift-detail">
+                <!-- 写真なし -->
+                <div class="gift-image-placeholder"></div>
 
-            <!-- 写真なし -->
-            <div class="gift-image-placeholder"></div>
+                <!-- 商品名 -->
+                <div class="gift-name-area">
+                    <span class="gift-flower"></span>
+                    <h1><%= giftName %></h1>
+                </div>
 
-            <!-- 商品名 -->
-            <div class="gift-name-area">
-                <span class="gift-flower"></span>
-                <h1><%= giftName %></h1>
-            </div>
+                <!-- 価格 -->
+                <p class="gift-price">¥<%= giftPrice %></p>
 
-            <!-- 価格 -->
-            <p class="gift-price">¥<%= giftPrice %></p>
+                <!-- 商品説明 -->
+                <div class="gift-description">
+                    <p><%= giftDescription %></p>
+                    <p>
+                        大切な人に「ありがとう」や
+                        「おめでとう」の気持ちを込めて
+                        贈ることができます。
+                    </p>
+                </div>
 
-            <!-- 商品説明 -->
-            <div class="gift-description">
-                <p><%= giftDescription %></p>
-                <p>
-                    大切な人に「ありがとう」や
-                    「おめでとう」の気持ちを込めて
-                    贈ることができます。
-                </p>
-            </div>
+            </section>
 
-        </section>
+            <!-- 下部ボタン -->
+            <footer class="detail-footer">
 
-        <!-- 下部ボタン -->
-        <footer class="detail-footer">
+                <!-- gift.jspに戻る -->
+                <a href="${pageContext.request.contextPath}/gift/gift.jsp"
+                   class="btn btn-back">
+                    <span class="btn-arrow">←</span>
+                    <span>戻る</span>
+                </a>
 
-            <!-- gift.jspに戻る -->
-           <a href="${pageContext.request.contextPath}/gift/gift.jsp"
-			   class="btn btn-back">
-			    <span class="btn-arrow">←</span>
-			    <span>戻る</span>
-			</a>
+                <!-- 決定ボタン -->
+                <form action="${pageContext.request.contextPath}/giftConfirm"
+                      method="post"
+                      class="confirm-form">
 
-            <!-- 決定ボタン -->
-            <form action="${pageContext.request.contextPath}/giftConfirm"
-                  method="post"
-                  class="confirm-form">
+                    <input type="hidden"
+                           name="giftName"
+                           value="<%= giftName %>">
 
-                <input type="hidden"
-                       name="giftName"
-                       value="<%= giftName %>">
+                    <input type="hidden"
+                           name="giftPrice"
+                           value="<%= giftPrice %>">
 
-                <input type="hidden"
-                       name="giftPrice"
-                       value="<%= giftPrice %>">
+                    <button type="submit" class="btn btn-confirm">
+                        <span>決定</span>
+                        <span class="gift-icon"></span>
+                    </button>
 
-                <button type="submit" class="btn btn-confirm">
-                    <span>決定</span>
-                    <span class="gift-icon"></span>
-                </button>
+                </form>
 
-            </form>
+            </footer>
 
-        </footer>
+        </div>
 
     </main>
 
-</body>
-</html>
+</div>
+
+<%@ include file="../footer.jsp" %>
