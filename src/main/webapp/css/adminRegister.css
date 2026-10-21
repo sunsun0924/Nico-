@@ -260,8 +260,6 @@ h1 {
 
     display: flex;
     align-items: center;
-
-    /* ボタンの文字を中央に配置 */
     justify-content: center;
 
     width: 76%;
@@ -280,31 +278,36 @@ h1 {
     font-family: inherit;
     font-size: 15px;
     font-weight: 700;
+    text-align: center;
 
     cursor: pointer;
 
-    /* ボタンの影 */
     box-shadow: 0 3px 7px rgba(150, 90, 65, 0.12);
-
-    /* ホバー時のアニメーション */
     transition: background 0.2s, transform 0.2s;
 }
 
-/* マウスを乗せたときの色と動き */
+/* マウスを乗せたとき */
 .register-button:hover {
     background: #c98263;
     transform: translateY(-1px);
 }
 
-/* 矢印だけをボタンの右側に固定 */
-.register-button span {
+/* 登録する文字 */
+.register-button .button-text {
+    position: static;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* 矢印をボタンの右側に配置 */
+.register-button .button-arrow {
     position: absolute;
-    right: 25px;
+    right: 22px;
 
     font-size: 24px;
     font-weight: normal;
 }
-
 /* ========================================
    スマートフォン向けの調整
 ======================================== */
