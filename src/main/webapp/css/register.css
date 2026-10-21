@@ -1,0 +1,333 @@
+
+/* =========================
+   全体設定
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    color: #80675b;
+    background: #fffaf5;
+}
+
+/* =========================
+   登録画面全体
+========================= */
+
+.register-container {
+    width: 100%;
+    max-width: 440px;
+    margin: auto;
+}
+
+/* =========================
+   ヘッダー
+========================= */
+
+.register-header {
+    text-align: center;
+    padding: 0 8px 26px;
+    border-bottom: 1px solid #f1e3d9;
+}
+
+.register-icon {
+    width: 66px;
+    height: 66px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto 12px;
+    border-radius: 50%;
+
+    color: #fffaf5;
+    background: linear-gradient(135deg, #e5aa8c, #ce8c70);
+}
+
+.register-icon svg {
+    width: 43px;
+    height: 43px;
+}
+
+.register-header h1 {
+    margin: 0 0 10px;
+
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.register-header p {
+    margin: 0;
+
+    color: #a18a7d;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* =========================
+   登録フォーム
+========================= */
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding-top: 26px;
+}
+
+/* =========================
+   入力欄
+========================= */
+
+.input-group {
+    display: flex;
+    align-items: center;
+
+    min-height: 70px;
+    padding: 10px 14px;
+
+    border: 1px solid #f0dfd3;
+    border-radius: 12px;
+
+    background: #fffdfb;
+    box-shadow: 0 2px 5px rgba(132, 94, 72, 0.03);
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group:focus-within {
+    border-color: #d99d83;
+    box-shadow: 0 0 0 3px rgba(217, 157, 131, 0.12);
+}
+
+/* 入力欄左側のアイコン */
+
+.input-icon {
+    width: 26px;
+    height: 26px;
+
+    flex-shrink: 0;
+    margin-right: 14px;
+
+    color: #a88b7c;
+}
+
+.input-icon svg {
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ラベルと入力欄 */
+
+.input-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    gap: 5px;
+}
+
+.input-content label {
+    color: #856d60;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.input-content input {
+    width: 100%;
+    padding: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+    color: #59483f;
+
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.input-content input::placeholder {
+    color: #c1b2a8;
+    font-size: 12px;
+}
+
+/* =========================
+   パスワード表示ボタン
+========================= */
+
+.toggle-password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    margin-left: 8px;
+    padding: 5px;
+
+    border: none;
+    background: transparent;
+    color: #a88b7c;
+
+    cursor: pointer;
+}
+
+.toggle-password svg {
+    width: 23px;
+    height: 23px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================
+   エラーメッセージ
+========================= */
+
+.error-message {
+    margin: -10px 0 0;
+
+    color: #c75f59;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* =========================
+   登録ボタン
+========================= */
+
+.register-button {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 76%;
+    min-height: 50px;
+    margin: 22px auto 0;
+    padding: 0 46px;
+
+    border: none;
+    border-radius: 30px;
+
+    background: linear-gradient(135deg, #dfa080, #cc876b);
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+
+    cursor: pointer;
+
+    box-shadow: 0 3px 7px rgba(179, 115, 86, 0.12);
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.register-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.button-arrow {
+    position: absolute;
+    right: 22px;
+
+    font-size: 22px;
+    font-weight: 400;
+}
+
+/* =========================
+   スマートフォン
+========================= */
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px 16px;
+    }
+
+    .register-header {
+        padding-bottom: 22px;
+    }
+
+    .register-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .register-header h1 {
+        font-size: 22px;
+    }
+
+    .register-form {
+        gap: 20px;
+        padding-top: 22px;
+    }
+
+    .input-group {
+        min-height: 64px;
+    }
+
+    .register-button {
+        width: 78%;
+        margin-top: 20px;
+    }
+}
+
+/* =========================
+   画面の高さが小さい場合
+========================= */
+
+@media (max-height: 520px) {
+    body {
+        align-items: flex-start;
+    }
+
+    .register-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 8px;
+    }
+
+    .register-header {
+        padding-bottom: 16px;
+    }
+
+    .register-form {
+        gap: 14px;
+        padding-top: 16px;
+    }
+
+    .register-button {
+        margin-top: 8px;
+    }
+}
