@@ -1,0 +1,181 @@
+
+/* 画面全体の基本設定 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    background-color: #ffe8d1;
+    color: #59483d;
+}
+
+/* 新規投稿画面全体 */
+.home-header {
+    width: 90%;
+    max-width: 480px;
+    min-height: 550px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
+}
+
+/* タイトル */
+.home-header h1 {
+    margin: 0 0 25px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #654b39;
+}
+
+/* ユーザー表示欄 */
+.post-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 12px;
+    background-color: #f7eee5;
+    border: 1px solid #f0e5da;
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+/* ユーザーアイコン */
+.post-toolbar .user-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background-color: #f8d9ca;
+    border-radius: 50%;
+}
+
+/* 表示テキスト */
+.post-toolbar input[type="text"] {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #806b5d;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+/* 画像マーク */
+.image-button {
+    flex-shrink: 0;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+/* 画像マークにマウスを乗せたとき */
+.image-button:hover {
+    opacity: 0.7;
+}
+
+/* ファイル選択ボタンを非表示にする */
+.image-input {
+    display: none;
+}
+
+/* 投稿本文入力欄 */
+.home-header textarea {
+    display: block;
+    width: 100%;
+    height: 200px;
+    padding: 15px;
+    box-sizing: border-box;
+    resize: vertical;
+    border: 1px solid #f0e5da;
+    border-radius: 16px;
+    background-color: #fffaf4;
+    color: #59483d;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.7;
+    outline: none;
+}
+
+/* 入力欄にフォーカスしたとき */
+.home-header textarea:focus {
+    border-color: #ed947c;
+}
+
+/* プレースホルダー */
+.home-header textarea::placeholder {
+    color: #a39a92;
+}
+
+/* 文字数カウンター */
+.home-header form p {
+    margin: 8px 2px 0;
+    text-align: right;
+    color: #a39a92;
+    font-size: 14px;
+}
+
+/* 投稿ボタン */
+.home-header input[type="submit"] {
+    display: block;
+    width: 95%;
+    margin: 25px auto 0;
+    padding: 15px;
+    border: none;
+    border-radius: 35px;
+    background-color: #ed947c;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* ボタンにマウスを乗せたとき */
+.home-header input[type="submit"]:hover {
+    background-color: #df8068;
+}
+
+/* 投稿一覧に戻るリンク */
+.home-header a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #806b5d;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.home-header a:hover {
+    color: #ed947c;
+    text-decoration: underline;
+}
+
+/* スマートフォン向け */
+@media screen and (max-width: 600px) {
+    .home-header {
+        width: 96%;
+        margin: 10px auto;
+        padding: 20px 14px;
+        border-radius: 16px;
+    }
+
+    .home-header h1 {
+        font-size: 26px;
+    }
+
+    .home-header textarea {
+        height: 180px;
+        font-size: 14px;
+    }
+
+    .home-header input[type="submit"] {
+        font-size: 15px;
+    }
+}
