@@ -24,7 +24,7 @@
         </a>
 
         <!-- チャット -->
-        <a href="#"
+        <a href="${pageContext.request.contextPath}/chat/chat_list.jsp"
            class="menu-item">
             <span class="menu-icon">☏</span>
             <span>チャット</span>

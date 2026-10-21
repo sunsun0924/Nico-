@@ -1,9 +1,4 @@
-
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.HashMap" %>
 
 <%@ include file="../header.jsp" %>
 
@@ -20,14 +15,16 @@
     <!-- 右側：検索画面 -->
     <main class="main-content">
 
+        <!-- 外側の白いエリア -->
         <div class="container">
 
+            <!-- 質問入力欄全体 -->
             <div class="question-box">
 
                 <!-- ＋ボタン -->
                 <button type="button" class="plus-button">+</button>
 
-                <!-- 質問入力欄 -->
+                <!-- 質問を入力する部分 -->
                 <input
                     type="text"
                     class="question-input"
@@ -62,4 +59,5 @@
 
 </div>
 
+<!-- フッター -->
 <%@ include file="../footer.jsp" %>
