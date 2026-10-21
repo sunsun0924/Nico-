@@ -9,6 +9,7 @@
 </head>
 
 <body>
+
     <div class="mypage-container">
         <!-- ページヘッダー -->
         <div class="mypage-header">
