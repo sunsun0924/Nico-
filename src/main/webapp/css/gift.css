@@ -1,0 +1,254 @@
+
+/* =========================
+   全体設定
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    background: #f5eee6;
+    color: #59483e;
+    padding: 24px;
+}
+
+/* =========================
+   メインコンテナ
+========================= */
+.gift-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 36px;
+    background: #fffdf9;
+    border: 1px solid #f0e5d9;
+    border-radius: 24px;
+    box-shadow: 0 4px 18px rgba(120, 88, 60, 0.06);
+}
+
+/* =========================
+   ヘッダー
+========================= */
+.gift-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.gift-icon {
+    font-size: 32px;
+}
+
+.gift-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #59483e;
+}
+
+/* =========================
+   メッセージ
+========================= */
+.gift-message {
+    display: flex;
+    align-items: center;
+    min-height: 130px;
+    padding: 24px 36px;
+    margin-bottom: 30px;
+    background: linear-gradient(
+        110deg,
+        #f5d9c8,
+        #f9e9dc,
+        #f5e1d0
+    );
+    border-radius: 20px;
+}
+
+.message-text p {
+    color: #a7765c;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.9;
+    letter-spacing: 1px;
+}
+
+.message-text span {
+    color: #d79579;
+    font-size: 25px;
+    margin-left: 4px;
+}
+
+/* =========================
+   人気のギフト
+========================= */
+.popular-gifts {
+    width: 100%;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.section-header h2 {
+    font-size: 21px;
+    font-weight: 700;
+    color: #59483e;
+}
+
+/* =========================
+   ギフト一覧
+========================= */
+.gift-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px 28px;
+}
+
+/* =========================
+   ギフトカード
+========================= */
+.gift-card {
+    display: block;
+    min-width: 0;
+    padding: 16px;
+    background: #fffaf5;
+    border: 1px solid #f1e7dd;
+    border-radius: 16px;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gift-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 14px rgba(140, 100, 70, 0.10);
+}
+
+.gift-card:focus-visible {
+    outline: 2px solid #c99178;
+    outline-offset: 3px;
+}
+
+/* 写真の代わりの仮表示 */
+.gift-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90px;
+    margin-bottom: 12px;
+    background: #f5e9dc;
+    border-radius: 12px;
+    font-size: 34px;
+}
+
+/* ギフト名 */
+.gift-card h3 {
+    overflow-wrap: anywhere;
+    margin-bottom: 6px;
+    color: #5d4b40;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* 価格 */
+.gift-price {
+    color: #9b8171;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* =========================
+   タブレット対応
+========================= */
+@media (max-width: 700px) {
+    body {
+        padding: 12px;
+    }
+
+    .gift-container {
+        padding: 22px 18px;
+        border-radius: 18px;
+    }
+
+    .gift-header {
+        margin-bottom: 22px;
+    }
+
+    .gift-header h1 {
+        font-size: 24px;
+    }
+
+    .gift-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .gift-card {
+        padding: 12px;
+    }
+
+    .gift-placeholder {
+        height: 80px;
+    }
+
+    .gift-message {
+        min-height: 110px;
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .message-text p {
+        font-size: 16px;
+    }
+
+    .section-header h2 {
+        font-size: 19px;
+    }
+}
+
+/* =========================
+   スマートフォン対応
+========================= */
+@media (max-width: 380px) {
+    body {
+        padding: 8px;
+    }
+
+    .gift-container {
+        padding: 18px 12px;
+    }
+
+    .gift-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .gift-card {
+        padding: 10px;
+    }
+
+    .gift-placeholder {
+        height: 65px;
+        font-size: 28px;
+    }
+
+    .gift-card h3 {
+        font-size: 14px;
+    }
+
+    .gift-price {
+        font-size: 13px;
+    }
+
+    .message-text p {
+        font-size: 14px;
+    }
+}

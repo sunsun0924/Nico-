@@ -1,0 +1,200 @@
+
+/* =========================
+   全体設定
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    background: #f8f5f0;
+    color: #65534a;
+    font-size: 13px;
+}
+
+/* =========================
+   メイン画面
+========================= */
+.detail-container {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 12px 15px 18px;
+    background: #fffdf9;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   ヘッダー
+========================= */
+.detail-header {
+    display: flex;
+    align-items: center;
+    height: 25px;
+    margin-bottom: 12px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #967a6b;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.back-arrow {
+    font-size: 23px;
+    line-height: 1;
+}
+
+/* =========================
+   ギフト詳細
+========================= */
+.gift-detail {
+    padding: 10px;
+    background: #fffaf5;
+    border: 1px solid #f2e8df;
+    border-radius: 12px;
+}
+
+/* 写真なしのスペース */
+.gift-image-placeholder {
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(
+        135deg,
+        #f8e8dc,
+        #fdf5ed,
+        #f2dfd2
+    );
+    border-radius: 8px;
+}
+
+/* 商品名 */
+.gift-name-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.gift-flower {
+    color: #dfa59b;
+    font-size: 18px;
+}
+
+.gift-name-area h1 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #65534a;
+}
+
+/* 価格 */
+.gift-price {
+    margin: 3px 0 10px 24px;
+    color: #967a6b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 商品説明 */
+.gift-description {
+    padding: 0 0 5px 24px;
+    color: #806d62;
+    font-size: 11px;
+    line-height: 1.9;
+}
+
+.gift-description p + p {
+    margin-top: 3px;
+}
+
+/* =========================
+   下部ボタン
+========================= */
+.detail-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 18px;
+}
+
+/* 共通ボタン */
+.btn {
+    min-width: 0;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 24px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 戻るボタン */
+.btn-back {
+    flex: 1;
+    color: #987d6e;
+    background: #fffaf6;
+    border: 1px solid #d9b9a9;
+}
+
+.btn-arrow {
+    font-size: 16px;
+}
+
+/* 決定ボタン */
+.confirm-form {
+    flex: 1;
+    min-width: 0;
+}
+
+.btn-confirm {
+    width: 100%;
+    color: #fff;
+    background: #dca39e;
+    border: 1px solid #dca39e;
+    transition: background 0.2s;
+}
+
+.btn-confirm:hover {
+    background: #cc8f89;
+}
+
+.gift-icon {
+    font-size: 15px;
+}
+
+/* =========================
+   小さい画面
+========================= */
+@media (max-width: 360px) {
+    .detail-container {
+        padding: 10px;
+    }
+
+    .gift-image-placeholder {
+        height: 125px;
+    }
+
+    .gift-description {
+        font-size: 10px;
+    }
+
+    .btn {
+        height: 40px;
+        font-size: 12px;
+    }
+}
