@@ -1,0 +1,184 @@
+/* 画面全体の基本設定 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    background-color: #ffe8d1;
+    color: #59483d;
+}
+
+/* 通知画面全体のコンテナ */
+.notification-container {
+    width: 90%;
+    max-width: 900px;
+    min-height: 90vh;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
+}
+
+/* タイトル部分 */
+.notification-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* 通知のタイトル */
+.notification-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: bold;
+    color: #654b39;
+}
+
+/* 通知タブ全体 */
+.notification-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 25px;
+    padding: 5px;
+    background-color: #f7eee5;
+    border: 1px solid #f0e5da;
+    border-radius: 35px;
+}
+
+/* 各タブの基本設定 */
+.notification-tabs .tab {
+    flex: 1;
+    padding: 13px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #806b5d;
+    background-color: #fffaf4;
+    border-radius: 30px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* マウスを乗せたとき */
+.notification-tabs .tab:hover {
+    background-color: #f8d9ca;
+}
+
+/* 選択中のタブ */
+.notification-tabs .tab.active {
+    color: #ffffff;
+    background-color: #ed947c;
+}
+
+/* 通知一覧全体 */
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 通知1件ごとの枠 */
+.notification-item {
+    display: flex;
+    align-items: center;
+    padding: 25px 22px;
+    background-color: #fffdf8;
+    border: 1px solid #f0e8de;
+    border-radius: 20px;
+    box-sizing: border-box;
+    min-height: 150px;
+}
+
+/* 通知の文章を表示する領域 */
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 通知のメイン文章 */
+.notification-message {
+    margin: 0 0 10px;
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.7;
+    color: #59483d;
+    overflow-wrap: anywhere;
+}
+
+/* コメント・ギフトの詳細 */
+.notification-detail {
+    margin: 0 0 8px;
+    padding-left: 10px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #75665c;
+    overflow-wrap: anywhere;
+}
+
+/* 通知日時 */
+.notification-date {
+    margin: 0;
+    font-size: 15px;
+    color: #a39a92;
+}
+
+/* 通知がない場合のメッセージ */
+.no-notification {
+    padding: 40px 10px;
+    text-align: center;
+    font-size: 17px;
+    color: #998a7e;
+}
+
+/* スマートフォン向けの設定 */
+@media screen and (max-width: 600px) {
+
+    /* 画面全体の余白を調整 */
+    .notification-container {
+        width: 96%;
+        margin: 10px auto;
+        padding: 18px 12px;
+        border-radius: 16px;
+    }
+
+    /* タイトルの文字サイズ */
+    .notification-header h1 {
+        font-size: 26px;
+    }
+
+    /* タブの間隔を調整 */
+    .notification-tabs {
+        gap: 4px;
+        padding: 4px;
+    }
+
+    /* タブの文字サイズ */
+    .notification-tabs .tab {
+        padding: 11px 4px;
+        font-size: 14px;
+    }
+
+    /* 通知枠の余白を調整 */
+    .notification-item {
+        padding: 18px 14px;
+        min-height: 120px;
+        border-radius: 15px;
+    }
+
+    /* 通知のメイン文章 */
+    .notification-message {
+        font-size: 16px;
+    }
+
+    /* コメント・ギフトの詳細 */
+    .notification-detail {
+        padding-left: 5px;
+        font-size: 14px;
+    }
+
+    /* 日時 */
+    .notification-date {
+        font-size: 13px;
+    }
+}
