@@ -14,7 +14,7 @@
     <!-- ページのタイトル -->
     <title>まとめ検索</title>
 
-    <!-- 通知画面のCSSを読み込む -->
+    <!-- CSSを読み込む -->
     <link rel="stylesheet"
         href="${pageContext.request.contextPath}/css/search.css">
 </head>
@@ -34,6 +34,12 @@
             placeholder="質問してみましょう"
         >
 
+        <!-- 送信ボタン -->
+        <button type="button" class="send-button">送信</button>
+
     </div>
 
 </div>
+
+</body>
+</html>
