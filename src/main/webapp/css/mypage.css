@@ -1,51 +1,150 @@
-/* =========================
-   画面全体のレイアウト
-========================= */
-.page-layout {
-    width: 100%;
-    min-height: 100vh;
-}
+@charset "UTF-8";
 
-/* メイン画面 */
-.main-content {
-    width: calc(100% - 266px);
-    min-height: calc(100vh - 40px);
-    margin: 20px 20px 20px 246px;
+body {
+    margin: 0;
     padding: 0;
+    background-color: #f7efe5;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #5c4033;
 }
 
-/* =========================
-   マイページコンテナ
-========================= */
-.mypage-container {
+.main-container {
+    margin-left: 240px; /* サイドバーの幅 */
+    padding: 30px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center; /* 横方向の中央に配置 */
+    align-items: flex-start;  /* 上から配置（上下も中央にする場合は center） */
+}
+
+.content-card {
+    background-color: #ffffff;
     width: 100%;
-    max-width: 1000px;
-    min-height: calc(100vh - 40px);
-    margin: 0 auto;
-    padding: 30px 36px;
-    background-color: #fffdf8;
-    border: 1px solid #eee4d8;
-    border-radius: 22px;
-    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
+    max-width: 680px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(92, 64, 51, 0.08);
+    padding: 24px 32px;
+    box-sizing: border-box;
 }
 
-/* =========================
-   スマートフォン対応
-========================= */
-@media screen and (max-width: 600px) {
-    .main-content {
-        width: calc(100% - 100px);
-        min-height: calc(100vh - 20px);
-        margin: 10px 10px 10px 90px;
-        padding: 0;
-    }
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-bottom: 1px solid #f0e6dc;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
 
-    .mypage-container {
-        width: 100%;
-        max-width: none;
-        min-height: calc(100vh - 20px);
-        margin: 0;
-        padding: 18px 12px;
-        border-radius: 16px;
-    }
+.card-header i {
+    color: #c88a7b;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.user-profile-section {
+    background-color: #fdfbf7;
+    border: 1px solid #f4ece1;
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* 湖面（空と水面）をイメージしたアバターデザイン */
+.lake-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #89f7fe 100%);
+    border: 2px solid #e8bcaf;
+    flex-shrink: 0;
+}
+
+.user-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.user-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.btn-edit-profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #fff;
+    color: #d48373;
+    border: 1px solid #e8bcaf;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    font-weight: 500;
+    width: fit-content;
+    transition: background-color 0.2s;
+}
+
+.btn-edit-profile:hover {
+    background-color: #fff5f2;
+}
+
+.menu-item-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fdfbf7;
+    border: 1px solid #f4ece1;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    text-decoration: none;
+    color: #5c4033;
+    transition: all 0.2s;
+}
+
+.menu-item-card:hover {
+    background-color: #f7efe5;
+    border-color: #e8bcaf;
+}
+
+.menu-item-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-icon-wrapper {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.red-heart { background-color: #faece8; color: #d48373; }
+.purple-gear { background-color: #f0ebf5; color: #8c7aa9; }
+.orange-logout { background-color: #faece8; color: #d48373; }
+
+.menu-item-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.arrow-icon {
+    color: #b59b8e;
+    font-size: 0.85rem;
 }

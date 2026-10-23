@@ -24,20 +24,26 @@ body {
 .page-layout {
     width: 100%;
     min-height: 100vh;
+    display: flex;
+    position: relative;
+    background-color: #fcf4ec;
 }
 
-/* メイン画面：PCはギフト画面と同じ配置 */
+/* メイン画面：サイドバーの幅（240px + 左右余白）を避ける配置 */
 .main-content {
     width: calc(100% - 266px);
     min-height: calc(100vh - 40px);
     margin: 20px 20px 20px 246px;
     padding: 0;
+    flex: 1;
 }
 
 /* =========================
-   設定画面コンテナ
+   設定画面・詳細画面の共通コンテナ
+   (.settings-container と .container の両方に対応)
 ========================= */
-.settings-container {
+.settings-container,
+.container {
     width: 100%;
     max-width: 1000px;
     min-height: calc(100vh - 40px);
@@ -50,7 +56,103 @@ body {
 }
 
 /* =========================
-   ヘッダー
+   ページタイトル・説明文（パスワード変更や登録情報変更用）
+========================= */
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #654b39;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.page-desc {
+    color: #9b8171;
+    font-size: 14px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+/* =========================
+   フォーム関連スタイル
+========================= */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #59483d;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+    color: #59483d;
+    background-color: #fffdf8;
+    border: 1px solid #ebd9cc;
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+    border-color: #ed947c;
+    box-shadow: 0 0 0 3px rgba(237, 148, 124, 0.15);
+}
+
+/* =========================
+   ボタンコンテナ & 各種ボタン
+========================= */
+.btn-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.btn-save {
+    padding: 12px 28px;
+    background-color: #ed947c;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-save:hover {
+    background-color: #e0826a;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    background-color: #fffdf8;
+    color: #8b6f5d;
+    border: 1px solid #edc5b2;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-back:hover {
+    background-color: #fdf5ed;
+}
+
+/* =========================
+   ヘッダー（設定メニュー用）
 ========================= */
 .header {
     display: flex;
@@ -85,7 +187,7 @@ body {
 }
 
 /* =========================
-   設定カード
+   設定カード（メニュー一覧用）
 ========================= */
 .settings-card {
     width: 100%;
@@ -96,9 +198,7 @@ body {
     overflow: hidden;
 }
 
-/* =========================
-   各項目のリンク
-========================= */
+/* 各項目のリンク */
 .setting-item {
     display: flex;
     align-items: center;
@@ -114,12 +214,6 @@ body {
     background-color: #fdf5ed;
 }
 
-.setting-item:focus-visible {
-    outline: 2px solid #ed947c;
-    outline-offset: -2px;
-}
-
-/* 項目間の区切り線 */
 .setting-item:not(:last-child)::after {
     content: "";
     position: absolute;
@@ -130,9 +224,7 @@ body {
     background-color: #eee4d8;
 }
 
-/* =========================
-   アイコン領域
-========================= */
+/* アイコン領域 */
 .icon-wrapper {
     display: flex;
     align-items: center;
@@ -158,9 +250,7 @@ body {
     font-size: 18px;
 }
 
-/* =========================
-   テキスト領域
-========================= */
+/* テキスト領域 */
 .text-content {
     flex: 1;
     min-width: 0;
@@ -182,7 +272,6 @@ body {
     overflow-wrap: anywhere;
 }
 
-/* 右矢印アイコン */
 .arrow-icon {
     flex-shrink: 0;
     color: #c9b5a6;
@@ -190,7 +279,7 @@ body {
 }
 
 /* =========================
-   ブロックリスト
+   ブロックリスト関連
 ========================= */
 #block-list-section {
     width: 100%;
@@ -224,9 +313,6 @@ body {
     overflow-wrap: anywhere;
 }
 
-/* =========================
-   ブロック解除ボタン
-========================= */
 .btn-unblock {
     flex-shrink: 0;
     padding: 8px 18px;
@@ -245,15 +331,6 @@ body {
     border-color: #ed947c;
 }
 
-.btn-unblock:focus-visible,
-.btn-back-bottom:focus-visible {
-    outline: 2px solid #ed947c;
-    outline-offset: 3px;
-}
-
-/* =========================
-   ブロックリスト画面の戻るボタン
-========================= */
 .btn-back-bottom {
     width: 100%;
     margin-top: 24px;
@@ -277,8 +354,6 @@ body {
    スマートフォン対応
 ========================= */
 @media screen and (max-width: 600px) {
-
-    /* メイン画面：ギフト画面と同じ配置 */
     .main-content {
         width: calc(100% - 100px);
         min-height: calc(100vh - 20px);
@@ -286,8 +361,8 @@ body {
         padding: 0;
     }
 
-    /* 設定画面コンテナ */
-    .settings-container {
+    .settings-container,
+    .container {
         width: 100%;
         max-width: none;
         min-height: calc(100vh - 20px);
@@ -296,94 +371,28 @@ body {
         border-radius: 16px;
     }
 
-    /* ヘッダー */
     .header {
         gap: 8px;
         margin-bottom: 20px;
     }
 
-    .back-btn {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-    }
-
-    .header-title {
+    .page-title {
         font-size: 20px;
-        letter-spacing: 1px;
     }
 
-    /* 設定カード */
-    .settings-card {
-        border-radius: 14px;
-    }
-
-    /* 各設定項目 */
-    .setting-item {
-        padding: 14px 12px;
-    }
-
-    .setting-item:not(:last-child)::after {
-        left: 12px;
-        right: 12px;
-    }
-
-    /* アイコン */
-    .icon-wrapper {
-        width: 38px;
-        height: 38px;
-        margin-right: 10px;
-    }
-
-    .icon-wrapper i {
-        font-size: 16px;
-    }
-
-    /* テキスト */
-    .text-content {
-        padding-right: 6px;
-    }
-
-    .item-title {
-        margin-bottom: 4px;
+    .form-input {
+        padding: 10px 12px;
         font-size: 14px;
     }
 
-    .item-desc {
-        font-size: 11px;
-        line-height: 1.5;
+    .btn-container {
+        flex-direction: column;
+        width: 100%;
     }
 
-    /* 右矢印 */
-    .arrow-icon {
-        font-size: 12px;
-    }
-
-    /* ブロックリスト */
-    .block-item {
-        padding: 14px 12px;
-    }
-
-    .block-item:not(:last-child)::after {
-        left: 12px;
-        right: 12px;
-    }
-
-    .block-user-name {
-        margin-left: 10px;
-        font-size: 13px;
-    }
-
-    /* ブロック解除ボタン */
-    .btn-unblock {
-        padding: 7px 12px;
-        font-size: 12px;
-    }
-
-    /* 戻るボタン */
-    .btn-back-bottom {
-        margin-top: 20px;
-        padding: 12px;
-        font-size: 14px;
+    .btn-save,
+    .btn-back {
+        width: 100%;
+        text-align: center;
     }
 }

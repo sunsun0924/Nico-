@@ -1,106 +1,66 @@
-```jsp
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ include file="../header.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>マイページ - Nico+</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
 
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/mypage.css">
+    <!-- ひとつ上の階層にある共通パーツを読み込む -->
+    <jsp:include page="../header.jsp" />
+    <jsp:include page="../sidebar.jsp" />
 
-<div class="page-layout">
-
-    <%@ include file="../sidebar.jsp" %>
-
-    <main class="main-content">
-
-        <div class="mypage-container">
-
-            <!-- ページヘッダー -->
-            <div class="mypage-header">
-                <i class="fa-regular fa-user header-icon"></i>
+    <main class="main-container">
+        <div class="content-card">
+            
+            <div class="card-header">
+                <i class="fa-regular fa-user"></i>
                 <h2>マイページ</h2>
             </div>
 
-            <!-- ユーザープロフィールカード -->
-            <div class="profile-card">
-
-                <!-- ユーザーアイコン -->
-                <div class="profile-avatar">
-                    <img
-                        src="${pageContext.request.contextPath}/images/sample-icon.png"
-                        alt="ユーザーアイコン">
-                </div>
-
-                <div class="profile-info">
-
-                    <!-- ユーザー名 -->
-                    <p class="user-name">みさき</p>
-
-                    <!-- プロフィール編集リンク -->
-                    <a
-                        href="${pageContext.request.contextPath}/profile_edit.jsp"
-                        class="edit-profile-btn">
-                        <i class="fa-solid fa-pen"></i>
-                        プロフィールを編集
+            <!-- ユーザー情報（湖面アバター） -->
+            <div class="user-profile-section">
+                <div class="user-avatar lake-avatar"></div>
+                <div class="user-info-text">
+                    <span class="user-name">みさき 🌷</span>
+                    <a href="${pageContext.request.contextPath}/profile/edit" class="btn-edit-profile">
+                        <i class="fa-solid fa-pen"></i> プロフィールを編集
                     </a>
-
                 </div>
             </div>
 
-            <!-- メニューリスト -->
-            <div class="menu-list">
+            <!-- メニュー項目 -->
+            <a href="${pageContext.request.contextPath}/user/likes" class="menu-item-card">
+                <div class="menu-item-left">
+                    <div class="menu-icon-wrapper red-heart"><i class="fa-regular fa-heart"></i></div>
+                    <span class="menu-item-title">いいねした投稿</span>
+                </div>
+                <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
 
-                <!-- いいねした投稿 -->
-                <a
-                    href="${pageContext.request.contextPath}/bookmark_list.jsp"
-                    class="menu-item">
+            <a href="${pageContext.request.contextPath}/user/settings" class="menu-item-card">
+                <div class="menu-item-left">
+                    <div class="menu-icon-wrapper purple-gear"><i class="fa-solid fa-gear"></i></div>
+                    <span class="menu-item-title">設定</span>
+                </div>
+                <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
 
-                    <div class="menu-left">
-                        <span class="icon-circle heart-icon">
-                            <i class="fa-regular fa-heart"></i>
-                        </span>
+            <a href="${pageContext.request.contextPath}/logout" class="menu-item-card">
+                <div class="menu-item-left">
+                    <div class="menu-icon-wrapper orange-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                    <span class="menu-item-title">ログアウト</span>
+                </div>
+                <i class="fa-solid fa-chevron-right arrow-icon"></i>
+            </a>
 
-                        <span class="menu-text">いいねした投稿</span>
-                    </div>
-
-                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                </a>
-
-                <!-- 設定 -->
-                <a
-                    href="${pageContext.request.contextPath}/mypage/mypage_detail.jsp"
-                    class="menu-item">
-
-                    <div class="menu-left">
-                        <span class="icon-circle gear-icon">
-                            <i class="fa-solid fa-gear"></i>
-                        </span>
-
-                        <span class="menu-text">設定</span>
-                    </div>
-
-                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                </a>
-
-                <!-- ログアウト -->
-                <a
-                    href="${pageContext.request.contextPath}/LogoutServlet"
-                    class="menu-item logout-item">
-
-                    <div class="menu-left">
-                        <span class="icon-circle logout-icon">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                        </span>
-
-                        <span class="menu-text">ログアウト</span>
-                    </div>
-
-                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                </a>
-
-            </div>
         </div>
-
     </main>
-</div>
 
-<%@ include file="../footer.jsp" %>
-```
+    <jsp:include page="../footer.jsp" />
+
+</body>
+</html>
