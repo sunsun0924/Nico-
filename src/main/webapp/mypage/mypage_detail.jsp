@@ -121,7 +121,6 @@
     }
 
     function unblockUser(userName) {
-      // 後々ここにチャット機能のブロック解除APIやサーブレットへの送信処理を記述できます
       alert(userName + ' のブロックを解除しました');
     }
   </script>
