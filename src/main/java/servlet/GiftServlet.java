@@ -2,8 +2,8 @@ package servlet;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
+import bean.Gift;
 import dao.GiftDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+// ギフト一覧を表示するServlet
 @WebServlet("/GiftServlet")
 public class GiftServlet extends HttpServlet {
 
@@ -22,12 +23,11 @@ public class GiftServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         try {
-            // ギフト一覧をDBから取得
+            // DBからギフト一覧を取得
             GiftDAO dao = new GiftDAO();
+            List<Gift> giftList = dao.selectAll();
 
-            List<Map<String, String>> giftList = dao.selectAll();
-
-            // JSPにギフト一覧を渡す
+            // ギフト一覧をJSPに渡す
             request.setAttribute("giftList", giftList);
 
             // ギフト画面を表示
@@ -35,7 +35,8 @@ public class GiftServlet extends HttpServlet {
                    .forward(request, response);
 
         } catch (Exception e) {
-            throw new ServletException("ギフト一覧の取得に失敗しました。", e);
+            throw new ServletException(
+                    "ギフト一覧の取得に失敗しました。", e);
         }
     }
 }
