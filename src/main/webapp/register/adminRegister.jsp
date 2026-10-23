@@ -1,6 +1,6 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,7 +10,7 @@
 
     <!-- 管理者新規登録画面のCSS -->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/adminRegister.css?v=3">
+          href="${pageContext.request.contextPath}/css/adminRegister.css?v=4">
 </head>
 <body>
 
@@ -26,6 +26,7 @@
         <!-- 見出し -->
         <h1>新規登録</h1>
 
+        <!-- 説明文 -->
         <p class="description">
             管理者情報を入力して、アカウントを作成してください。
         </p>
@@ -36,7 +37,13 @@
             <!-- メールアドレス -->
             <div class="form-group">
                 <div class="input-box" id="emailBox">
-                    <span class="field-icon"></span>
+
+                    <span class="field-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="5" width="18" height="14" rx="2"/>
+                            <path d="m4 7 8 6 8-6"/>
+                        </svg>
+                    </span>
 
                     <div class="input-content">
                         <label for="email">メールアドレス</label>
@@ -48,13 +55,20 @@
                             autocomplete="email">
                     </div>
                 </div>
+
                 <p class="error-message" id="emailError"></p>
             </div>
 
             <!-- ID -->
             <div class="form-group">
                 <div class="input-box" id="idBox">
-                    <span class="field-icon"></span>
+
+                    <span class="field-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
+                        </svg>
+                    </span>
 
                     <div class="input-content">
                         <label for="userId">ID</label>
@@ -66,39 +80,88 @@
                             autocomplete="username">
                     </div>
                 </div>
+
                 <p class="error-message" id="idError"></p>
             </div>
 
-            <!-- パスワード -->
-            <div class="form-group">
-                <div class="input-box" id="passwordBox">
-                    <span class="field-icon"></span>
+           
+           
+<!-- パスワード -->
+<div class="form-group">
+    <div class="input-box" id="passwordBox">
 
-                    <div class="input-content">
-                        <label for="password">パスワード</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="例：Admin1234"
-                            autocomplete="new-password">
-                    </div>
+        <!-- 左側の鍵アイコン -->
+        <span class="field-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+                <rect x="4" y="10" width="16" height="11" rx="2"/>
+                <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                <circle cx="12" cy="15" r="1"/>
+                <path d="M12 16v2"/>
+            </svg>
+        </span>
 
-                    <button
-                        type="button"
-                        id="togglePassword"
-                        class="eye-button"
-                        aria-label="パスワードを表示">
-                        ◎
-                    </button>
-                </div>
-                <p class="error-message" id="passwordError"></p>
-            </div>
+        <!-- ラベルと入力欄 -->
+        <div class="input-content">
+            <label for="password">パスワード</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="例：Admin1234"
+                autocomplete="new-password">
+        </div>
+
+        <!-- パスワード表示切り替えボタン -->
+        <button
+            type="button"
+            id="togglePassword"
+            class="eye-button"
+            aria-label="パスワードを表示"
+            aria-pressed="false">
+
+            <svg
+                id="eyeIcon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+
+                <!-- 通常の目 -->
+                <g id="eyeOpen" style="display: none;">
+                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </g>
+
+                <!-- 斜線入りの目 -->
+                <g id="eyeClosed">
+                    <path d="M3 3l18 18"/>
+                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+                    <path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3.1 3.9"/>
+                    <path d="M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7a10.5 10.5 0 0 0 3-.4"/>
+                </g>
+            </svg>
+        </button>
+    </div>
+
+    <!-- 重要：エラーメッセージは枠の外に置く -->
+    <p class="error-message" id="passwordError"></p>
+</div>
+
 
             <!-- 企業コード -->
             <div class="form-group">
                 <div class="input-box" id="companyCodeBox">
-                    <span class="field-icon"></span>
+
+                    <span class="field-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="5" y="3" width="14" height="18" rx="1"/>
+                            <path d="M9 7h2M14 7h1M9 11h2M14 11h1M9 15h2M14 15h1M11 21v-3h3v3"/>
+                        </svg>
+                    </span>
 
                     <div class="input-content">
                         <label for="companyCode">企業コード</label>
@@ -110,166 +173,221 @@
                             autocomplete="off">
                     </div>
                 </div>
+
                 <p class="error-message" id="companyCodeError"></p>
             </div>
 
             <!-- 登録ボタン -->
             <button type="submit" class="register-button">
                 <span>登録する</span>
-                <span class="button-arrow">→</span>
+                <span class="button-arrow" aria-hidden="true">→</span>
             </button>
-
-          
 
         </form>
     </main>
 
-    <!-- 入力チェックと画面遷移 -->
-    <script>
-        const form = document.getElementById("adminRegisterForm");
+    <!-- 入力チェック・パスワード表示切り替え・画面遷移 -->
+   
+<script>
+    // ========================================
+    // 入力欄とボタンを取得
+    // ========================================
 
-        const email = document.getElementById("email");
-        const userId = document.getElementById("userId");
-        const password = document.getElementById("password");
-        const companyCode = document.getElementById("companyCode");
+    const form = document.getElementById("adminRegisterForm");
+    const email = document.getElementById("email");
+    const userId = document.getElementById("userId");
+    const password = document.getElementById("password");
+    const companyCode = document.getElementById("companyCode");
 
-        // 入力エラーの表示を共通処理する
-        function setError(inputId, boxId, errorId, message) {
-            document.getElementById(errorId).textContent = message;
+    const togglePassword = document.getElementById("togglePassword");
+    const eyeOpen = document.getElementById("eyeOpen");
+    const eyeClosed = document.getElementById("eyeClosed");
 
-            document.getElementById(boxId).classList.toggle(
-                "invalid", message !== ""
+    // ========================================
+    // パスワードの初期状態
+    // 非表示のときは斜線入りの目
+    // ========================================
+
+    password.type = "password";
+    eyeOpen.style.display = "none";
+    eyeClosed.style.display = "inline";
+
+    // ========================================
+    // パスワード表示・非表示の切り替え
+    // ========================================
+
+    togglePassword.addEventListener("click", function () {
+        const isHidden = password.type === "password";
+
+        if (isHidden) {
+            // パスワードを表示
+            password.type = "text";
+
+            // 通常の目を表示
+            eyeOpen.style.display = "inline";
+            eyeClosed.style.display = "none";
+
+            togglePassword.setAttribute(
+                "aria-label", "パスワードを非表示"
             );
+            togglePassword.setAttribute("aria-pressed", "true");
 
-            document.getElementById(inputId).setAttribute(
-                "aria-invalid", message !== "" ? "true" : "false"
+        } else {
+            // パスワードを非表示
+            password.type = "password";
+
+            // 斜線入りの目を表示
+            eyeOpen.style.display = "none";
+            eyeClosed.style.display = "inline";
+
+            togglePassword.setAttribute(
+                "aria-label", "パスワードを表示"
             );
+            togglePassword.setAttribute("aria-pressed", "false");
+        }
+    });
 
-            return message === "";
+    // ========================================
+    // 入力エラーの共通処理
+    // ========================================
+
+    function setError(inputId, boxId, errorId, message) {
+        document.getElementById(errorId).textContent = message;
+
+        document.getElementById(boxId).classList.toggle(
+            "invalid",
+            message !== ""
+        );
+
+        document.getElementById(inputId).setAttribute(
+            "aria-invalid",
+            message !== "" ? "true" : "false"
+        );
+
+        return message === "";
+    }
+
+    // ========================================
+    // メールアドレスのチェック
+    // ========================================
+
+    function validateEmail() {
+        const value = email.value.trim();
+        let message = "";
+
+        if (!value) {
+            message = "メールアドレスを入力してください。";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            message = "正しいメールアドレスを入力してください。";
         }
 
-        // メールアドレスをチェック
-        function validateEmail() {
-            const value = email.value.trim();
-            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        return setError(
+            "email", "emailBox", "emailError", message
+        );
+    }
 
-            let message = "";
+    // ========================================
+    // IDのチェック
+    // ========================================
 
-            if (!value) {
-                message = "メールアドレスを入力してください。";
-            } else if (!valid) {
-                message = "正しいメールアドレスを入力してください。";
-            }
+    function validateId() {
+        const value = userId.value.trim();
+        let message = "";
 
-            return setError(
-                "email", "emailBox", "emailError", message
-            );
+        if (!value) {
+            message = "IDを入力してください。";
+        } else if (value.length < 4) {
+            message = "IDは4文字以上で入力してください。";
         }
 
-        // IDをチェック
-        function validateId() {
-            const value = userId.value.trim();
+        return setError(
+            "userId", "idBox", "idError", message
+        );
+    }
 
-            let message = "";
+    // ========================================
+    // パスワードのチェック
+    // ========================================
 
-            if (!value) {
-                message = "IDを入力してください。";
-            } else if (value.length < 4) {
-                message = "IDは4文字以上で入力してください。";
-            }
+    function validatePassword() {
+        const value = password.value;
+        let message = "";
 
-            return setError(
-                "userId", "idBox", "idError", message
-            );
+        if (!value) {
+            message = "パスワードを入力してください。";
+        } else if (!/^[a-zA-Z0-9]{8,}$/.test(value)) {
+            message =
+                "パスワードは8文字以上の半角英数字で入力してください。";
         }
 
-        // パスワードをチェック
-        function validatePassword() {
-            const value = password.value;
+        return setError(
+            "password", "passwordBox", "passwordError", message
+        );
+    }
 
-            let message = "";
+    // ========================================
+    // 企業コードのチェック
+    // ========================================
 
-            if (!value) {
-                message = "パスワードを入力してください。";
-            } else if (!/^[a-zA-Z0-9]{8,}$/.test(value)) {
-                message =
-                    "パスワードは8文字以上の半角英数字で入力してください。";
-            }
+    function validateCompanyCode() {
+        const value = companyCode.value.trim();
+        let message = "";
 
-            return setError(
-                "password", "passwordBox", "passwordError", message
-            );
+        if (!value) {
+            message = "企業コードを入力してください。";
         }
 
-        // 企業コードをチェック
-        function validateCompanyCode() {
-            const value = companyCode.value.trim();
+        return setError(
+            "companyCode",
+            "companyCodeBox",
+            "companyCodeError",
+            message
+        );
+    }
 
-            let message = "";
+    // ========================================
+    // 入力欄から離れたときにチェック
+    // ========================================
 
-            if (!value) {
-                message = "企業コードを入力してください。";
-            }
+    email.addEventListener("blur", validateEmail);
+    userId.addEventListener("blur", validateId);
+    password.addEventListener("blur", validatePassword);
+    companyCode.addEventListener("blur", validateCompanyCode);
 
-            return setError(
-                "companyCode", "companyCodeBox",
-                "companyCodeError", message
+    // ========================================
+    // 登録ボタンの処理
+    // ========================================
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const results = [
+            validateEmail(),
+            validateId(),
+            validatePassword(),
+            validateCompanyCode()
+        ];
+
+        if (results.every(Boolean)) {
+            alert(
+                "入力チェックに成功しました。\n" +
+                "現在は仮実装のため、ログイン画面へ移動します。"
             );
-        }
 
-        // 入力欄から離れたときにチェック
-        email.addEventListener("blur", validateEmail);
-        userId.addEventListener("blur", validateId);
-        password.addEventListener("blur", validatePassword);
-        companyCode.addEventListener("blur", validateCompanyCode);
+            window.location.href =
+                "${pageContext.request.contextPath}/login/adminLogin.jsp";
 
-        // パスワードの表示・非表示を切り替える
-        document.getElementById("togglePassword")
-            .addEventListener("click", function() {
+        } else {
+            const firstInvalid =
+                form.querySelector('[aria-invalid="true"]');
 
-                const hidden = password.type === "password";
-
-                password.type = hidden ? "text" : "password";
-                this.textContent = hidden ? "◉" : "◎";
-
-                this.setAttribute(
-                    "aria-label",
-                    hidden ? "パスワードを隠す" : "パスワードを表示"
-                );
-            });
-
-        // 登録ボタンを押したときの処理
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const results = [
-                validateEmail(),
-                validateId(),
-                validatePassword(),
-                validateCompanyCode()
-            ];
-
-            // すべての入力チェックに成功した場合
-            if (results.every(Boolean)) {
-                alert(
-                    "入力チェックに成功しました。\n" +
-                    "現在は仮実装のため、ログイン画面へ移動します。"
-                );
-
-                // 管理者ログイン画面へ移動
-                window.location.href =
-                    "${pageContext.request.contextPath}/login/adminLogin.jsp";
-            } else {
-                // 最初の入力エラーにフォーカスを当てる
-                const firstInvalid =
-                    form.querySelector('[aria-invalid="true"]');
-
-                if (firstInvalid) {
-                    firstInvalid.focus();
-                }
+            if (firstInvalid) {
+                firstInvalid.focus();
             }
-        });
-    </script>
+        }
+    });
+</script>
+
 
 </body>
 </html>

@@ -97,6 +97,8 @@ body {
 ========================= */
 
 .input-group {
+    position: relative;
+
     display: flex;
     align-items: center;
 
@@ -112,12 +114,15 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+/* 入力欄を選択したとき */
 .input-group:focus-within {
     border-color: #d99d83;
     box-shadow: 0 0 0 3px rgba(217, 157, 131, 0.12);
 }
 
-/* 入力欄左側のアイコン */
+/* =========================
+   入力欄左側のアイコン
+========================= */
 
 .input-icon {
     width: 26px;
@@ -130,6 +135,7 @@ body {
 }
 
 .input-icon svg {
+    display: block;
     width: 100%;
     height: 100%;
 
@@ -140,12 +146,15 @@ body {
     stroke-linejoin: round;
 }
 
-/* ラベルと入力欄 */
+/* =========================
+   ラベルと入力欄
+========================= */
 
 .input-content {
     display: flex;
     flex: 1;
     flex-direction: column;
+
     min-width: 0;
     gap: 5px;
 }
@@ -157,7 +166,9 @@ body {
 }
 
 .input-content input {
+    display: block;
     width: 100%;
+    min-width: 0;
     padding: 0;
 
     border: none;
@@ -177,35 +188,55 @@ body {
 
 /* =========================
    パスワード表示ボタン
+   四角い枠・背景を表示しない
 ========================= */
 
-.toggle-password {
+.register-form .eye-button,
+.register-form .eye-button:hover,
+.register-form .eye-button:focus,
+.register-form .eye-button:focus-visible,
+.register-form .eye-button:active {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 34px;
 
-    flex-shrink: 0;
     width: 34px;
     height: 34px;
     margin-left: 8px;
-    padding: 5px;
+    padding: 0;
 
-    border: none;
-    background: transparent;
-    color: #a88b7c;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    appearance: none;
+    -webkit-appearance: none;
 
     cursor: pointer;
 }
 
-.toggle-password svg {
-    width: 23px;
-    height: 23px;
+/* 目のマーク */
+.register-form .eye-button svg {
+    display: block;
+    flex-shrink: 0;
+
+    width: 22px;
+    height: 22px;
 
     fill: none;
-    stroke: currentColor;
+    stroke: #b58b78;
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
+}
+
+/* パスワード非表示時の斜線 */
+.register-form .eye-button #eyeSlash {
+    stroke: #b58b78;
 }
 
 /* =========================
@@ -330,4 +361,5 @@ body {
     .register-button {
         margin-top: 8px;
     }
+
 }

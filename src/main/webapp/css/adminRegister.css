@@ -3,198 +3,220 @@
    ページ全体の基本設定
 ======================================== */
 
-/* すべての要素で幅・高さの計算方法を統一 */
 * {
     box-sizing: border-box;
 }
 
-/* ページの基本設定 */
 html {
     min-height: 100%;
 }
 
-/* 背景色・文字・余白の設定 */
 body {
     margin: 0;
     min-height: 100vh;
-    padding: 4px;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-    color: #795c50;
-    background: #ffffff;
+    padding: 24px 16px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #fff9f5;
+    color: #806653;
+
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
 }
 
 /* ========================================
-   登録画面全体のレイアウト
+   新規登録画面全体
 ======================================== */
 
-/* 画面全体を囲むコンテナ */
 .register-container {
     width: 100%;
-    min-height: calc(100vh - 8px);
-
-    /* 中の要素を縦方向に中央配置 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    padding: 45px 24px;
-
-    /* 外枠と背景 */
-    border: 1px solid #eadfd8;
-    border-radius: 6px;
-    background: #fffaf6;
+    max-width: 440px;
+    margin: auto;
 }
 
 /* ========================================
-   ユーザーアイコン
+   管理者アイコン
 ======================================== */
 
-/* アイコンの丸い背景 */
 .user-icon {
     position: relative;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 66px;
-    height: 66px;
-    margin: 0 auto 15px;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 12px;
 
     border-radius: 50%;
-    background: #df9b7d;
-    color: #ffffff;
+    background: #df9475;
+    color: #fff;
 }
 
-/* 人物アイコン */
 .user-symbol {
-    font-size: 34px;
+    font-size: 24px;
+    line-height: 1;
 }
 
-/* プラスマーク */
 .plus-symbol {
     position: absolute;
-    right: 7px;
-    bottom: 12px;
+    top: 7px;
+    right: 5px;
 
-    font-size: 22px;
+    font-size: 17px;
     font-weight: bold;
 }
 
 /* ========================================
-   見出し・説明文
+   見出し
 ======================================== */
 
-/* 「新規登録」の見出し */
 h1 {
-    margin: 0 0 12px;
-    color: #795c50;
-    font-size: 25px;
-    font-weight: 700;
+    margin: 0;
     text-align: center;
+    font-size: 23px;
+    font-weight: 600;
+    color: #8a644e;
 }
 
-/* 見出しの下に表示する説明文 */
 .description {
-    margin: 0 0 28px;
-    color: #a68a7d;
-    font-size: 13px;
-    line-height: 1.8;
+    margin: 18px 0 24px;
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #f0d8ca;
+
     text-align: center;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #b18b78;
 }
 
 /* ========================================
-   入力フォーム全体
+   フォーム全体
 ======================================== */
 
-/* フォームの横幅と上部の区切り線 */
 #adminRegisterForm {
-    width: 100%;
-    max-width: 440px;
-    padding-top: 26px;
-    border-top: 1px solid #f0ded3;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
 
-/* 各入力項目の間隔 */
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
+    width: 100%;
+    height: auto;
 }
 
 /* ========================================
-   入力欄
+   入力欄のグループ
 ======================================== */
 
-/* 入力欄の枠・背景・配置 */
-.input-box {
+#adminRegisterForm .form-group {
+    position: relative;
+    display: block;
+
+    width: 100%;
+    height: auto;
+    min-height: 0;
+
+    margin: 0 0 8px;
+    padding: 0;
+
+    flex: 0 0 auto;
+}
+
+/* 入力欄の外枠 */
+#adminRegisterForm .input-box {
+    position: relative;
+
     display: flex;
     align-items: center;
 
     width: 100%;
-    min-height: 70px;
+    height: 74px;
+    min-height: 74px;
+
+    margin: 0;
     padding: 12px 16px;
 
-    border: 1px solid #f0d8ca;
-    border-radius: 13px;
+    border: 1px solid #f0d3c4;
+    border-radius: 14px;
+
     background: #fffdfb;
+    box-shadow: 0 2px 5px rgba(153, 105, 78, 0.04);
 
-    /* 控えめな影 */
-    box-shadow: 0 2px 5px rgba(120, 80, 60, 0.04);
-
-    /* 枠線の変化をなめらかにする */
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-/* 入力欄を選択しているときの枠線 */
-.input-box:focus-within {
-    border-color: #df9b7d;
-    box-shadow: 0 0 0 2px rgba(223, 155, 125, 0.12);
+/* 入力欄を選択したとき */
+#adminRegisterForm .input-box:focus-within {
+    border-color: #df9475;
+    box-shadow: 0 0 0 2px rgba(223, 148, 117, 0.1);
 }
 
-/* 入力エラーがあるときの赤枠 */
-.input-box.invalid {
-    border: 2px solid #ff929e;
+/* 入力エラーがあるとき */
+#adminRegisterForm .input-box.invalid {
+    border-color: #df806d;
+    box-shadow: 0 0 0 1px rgba(223, 128, 109, 0.08);
 }
 
 /* ========================================
-   入力欄のアイコン
+   入力欄の左側のアイコン
 ======================================== */
 
-/* メール・ユーザー・鍵・企業のアイコン部分 */
 .field-icon {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 
-    width: 38px;
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
+
     flex-shrink: 0;
+    color: #aa8975;
+}
 
-    color: #b28b78;
-    font-size: 23px;
+.field-icon svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 /* ========================================
-   項目名と入力欄
+   ラベルと入力フォーム
 ======================================== */
 
-/* ラベルと入力欄を縦に並べる */
 .input-content {
-    display: flex;
     flex: 1;
     min-width: 0;
-    flex-direction: column;
-    gap: 7px;
 }
 
-/* 「メールアドレス」「ID」などの項目名 */
 .input-content label {
-    color: #876759;
+    display: block;
+    margin-bottom: 7px;
+
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
+    color: #8a644e;
 }
 
-/* 入力フィールド */
 .input-content input {
+    display: block;
+
     width: 100%;
     min-width: 0;
     padding: 0;
@@ -203,201 +225,289 @@ h1 {
     outline: none;
     background: transparent;
 
-    color: #795c50;
+    color: #6f5545;
     font-family: inherit;
     font-size: 13px;
+    line-height: 1.5;
 }
 
-/* 入力例の文字色 */
 .input-content input::placeholder {
-    color: #bda69b;
+    color: #c2a89a;
     opacity: 1;
 }
 
 /* ========================================
-   パスワードの表示・非表示ボタン
+   パスワード表示・非表示ボタン
 ======================================== */
 
-/* 目のアイコンボタン */
-.eye-button {
-    padding: 5px;
+/* Edge標準のパスワード表示ボタン */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+/* 独自の目のボタン */
+#adminRegisterForm .eye-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 32px;
+    width: 32px;
+    height: 36px;
+
+    margin-left: 8px;
+    padding: 0;
+
     border: none;
+    border-radius: 50%;
+    outline-offset: 2px;
+
     background: transparent;
-    color: #a98776;
+    color: #aa8975;
+
     cursor: pointer;
-    font-size: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#adminRegisterForm .eye-button svg {
+    display: block;
+
+    width: 22px;
+    height: 22px;
+
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+/* マウスを乗せたとき */
+#adminRegisterForm .eye-button:hover {
+    background: #fff1e9;
+    color: #aa8975;
+}
+
+/* 余分なアイコンを疑似要素で追加しない */
+#adminRegisterForm .eye-button::before,
+#adminRegisterForm .eye-button::after {
+    content: none !important;
+    display: none !important;
 }
 
 /* ========================================
    入力エラーメッセージ
 ======================================== */
 
-/* エラー文の文字色・位置・サイズ */
-.error-message {
-    min-height: 0;
-    margin: 5px 0 0 10px;
+#adminRegisterForm .error-message {
+    position: static;
 
-    color: #e65e70;
+    width: 100%;
+    height: auto;
+
+    margin: 4px 0 0;
+    padding: 0 4px;
+
+    color: #d76f60;
     font-size: 11px;
-    line-height: 1.6;
-
-    /* 長いメッセージを折り返す */
-    overflow-wrap: anywhere;
+    line-height: 1.5;
 }
 
-/* エラーメッセージの前にマークを表示 */
-.error-message:not(:empty)::before {
-    content: "❗ ";
+/* エラーがない場合は非表示 */
+#adminRegisterForm .error-message:empty {
+    display: none;
 }
 
 /* ========================================
    登録ボタン
 ======================================== */
 
-/* ボタン本体 */
-.register-button {
+#adminRegisterForm .register-button {
     position: relative;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 76%;
-    max-width: 335px;
+    flex: 0 0 auto;
+
+    width: 78%;
+    height: 50px;
     min-height: 50px;
 
-    margin: 42px auto 0;
-    padding: 0 45px;
+    margin: 12px auto 0;
+    padding: 12px 48px;
 
     border: none;
     border-radius: 30px;
 
-    background: #d99172;
-    color: #ffffff;
+    background: #dc9273;
+    color: #fff;
 
     font-family: inherit;
-    font-size: 15px;
-    font-weight: 700;
-    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
 
     cursor: pointer;
 
-    box-shadow: 0 3px 7px rgba(150, 90, 65, 0.12);
-    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(168, 108, 79, 0.12);
+
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-/* マウスを乗せたとき */
-.register-button:hover {
-    background: #c98263;
-    transform: translateY(-1px);
+#adminRegisterForm .register-button:hover {
+    background: #d58464;
+    box-shadow: 0 5px 10px rgba(168, 108, 79, 0.18);
 }
 
-/* 登録する文字 */
-.register-button .button-text {
-    position: static;
-    margin: 0;
-    font-size: 15px;
-    font-weight: 700;
+#adminRegisterForm .register-button:active {
+    box-shadow: none;
 }
 
-/* 矢印をボタンの右側に配置 */
-.register-button .button-arrow {
+.button-arrow {
     position: absolute;
-    right: 22px;
+    right: 20px;
 
-    font-size: 24px;
-    font-weight: normal;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
 }
+
 /* ========================================
-   スマートフォン向けの調整
+   スマートフォン対応
 ======================================== */
 
 @media (max-width: 480px) {
+    body {
+        padding: 20px 14px;
+    }
 
-    /* 画面が狭い場合の余白 */
     .register-container {
-        padding: 35px 18px;
-    }
-
-    /* 見出しを少し小さくする */
-    h1 {
-        font-size: 23px;
-    }
-
-    /* 説明文の文字サイズ */
-    .description {
-        font-size: 12px;
-    }
-
-    /* フォームを画面幅に合わせる */
-    #adminRegisterForm {
         max-width: 100%;
     }
 
-    /* 入力欄の高さを調整 */
-    .input-box {
-        min-height: 64px;
+    h1 {
+        font-size: 21px;
     }
 
-    /* 項目間の余白を調整 */
-    .form-group {
-        margin-bottom: 16px;
+    .description {
+        font-size: 11px;
     }
 
-    /* 登録ボタンの幅を調整 */
-    .register-button {
-        width: 82%;
-        margin-top: 30px;
+    #adminRegisterForm .input-box {
+        height: 70px;
+        min-height: 70px;
+        padding: 10px 12px;
+    }
+
+    .field-icon {
+        margin-right: 8px;
+    }
+
+    #adminRegisterForm .register-button {
+        width: 86%;
     }
 }
 
 /* ========================================
-   高さが小さい画面向けの調整
+   画面の高さが小さい場合
 ======================================== */
 
-@media (max-height: 750px) {
-
-    /* 上部から配置し、縦方向のはみ出しを抑える */
-    .register-container {
-        justify-content: flex-start;
-        padding-top: 24px;
-        padding-bottom: 24px;
+@media (max-height: 650px) {
+    body {
+        align-items: flex-start;
+        padding-top: 12px;
+        padding-bottom: 12px;
     }
 
-    /* アイコンを小さくする */
     .user-icon {
-        width: 52px;
-        height: 52px;
-        margin-bottom: 10px;
+        width: 42px;
+        height: 42px;
+        margin-bottom: 8px;
     }
 
-    /* 見出しのサイズ */
     h1 {
-        font-size: 22px;
+        font-size: 20px;
     }
 
-    /* 説明文の下の余白 */
     .description {
-        margin-bottom: 18px;
+        margin: 10px 0 14px;
+        padding-bottom: 12px;
     }
 
-    /* フォーム上部の余白 */
-    #adminRegisterForm {
-        padding-top: 18px;
+    #adminRegisterForm .form-group {
+        margin-bottom: 8px;
     }
 
-    /* 項目間の余白 */
-    .form-group {
-        margin-bottom: 12px;
+    #adminRegisterForm .input-box {
+        height: 62px;
+        min-height: 62px;
+        padding-top: 8px;
+        padding-bottom: 8px;
     }
 
-    /* 入力欄を少し低くする */
-    .input-box {
-        min-height: 58px;
+    #adminRegisterForm .register-button {
+        height: 44px;
+        min-height: 44px;
+        margin-top: 8px;
     }
+    
+/* ========================================
+   パスワード欄の重なり修正
+======================================== */
 
-    /* 登録ボタン上部の余白 */
-    .register-button {
-        margin-top: 20px;
+/* 各入力グループを縦に配置 */
+#adminRegisterForm .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    height: auto;
+    margin: 0 0 8px;
+}
+
+/* 入力枠の高さを固定 */
+#adminRegisterForm .input-box {
+    display: flex;
+    align-items: center;
+    flex: 0 0 74px;
+    width: 100%;
+    height: 74px;
+    min-height: 74px;
+    margin: 0;
+}
+
+/* エラーメッセージは入力枠の下 */
+#adminRegisterForm .form-group > .error-message {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 4px 0 0;
+    padding: 0 4px;
+    line-height: 1.5;
+}
+
+/* エラーがない場合は余白を作らない */
+#adminRegisterForm .form-group > .error-message:empty {
+    display: none;
+}
+
+/* 目のアイコンは1つだけ表示 */
+#adminRegisterForm .eye-button {
+    flex: 0 0 32px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 画面が低い場合 */
+@media (max-height: 650px) {
+    #adminRegisterForm .input-box {
+        flex-basis: 62px;
+        height: 62px;
+        min-height: 62px;
     }
+}
+
 }

@@ -1,7 +1,6 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -51,7 +50,13 @@
             <div class="input-group">
 
                 <div class="input-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         aria-hidden="true">
                         <circle cx="12" cy="7" r="4"/>
                         <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
                     </svg>
@@ -71,47 +76,77 @@
 
             </div>
 
-            <!-- パスワード入力欄 -->
-            <div class="input-group">
-
-                <div class="input-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="4" y="10" width="16" height="12" rx="2"/>
-                        <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-                        <circle cx="12" cy="15" r="1"/>
-                        <path d="M12 16v2"/>
-                    </svg>
-                </div>
-
-                <div class="input-content">
-                    <label for="password">パスワード</label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="例）8文字以上の半角英数字"
-                        minlength="8"
-                        autocomplete="new-password"
-                        required>
-                </div>
-
-                <!-- パスワード表示切り替え -->
-                <button
-                    type="button"
-                    class="toggle-password"
-                    id="togglePassword"
-                    aria-label="パスワードを表示"
-                    aria-pressed="false">
-
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                    </svg>
-
-                </button>
-
-            </div>
+       
+			<!-- パスワード入力欄 -->
+			<div class="input-group">
+			
+			    <div class="input-icon">
+			        <svg viewBox="0 0 24 24"
+			             fill="none"
+			             stroke="currentColor"
+			             stroke-width="1.8"
+			             stroke-linecap="round"
+			             stroke-linejoin="round"
+			             aria-hidden="true">
+			            <rect x="4" y="10" width="16" height="12" rx="2"/>
+			            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+			            <circle cx="12" cy="15" r="1"/>
+			            <path d="M12 16v2"/>
+			        </svg>
+			    </div>
+			
+			    <div class="input-content">
+			        <label for="password">パスワード</label>
+			
+			        <input
+			            type="password"
+			            id="password"
+			            name="password"
+			            placeholder="例）8文字以上の半角英数字"
+			            minlength="8"
+			            autocomplete="new-password"
+			            required>
+			    </div>
+			
+	<!-- パスワード表示切り替えボタン -->
+		<button
+		    type="button"
+		    id="togglePassword"
+		    class="eye-button"
+		    aria-label="パスワードを表示"
+		    aria-pressed="false"
+		    style="border: none !important;
+		           outline: none !important;
+		           background: transparent !important;
+		           box-shadow: none !important;
+		           border-radius: 0 !important;
+		           appearance: none;
+		           -webkit-appearance: none;">
+		
+		    <svg
+		        xmlns="http://www.w3.org/2000/svg"
+		        viewBox="0 0 24 24"
+		        width="22"
+		        height="22"
+		        fill="none"
+		        stroke="#b58b78"
+		        stroke-width="1.8"
+		        stroke-linecap="round"
+		        stroke-linejoin="round"
+		        aria-hidden="true">
+		
+		        <!-- 目の輪郭 -->
+		        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+		
+		        <!-- 黒目 -->
+		        <circle cx="12" cy="12" r="3"/>
+		
+		        <!-- パスワード非表示時の斜線 -->
+		        <path id="eyeSlash" d="M3 3l18 18"/>
+		    </svg>
+		</button>
+			
+			</div>
 
             <!-- エラーメッセージ -->
             <% if (request.getAttribute("errorMessage") != null) { %>
@@ -131,26 +166,36 @@
     </main>
 
     <!-- パスワードの表示・非表示 -->
-    <script>
-        const passwordInput = document.getElementById("password");
-        const toggleButton = document.getElementById("togglePassword");
+   
 
-        toggleButton.addEventListener("click", function () {
-            const isHidden = passwordInput.type === "password";
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const password = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+    const eyeSlash = document.getElementById("eyeSlash");
 
-            passwordInput.type = isHidden ? "text" : "password";
+    // 必要な要素がそろっているか確認
+    if (!password || !togglePassword || !eyeSlash) {
+        console.error("パスワード表示切り替え用のHTMLが見つかりません。");
+        return;
+    }
 
-            toggleButton.setAttribute(
-                "aria-pressed",
-                String(isHidden)
-            );
+    togglePassword.addEventListener("click", function () {
+        const isHidden = password.type === "password";
 
-            toggleButton.setAttribute(
-                "aria-label",
-                isHidden ? "パスワードを隠す" : "パスワードを表示"
-            );
-        });
-    </script>
+        password.type = isHidden ? "text" : "password";
+        eyeSlash.style.display = isHidden ? "none" : "inline";
+
+        togglePassword.setAttribute(
+            "aria-label",
+            isHidden ? "パスワードを非表示" : "パスワードを表示"
+        );
+        togglePassword.setAttribute("aria-pressed", String(isHidden));
+    });
+});
+</script>
+
+
 
 </body>
 </html>
