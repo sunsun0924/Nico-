@@ -1,24 +1,28 @@
 
 /* ========================================
-   ページ全体の基本設定
+   1. ページ全体
 ======================================== */
 
 * {
     box-sizing: border-box;
 }
 
-html {
+html,
+body {
+    width: 100%;
     min-height: 100%;
+    margin: 0;
 }
 
 body {
-    margin: 0;
     min-height: 100vh;
-    padding: 24px 16px;
+    min-height: 100dvh;
 
     display: flex;
     justify-content: center;
     align-items: center;
+
+    padding: 12px 16px;
 
     background: #fff9f5;
     color: #806653;
@@ -31,17 +35,17 @@ body {
 }
 
 /* ========================================
-   新規登録画面全体
+   2. 登録画面全体
 ======================================== */
 
 .register-container {
     width: 100%;
-    max-width: 440px;
+    max-width: 480px;
     margin: auto;
 }
 
 /* ========================================
-   管理者アイコン
+   3. アイコン
 ======================================== */
 
 .user-icon {
@@ -51,9 +55,9 @@ body {
     align-items: center;
     justify-content: center;
 
-    width: 52px;
-    height: 52px;
-    margin: 0 auto 12px;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 8px;
 
     border-radius: 50%;
     background: #df9475;
@@ -61,45 +65,40 @@ body {
 }
 
 .user-symbol {
-    font-size: 24px;
+    font-size: 29px;
     line-height: 1;
 }
 
-.plus-symbol {
-    position: absolute;
-    top: 7px;
-    right: 5px;
 
-    font-size: 17px;
-    font-weight: bold;
-}
+
 
 /* ========================================
-   見出し
+   4. タイトル・説明文
 ======================================== */
 
 h1 {
     margin: 0;
+
     text-align: center;
-    font-size: 23px;
+    font-size: 25px;
     font-weight: 600;
     color: #8a644e;
 }
 
 .description {
-    margin: 18px 0 24px;
-    padding-bottom: 20px;
+    margin: 10px 0 16px;
+    padding-bottom: 14px;
 
     border-bottom: 1px solid #f0d8ca;
 
     text-align: center;
-    font-size: 12px;
-    line-height: 1.8;
+    font-size: 13px;
+    line-height: 1.7;
     color: #b18b78;
 }
 
 /* ========================================
-   フォーム全体
+   5. フォーム全体
 ======================================== */
 
 #adminRegisterForm {
@@ -109,40 +108,34 @@ h1 {
     gap: 0;
 
     width: 100%;
-    height: auto;
+    margin: 0;
+    padding: 0;
 }
 
 /* ========================================
-   入力欄のグループ
+   6. 入力項目
 ======================================== */
 
 #adminRegisterForm .form-group {
-    position: relative;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 
     width: 100%;
-    height: auto;
-    min-height: 0;
-
+    min-width: 0;
     margin: 0 0 8px;
     padding: 0;
-
-    flex: 0 0 auto;
 }
 
 /* 入力欄の外枠 */
 #adminRegisterForm .input-box {
-    position: relative;
-
     display: flex;
     align-items: center;
 
     width: 100%;
-    height: 74px;
-    min-height: 74px;
-
-    margin: 0;
-    padding: 12px 16px;
+    height: 68px;
+    min-height: 68px;
+    padding: 10px 16px;
 
     border: 1px solid #f0d3c4;
     border-radius: 14px;
@@ -158,17 +151,16 @@ h1 {
 /* 入力欄を選択したとき */
 #adminRegisterForm .input-box:focus-within {
     border-color: #df9475;
-    box-shadow: 0 0 0 2px rgba(223, 148, 117, 0.1);
+    box-shadow: 0 0 0 3px rgba(223, 148, 117, 0.1);
 }
 
-/* 入力エラーがあるとき */
+/* 入力エラー時 */
 #adminRegisterForm .input-box.invalid {
     border-color: #df806d;
-    box-shadow: 0 0 0 1px rgba(223, 128, 109, 0.08);
 }
 
 /* ========================================
-   入力欄の左側のアイコン
+   7. 左側のアイコン
 ======================================== */
 
 .field-icon {
@@ -176,18 +168,18 @@ h1 {
     align-items: center;
     justify-content: center;
 
-    width: 28px;
-    height: 28px;
-    margin-right: 12px;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    margin-right: 14px;
 
-    flex-shrink: 0;
     color: #aa8975;
 }
 
 .field-icon svg {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
 
     fill: none;
     stroke: currentColor;
@@ -197,20 +189,26 @@ h1 {
 }
 
 /* ========================================
-   ラベルと入力フォーム
+   8. 項目名・入力欄
 ======================================== */
 
 .input-content {
+    display: flex;
     flex: 1;
+    flex-direction: column;
+    justify-content: center;
+
     min-width: 0;
+    gap: 5px;
 }
 
 .input-content label {
     display: block;
-    margin-bottom: 7px;
+    margin: 0;
 
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
+    line-height: 1.4;
     color: #8a644e;
 }
 
@@ -219,6 +217,7 @@ h1 {
 
     width: 100%;
     min-width: 0;
+    margin: 0;
     padding: 0;
 
     border: none;
@@ -227,67 +226,70 @@ h1 {
 
     color: #6f5545;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.5;
 }
 
 .input-content input::placeholder {
     color: #c2a89a;
+    font-size: 13px;
     opacity: 1;
 }
 
-/* ========================================
-   パスワード表示・非表示ボタン
-======================================== */
-
-/* Edge標準のパスワード表示ボタン */
+/* Edge標準のパスワード表示アイコン */
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
     display: none;
 }
 
-/* 独自の目のボタン */
-#adminRegisterForm .eye-button {
+/* ========================================
+   9. パスワード表示・非表示
+======================================== */
+
+#adminRegisterForm .eye-button,
+#adminRegisterForm .eye-button:hover,
+#adminRegisterForm .eye-button:focus,
+#adminRegisterForm .eye-button:active {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    flex: 0 0 32px;
-    width: 32px;
-    height: 36px;
-
-    margin-left: 8px;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    margin-left: 6px;
     padding: 0;
 
-    border: none;
-    border-radius: 50%;
-    outline-offset: 2px;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none;
 
-    background: transparent;
+    background: transparent !important;
+    box-shadow: none !important;
+
     color: #aa8975;
-
     cursor: pointer;
-    -webkit-appearance: none;
+
     appearance: none;
+    -webkit-appearance: none;
 }
 
 #adminRegisterForm .eye-button svg {
     display: block;
-
-    width: 22px;
-    height: 22px;
-
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
     pointer-events: none;
 }
 
-/* マウスを乗せたとき */
-#adminRegisterForm .eye-button:hover {
-    background: #fff1e9;
-    color: #aa8975;
-}
-
-/* 余分なアイコンを疑似要素で追加しない */
+/* 不要なマークを追加しない */
 #adminRegisterForm .eye-button::before,
 #adminRegisterForm .eye-button::after {
     content: none !important;
@@ -295,12 +297,11 @@ input[type="password"]::-ms-clear {
 }
 
 /* ========================================
-   入力エラーメッセージ
+   10. エラーメッセージ
 ======================================== */
 
 #adminRegisterForm .error-message {
-    position: static;
-
+    display: block;
     width: 100%;
     height: auto;
 
@@ -310,15 +311,16 @@ input[type="password"]::-ms-clear {
     color: #d76f60;
     font-size: 11px;
     line-height: 1.5;
+    overflow-wrap: anywhere;
 }
 
-/* エラーがない場合は非表示 */
 #adminRegisterForm .error-message:empty {
     display: none;
 }
 
 /* ========================================
-   登録ボタン
+   11. 登録ボタン
+   高さ・文字サイズは維持
 ======================================== */
 
 #adminRegisterForm .register-button {
@@ -328,14 +330,15 @@ input[type="password"]::-ms-clear {
     align-items: center;
     justify-content: center;
 
-    flex: 0 0 auto;
+    flex: 0 0 50px;
 
     width: 78%;
+    max-width: 343px;
     height: 50px;
     min-height: 50px;
 
-    margin: 12px auto 0;
-    padding: 12px 48px;
+    margin: 5px auto 0;
+    padding: 0 48px;
 
     border: none;
     border-radius: 30px;
@@ -356,15 +359,18 @@ input[type="password"]::-ms-clear {
         box-shadow 0.2s ease;
 }
 
+/* ホバー時 */
 #adminRegisterForm .register-button:hover {
     background: #d58464;
     box-shadow: 0 5px 10px rgba(168, 108, 79, 0.18);
 }
 
+/* クリック時 */
 #adminRegisterForm .register-button:active {
     box-shadow: none;
 }
 
+/* ボタン右側の矢印 */
 .button-arrow {
     position: absolute;
     right: 20px;
@@ -375,16 +381,119 @@ input[type="password"]::-ms-clear {
 }
 
 /* ========================================
-   スマートフォン対応
+   12. スマートフォン対応
 ======================================== */
 
 @media (max-width: 480px) {
     body {
-        padding: 20px 14px;
+        padding: 12px;
     }
 
     .register-container {
         max-width: 100%;
+    }
+
+    .user-icon {
+        width: 52px;
+        height: 52px;
+        margin-bottom: 7px;
+    }
+
+    .user-symbol {
+        font-size: 26px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .description {
+        margin: 8px 0 12px;
+        padding-bottom: 11px;
+        font-size: 12px;
+    }
+
+    #adminRegisterForm .form-group {
+        margin-bottom: 7px;
+    }
+
+    #adminRegisterForm .input-box {
+        height: 64px;
+        min-height: 64px;
+        padding: 8px 12px;
+    }
+
+    .field-icon {
+        width: 29px;
+        height: 29px;
+        flex-basis: 29px;
+        margin-right: 10px;
+    }
+
+    .field-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .input-content label {
+        font-size: 13px;
+    }
+
+    .input-content input {
+        font-size: 14px;
+    }
+
+    .input-content input::placeholder {
+        font-size: 12px;
+    }
+
+    #adminRegisterForm .eye-button {
+        flex-basis: 30px;
+        width: 30px;
+        height: 30px;
+        margin-left: 4px;
+    }
+
+    #adminRegisterForm .eye-button svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* 登録ボタンのサイズは変えない */
+    #adminRegisterForm .register-button {
+        width: 78%;
+        height: 50px;
+        min-height: 50px;
+        flex-basis: 50px;
+        font-size: 14px;
+    }
+}
+
+/* ========================================
+   13. 高さが低い画面
+======================================== */
+
+@media (max-height: 560px) {
+    body {
+        align-items: flex-start;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .user-icon {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 5px;
+    }
+
+    .user-symbol {
+        font-size: 22px;
+    }
+
+    .plus-symbol {
+        top: 5px;
+        right: 4px;
+        font-size: 14px;
     }
 
     h1 {
@@ -392,122 +501,105 @@ input[type="password"]::-ms-clear {
     }
 
     .description {
-        font-size: 11px;
-    }
-
-    #adminRegisterForm .input-box {
-        height: 70px;
-        min-height: 70px;
-        padding: 10px 12px;
-    }
-
-    .field-icon {
-        margin-right: 8px;
-    }
-
-    #adminRegisterForm .register-button {
-        width: 86%;
-    }
-}
-
-/* ========================================
-   画面の高さが小さい場合
-======================================== */
-
-@media (max-height: 650px) {
-    body {
-        align-items: flex-start;
-        padding-top: 12px;
-        padding-bottom: 12px;
-    }
-
-    .user-icon {
-        width: 42px;
-        height: 42px;
-        margin-bottom: 8px;
-    }
-
-    h1 {
-        font-size: 20px;
-    }
-
-    .description {
-        margin: 10px 0 14px;
-        padding-bottom: 12px;
+        margin: 6px 0 9px;
+        padding-bottom: 8px;
+        font-size: 12px;
+        line-height: 1.5;
     }
 
     #adminRegisterForm .form-group {
-        margin-bottom: 8px;
+        margin-bottom: 5px;
     }
 
     #adminRegisterForm .input-box {
-        height: 62px;
-        min-height: 62px;
-        padding-top: 8px;
-        padding-bottom: 8px;
+        height: 58px;
+        min-height: 58px;
+        padding-top: 6px;
+        padding-bottom: 6px;
     }
 
-    #adminRegisterForm .register-button {
-        height: 44px;
-        min-height: 44px;
-        margin-top: 8px;
+    .field-icon {
+        width: 27px;
+        height: 27px;
+        flex-basis: 27px;
+        margin-right: 10px;
     }
-    
+
+    .field-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .input-content {
+        gap: 3px;
+    }
+
+    .input-content label {
+        font-size: 12px;
+    }
+
+    .input-content input {
+        font-size: 13px;
+    }
+
+    #adminRegisterForm .eye-button svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    /* 登録ボタンの高さは50pxを維持 */
+    #adminRegisterForm .register-button {
+        height: 50px;
+        min-height: 50px;
+        flex-basis: 50px;
+        margin-top: 3px;
+    }
+}
+
 /* ========================================
-   パスワード欄の重なり修正
+   14. 非常に高さが低い画面
 ======================================== */
 
-/* 各入力グループを縦に配置 */
-#adminRegisterForm .form-group {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    height: auto;
-    margin: 0 0 8px;
-}
-
-/* 入力枠の高さを固定 */
-#adminRegisterForm .input-box {
-    display: flex;
-    align-items: center;
-    flex: 0 0 74px;
-    width: 100%;
-    height: 74px;
-    min-height: 74px;
-    margin: 0;
-}
-
-/* エラーメッセージは入力枠の下 */
-#adminRegisterForm .form-group > .error-message {
-    position: static;
-    display: block;
-    width: 100%;
-    height: auto;
-    margin: 4px 0 0;
-    padding: 0 4px;
-    line-height: 1.5;
-}
-
-/* エラーがない場合は余白を作らない */
-#adminRegisterForm .form-group > .error-message:empty {
-    display: none;
-}
-
-/* 目のアイコンは1つだけ表示 */
-#adminRegisterForm .eye-button {
-    flex: 0 0 32px;
-    position: relative;
-    z-index: 1;
-}
-
-/* 画面が低い場合 */
-@media (max-height: 650px) {
-    #adminRegisterForm .input-box {
-        flex-basis: 62px;
-        height: 62px;
-        min-height: 62px;
+@media (max-height: 440px) {
+    body {
+        padding-top: 4px;
+        padding-bottom: 4px;
     }
-}
 
+    .user-icon {
+        width: 34px;
+        height: 34px;
+        margin-bottom: 3px;
+    }
+
+    .user-symbol {
+        font-size: 19px;
+    }
+
+    h1 {
+        font-size: 19px;
+    }
+
+    .description {
+        margin: 4px 0 6px;
+        padding-bottom: 6px;
+    }
+
+    #adminRegisterForm .form-group {
+        margin-bottom: 4px;
+    }
+
+    #adminRegisterForm .input-box {
+        height: 52px;
+        min-height: 52px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    /* ボタンは50pxのまま */
+    #adminRegisterForm .register-button {
+        height: 50px;
+        min-height: 50px;
+        flex-basis: 50px;
+    }
 }

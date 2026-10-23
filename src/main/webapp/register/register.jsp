@@ -16,22 +16,22 @@
 <body>
 
     <main class="register-container">
+    
 
         <!-- ヘッダー -->
         <header class="register-header">
 
-            <div class="register-icon">
-                <svg viewBox="0 0 48 48" aria-hidden="true">
-                    <circle cx="20" cy="14" r="8" fill="currentColor"/>
-                    <path d="M5 36c0-8 6-13 15-13s15 5 15 13"
-                          fill="currentColor"/>
-                    <path d="M37 28v13M30.5 34.5h13"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="3"
-                          stroke-linecap="round"/>
-                </svg>
-            </div>
+		 
+		
+            <!-- ユーザー登録アイコン -->
+				<div class="register-icon">
+				    <span class="user-symbol"
+				          style="font-size: 32px !important;
+				                 line-height: 1;
+				                 display: inline-block;">♟</span>
+				</div>
+				            
+        
 
             <h1>ユーザー新規登録</h1>
 

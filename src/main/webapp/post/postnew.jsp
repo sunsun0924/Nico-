@@ -17,7 +17,7 @@
 
         <div class="home-header">
 
-            <h1>✎ 投稿</h1>
+            <h1>投稿</h1>
 
             <!-- 投稿フォーム -->
             <form action="#" method="post" enctype="multipart/form-data">
@@ -28,7 +28,7 @@
                     <span class="user-name">${user_name}</span>
                     <input type="text" readonly>
 
-                    <label for="post_img" class="image-button">🖼️</label>
+                    <label for="post_img" class="image-button"></label>
 
                     <input type="file"
                            id="post_img"

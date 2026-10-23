@@ -36,7 +36,7 @@ body {
 }
 
 /* =========================
-   ヘッダー
+   ヘッダー・アイコン
 ========================= */
 
 .register-header {
@@ -45,25 +45,24 @@ body {
     border-bottom: 1px solid #f1e3d9;
 }
 
+
 .register-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     width: 66px;
     height: 66px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     margin: 0 auto 12px;
-    border-radius: 50%;
 
+    border-radius: 50%;
     color: #fffaf5;
     background: linear-gradient(135deg, #e5aa8c, #ce8c70);
+
 }
 
-.register-icon svg {
-    width: 43px;
-    height: 43px;
-}
+
+
 
 .register-header h1 {
     margin: 0 0 10px;
@@ -114,7 +113,6 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* 入力欄を選択したとき */
 .input-group:focus-within {
     border-color: #d99d83;
     box-shadow: 0 0 0 3px rgba(217, 157, 131, 0.12);
@@ -188,9 +186,15 @@ body {
 
 /* =========================
    パスワード表示ボタン
-   四角い枠・背景を表示しない
 ========================= */
 
+/* Edge標準の表示ボタンを非表示 */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+/* ボタンの枠・背景をなくす */
 .register-form .eye-button,
 .register-form .eye-button:hover,
 .register-form .eye-button:focus,
@@ -216,6 +220,7 @@ body {
     appearance: none;
     -webkit-appearance: none;
 
+    color: #b58b78;
     cursor: pointer;
 }
 
@@ -228,15 +233,10 @@ body {
     height: 22px;
 
     fill: none;
-    stroke: #b58b78;
+    stroke: currentColor;
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
-}
-
-/* パスワード非表示時の斜線 */
-.register-form .eye-button #eyeSlash {
-    stroke: #b58b78;
 }
 
 /* =========================
@@ -249,6 +249,7 @@ body {
     color: #c75f59;
     font-size: 13px;
     line-height: 1.6;
+    overflow-wrap: anywhere;
 }
 
 /* =========================
@@ -315,6 +316,11 @@ body {
         height: 60px;
     }
 
+    .register-icon svg {
+        width: 48px;
+        height: 48px;
+    }
+
     .register-header h1 {
         font-size: 22px;
     }
@@ -334,6 +340,7 @@ body {
     }
 }
 
+
 /* =========================
    画面の高さが小さい場合
 ========================= */
@@ -341,12 +348,6 @@ body {
 @media (max-height: 520px) {
     body {
         align-items: flex-start;
-    }
-
-    .register-icon {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 8px;
     }
 
     .register-header {
@@ -361,5 +362,6 @@ body {
     .register-button {
         margin-top: 8px;
     }
-
 }
+
+

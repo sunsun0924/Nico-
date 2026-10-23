@@ -20,7 +20,7 @@
         <!-- 管理者アイコン -->
         <div class="user-icon">
             <span class="user-symbol">♟</span>
-            <span class="plus-symbol">＋</span>
+            
         </div>
 
         <!-- 見出し -->

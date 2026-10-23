@@ -7,18 +7,22 @@
     box-sizing: border-box;
 }
 
-html {
+html,
+body {
+    margin: 0;
     min-height: 100%;
 }
 
 body {
-    margin: 0;
     min-height: 100vh;
-    padding: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
 
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
     color: #795c50;
-    background: #ffffff;
+    background: #fffaf5;
 }
 
 /* ========================================
@@ -27,26 +31,21 @@ body {
 
 .login-container {
     width: 100%;
-    min-height: calc(100vh - 8px);
-
-    /* コンテンツを中央に配置 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    padding: 45px 24px;
-
-    /* 外枠と背景色 */
-    border: 1px solid #eadfd8;
-    border-radius: 6px;
-    background: #fffaf6;
+    max-width: 440px;
+    margin: auto;
 }
 
 /* ========================================
-   管理者アイコン
+   ヘッダー
 ======================================== */
 
+.login-header {
+    text-align: center;
+    padding: 0 8px 26px;
+    border-bottom: 1px solid #f1e3d9;
+}
+
+/* 管理者アイコンの丸い背景 */
 .admin-icon {
     display: flex;
     align-items: center;
@@ -57,34 +56,33 @@ body {
     margin: 0 auto 15px;
 
     border-radius: 50%;
-    background: #df9b7d;
+    background: linear-gradient(135deg, #e5aa8c, #ce8c70);
     color: #ffffff;
 }
 
-/* アイコン内のマーク */
-.admin-symbol {
-    font-size: 34px;
+/* 管理者アイコンのマーク */
+.admin-icon svg {
+    display: block;
+    width: 43px;
+    height: 43px;
 }
 
-/* ========================================
-   見出しと説明文
-======================================== */
-
-/* 管理者ログインのタイトル */
-h1 {
+/* タイトル */
+.login-header h1 {
     margin: 0 0 12px;
 
     color: #795c50;
     font-size: 25px;
     font-weight: 700;
+    letter-spacing: 0.04em;
     text-align: center;
 }
 
-/* タイトル下の説明文 */
+/* 説明文 */
 .description {
-    margin: 0 0 28px;
+    margin: 0;
 
-    color: #a68a7d;
+    color: #a18a7d;
     font-size: 13px;
     line-height: 1.8;
     text-align: center;
@@ -95,17 +93,12 @@ h1 {
 ======================================== */
 
 #adminLoginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+
     width: 100%;
-    max-width: 440px;
-
     padding-top: 26px;
-    border-top: 1px solid #f0ded3;
-}
-
-/* 各入力項目の間隔 */
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
 }
 
 /* ========================================
@@ -118,68 +111,73 @@ h1 {
 
     width: 100%;
     min-height: 70px;
-    padding: 12px 16px;
+    padding: 10px 14px;
 
-    border: 1px solid #f0d8ca;
-    border-radius: 13px;
+    border: 1px solid #f0dfd3;
+    border-radius: 12px;
     background: #fffdfb;
 
-    /* 控えめな影 */
-    box-shadow: 0 2px 5px rgba(120, 80, 60, 0.04);
-
-    /* 枠線の変化をなめらかにする */
+    box-shadow: 0 2px 5px rgba(132, 94, 72, 0.03);
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* 入力欄を選択しているとき */
+/* 入力欄にフォーカスしたとき */
 .input-box:focus-within {
-    border-color: #df9b7d;
-    box-shadow: 0 0 0 2px rgba(223, 155, 125, 0.12);
-}
-
-/* 入力エラーがあるときの赤枠 */
-.input-box.invalid {
-    border: 2px solid #ff929e;
+    border-color: #d99d83;
+    box-shadow: 0 0 0 3px rgba(217, 157, 131, 0.12);
 }
 
 /* ========================================
-   入力欄の左側のアイコン
+   入力欄左側のアイコン
 ======================================== */
 
 .field-icon {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 
-    width: 38px;
+    width: 26px;
+    height: 26px;
     flex-shrink: 0;
+    margin-right: 14px;
 
-    color: #b28b78;
-    font-size: 23px;
+    color: #a88b7c;
+}
+
+.field-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 /* ========================================
-   項目名と入力フィールド
+   ラベルと入力フィールド
 ======================================== */
 
-/* 項目名と入力欄を縦に並べる */
 .input-content {
     display: flex;
     flex: 1;
-    min-width: 0;
     flex-direction: column;
-    gap: 7px;
+
+    min-width: 0;
+    gap: 5px;
 }
 
-/* ID・パスワードの項目名 */
 .input-content label {
-    color: #876759;
+    color: #856d60;
     font-size: 12px;
     font-weight: 700;
 }
 
-/* 入力フィールド */
 .input-content input {
+    display: block;
+
     width: 100%;
     min-width: 0;
     padding: 0;
@@ -188,55 +186,79 @@ h1 {
     outline: none;
     background: transparent;
 
-    color: #795c50;
+    color: #59483f;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 14px;
 }
 
-/* 入力例の文字色 */
 .input-content input::placeholder {
-    color: #bda69b;
-    opacity: 1;
+    color: #c1b2a8;
+    font-size: 12px;
 }
 
 /* ========================================
    パスワード表示切り替えボタン
+   四角い枠・背景を表示しない
 ======================================== */
 
-.eye-button {
-    padding: 5px;
+.eye-button,
+.eye-button:hover,
+.eye-button:focus,
+.eye-button:focus-visible,
+.eye-button:active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 30px;
 
-    border: none;
-    background: transparent;
+    width: 30px;
+    height: 30px;
+    margin-left: 8px;
+    padding: 0;
 
-    color: #a98776;
+    border: none !important;
+    outline: none !important;
+    border-radius: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    color: #b58b78;
     cursor: pointer;
-    font-size: 20px;
+}
+
+/* 目のマーク */
+.eye-button svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 /* ========================================
-   入力エラーメッセージ
+   エラーメッセージ
 ======================================== */
 
 .error-message {
-    min-height: 0;
-    margin: 5px 0 0 10px;
+    margin: -10px 0 0;
 
-    color: #e65e70;
-    font-size: 11px;
+    color: #c75f59;
+    font-size: 13px;
     line-height: 1.6;
-
-    /* 長いメッセージを折り返す */
     overflow-wrap: anywhere;
 }
 
-/* エラー文の前にマークを表示 */
-.error-message:not(:empty)::before {
-    content: "❗ ";
-}
-
 /* ========================================
-   ログイン・新規登録ボタン共通設定
+   ログイン・新規登録ボタン
 ======================================== */
 
 .login-button,
@@ -250,7 +272,6 @@ h1 {
     width: 76%;
     max-width: 335px;
     min-height: 50px;
-
     margin-right: auto;
     margin-left: auto;
     padding: 0 45px;
@@ -258,15 +279,19 @@ h1 {
     border: none;
     border-radius: 30px;
 
+    background: linear-gradient(135deg, #dfa080, #cc876b);
+    color: #ffffff;
+
     font-family: inherit;
     font-size: 15px;
     font-weight: 700;
+    letter-spacing: 0.04em;
     text-decoration: none;
 
     cursor: pointer;
+    box-shadow: 0 3px 7px rgba(179, 115, 86, 0.12);
 
-    /* 文字と背景色の変化 */
-    transition: background 0.2s, transform 0.2s;
+    transition: transform 0.2s, opacity 0.2s;
 }
 
 /* ========================================
@@ -274,18 +299,7 @@ h1 {
 ======================================== */
 
 .login-button {
-    margin-top: 36px;
-
-    background: #d99172;
-    color: #ffffff;
-
-    box-shadow: 0 3px 7px rgba(150, 90, 65, 0.12);
-}
-
-/* ログインボタンにマウスを乗せたとき */
-.login-button:hover {
-    background: #c98263;
-    transform: translateY(-1px);
+    margin-top: 22px;
 }
 
 /* ========================================
@@ -293,36 +307,29 @@ h1 {
 ======================================== */
 
 .register-button {
-    margin-top: 16px;
-
-    border: 1px solid #d99172;
-    background: #fffaf6;
-    color: #c98263;
+    margin-top: 10px;  /* ボタン同士の間隔を狭くする */
 }
 
-/* 新規登録ボタンにマウスを乗せたとき */
+/* ボタン共通のホバー効果 */
+.login-button:hover,
 .register-button:hover {
-    background: #fcece3;
+    opacity: 0.9;
     transform: translateY(-1px);
 }
 
-/* ========================================
-   ボタン内の文字と矢印
-======================================== */
-
-/* ボタンの文字は中央に固定 */
+/* ボタンの文字 */
 .login-button > span:first-child,
 .register-button > span:first-child {
     text-align: center;
 }
 
-/* 矢印をボタンの右端に配置 */
+/* 右側の矢印 */
 .button-arrow {
     position: absolute;
-    right: 25px;
+    right: 22px;
 
-    font-size: 24px;
-    font-weight: normal;
+    font-size: 22px;
+    font-weight: 400;
 }
 
 /* ========================================
@@ -330,41 +337,43 @@ h1 {
 ======================================== */
 
 @media (max-width: 480px) {
-
-    /* 画面の左右の余白 */
-    .login-container {
-        padding: 35px 18px;
+    body {
+        padding: 20px 16px;
     }
 
-    /* タイトルのサイズ */
-    h1 {
-        font-size: 23px;
+    .login-header {
+        padding-bottom: 22px;
     }
 
-    /* 説明文のサイズ */
-    .description {
-        font-size: 12px;
+    .admin-icon {
+        width: 60px;
+        height: 60px;
     }
 
-    /* フォームを画面幅に合わせる */
+    .login-header h1 {
+        font-size: 22px;
+    }
+
     #adminLoginForm {
-        max-width: 100%;
+        gap: 20px;
+        padding-top: 22px;
     }
 
-    /* 入力欄の高さ */
     .input-box {
         min-height: 64px;
     }
 
-    /* 入力項目の間隔 */
-    .form-group {
-        margin-bottom: 16px;
-    }
-
-    /* ボタンの横幅 */
     .login-button,
     .register-button {
         width: 82%;
+    }
+
+    .login-button {
+        margin-top: 20px;
+    }
+
+    .register-button {
+        margin-top: 10px;
     }
 }
 
@@ -372,53 +381,32 @@ h1 {
    高さが小さい画面向けの調整
 ======================================== */
 
-@media (max-height: 650px) {
-
-    /* 上部から配置し、縦のはみ出しを抑える */
-    .login-container {
-        justify-content: flex-start;
-        padding-top: 24px;
-        padding-bottom: 24px;
+@media (max-height: 520px) {
+    body {
+        align-items: flex-start;
     }
 
-    /* アイコンを小さくする */
     .admin-icon {
-        width: 52px;
-        height: 52px;
-        margin-bottom: 10px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 8px;
     }
 
-    /* タイトルのサイズ */
-    h1 {
-        font-size: 22px;
+    .login-header {
+        padding-bottom: 16px;
     }
 
-    /* 説明文の下の余白 */
-    .description {
-        margin-bottom: 18px;
-    }
-
-    /* フォーム上部の余白 */
     #adminLoginForm {
-        padding-top: 18px;
+        gap: 14px;
+        padding-top: 16px;
     }
 
-    /* 入力欄の高さ */
-    .input-box {
-        min-height: 58px;
-    }
-
-    /* 入力項目の間隔 */
-    .form-group {
-        margin-bottom: 12px;
-    }
-
-    /* ボタンの上部余白 */
     .login-button {
-        margin-top: 20px;
+        margin-top: 8px;
     }
 
     .register-button {
-        margin-top: 12px;
+        margin-top: 10px;
     }
+	
 }
