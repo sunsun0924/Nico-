@@ -1,0 +1,104 @@
+
+/* 企業登録フォーム */
+.company-register {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #fffaf5;
+    border: 1px solid #f0d3b9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(89, 72, 61, 0.12);
+    box-sizing: border-box;
+}
+
+
+/* 画面タイトル */
+.company-register h2 {
+    margin: -30px -30px 30px;
+    padding: 18px;
+    background-color: #fffaf5;
+    border-radius: 12px 12px 0 0;
+    color: #59483d;
+    text-align: center;
+    font-size: 24px;
+    border-bottom: 1px solid #f0d3b9;
+}
+
+
+/* 入力項目 */
+.company-register p {
+    margin-bottom: 24px;
+    color: #59483d;
+}
+
+/* 入力欄 */
+.company-register input[type="text"] {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 11px;
+    border: 1px solid #d8bda8;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #59483d;
+    font-size: 16px;
+}
+
+/* 入力欄を選択したとき */
+.company-register input[type="text"]:focus {
+    outline: none;
+    border-color: #ff9b42;
+    box-shadow: 0 0 4px rgba(255, 155, 66, 0.35);
+}
+
+/* ボタン共通設定 */
+.company-register input[type="submit"],
+.company-register input[type="button"] {
+    padding: 11px 30px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* 登録ボタン */
+.company-register input[type="submit"] {
+    background-color: #ff9933;
+    color: #ffffff;
+}
+
+/* 登録ボタンにマウスを合わせたとき */
+.company-register input[type="submit"]:hover {
+    background-color: #f58220;
+}
+
+
+/* 登録ボタン */
+.company-register input[type="submit"] {
+    background-color: #f5a08a;
+    color: #ffffff;
+}
+
+/* 登録ボタンにマウスを合わせたとき */
+.company-register input[type="submit"]:hover {
+    background-color: #ee8e78;
+}
+
+
+/* スマートフォン向け */
+@media screen and (max-width: 600px) {
+    .company-register {
+        margin: 15px auto;
+        padding: 20px;
+    }
+
+    .company-register h2 {
+        margin: -20px -20px 25px;
+        padding: 15px;
+        font-size: 21px;
+    }
+}

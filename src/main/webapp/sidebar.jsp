@@ -38,8 +38,7 @@
         </a>
 
         <!-- ギフト -->
-        <a href="${pageContext.request.contextPath}/gift/gift.jsp"
-           class="menu-item">
+        <a href="${pageContext.request.contextPath}/GiftServlet">
             <span class="menu-icon">♔</span>
             <span>ギフト</span>
         </a>
@@ -64,7 +63,7 @@
 
     <!-- 一番下のマイページ -->
     <div class="menu-bottom">
-        <a href="#"
+        <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
            class="mypage-item">
 
             <span class="profile-icon">👤</span>

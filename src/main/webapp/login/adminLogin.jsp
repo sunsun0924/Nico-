@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -47,7 +46,12 @@
         <!-- ログインフォーム -->
         <form id="adminLoginForm"
               action="${pageContext.request.contextPath}/AdminLoginServlet"
+<<<<<<< HEAD
               method="post">
+=======
+              method="post"
+              novalidate>
+>>>>>>> branch 'master' of https://github.com/sunsun0924/Nico-.git
 
             <!-- ID入力欄 -->
             <div class="input-box">
@@ -65,6 +69,7 @@
                     </svg>
                 </div>
 
+<<<<<<< HEAD
                 <div class="input-content">
                     <label for="userId">ID</label>
 
@@ -77,6 +82,9 @@
                         required>
                 </div>
 
+=======
+                <p class="error-message" id="idError"></p>
+>>>>>>> branch 'master' of https://github.com/sunsun0924/Nico-.git
             </div>
 
             <!-- パスワード入力欄 -->
@@ -97,6 +105,7 @@
                     </svg>
                 </div>
 
+<<<<<<< HEAD
                 <div class="input-content">
                     <label for="password">パスワード</label>
 
@@ -136,14 +145,33 @@
 
                 </button>
 
+=======
+                <p class="error-message" id="passwordError"></p>
+>>>>>>> branch 'master' of https://github.com/sunsun0924/Nico-.git
             </div>
 
+<<<<<<< HEAD
             <!-- エラーメッセージ -->
             <% if (request.getAttribute("errorMessage") != null) { %>
                 <p class="error-message">
                     <%= request.getAttribute("errorMessage") %>
                 </p>
             <% } %>
+=======
+            <!-- DB認証エラーメッセージ -->
+            <%
+                String errorMessage =
+                        (String) request.getAttribute("errorMessage");
+
+                if (errorMessage != null) {
+            %>
+                <p class="error-message">
+                    <%= errorMessage %>
+                </p>
+            <%
+                }
+            %>
+>>>>>>> branch 'master' of https://github.com/sunsun0924/Nico-.git
 
             <!-- ログインボタン -->
             <button type="submit" class="login-button">
@@ -192,6 +220,30 @@
                     String(isHidden)
                 );
             });
+<<<<<<< HEAD
+=======
+
+        // ログインボタンを押したとき
+        form.addEventListener("submit", function(event) {
+
+            // 入力チェックに失敗した場合だけ送信を止める
+            const idValid = validateId();
+            const passwordValid = validatePassword();
+
+            if (!idValid || !passwordValid) {
+                event.preventDefault();
+
+                if (!idValid) {
+                    userId.focus();
+                } else {
+                    password.focus();
+                }
+
+                return;
+            }
+
+            // 入力チェック成功時はAdminLoginServletへ送信する
+>>>>>>> branch 'master' of https://github.com/sunsun0924/Nico-.git
         });
     </script>
 
