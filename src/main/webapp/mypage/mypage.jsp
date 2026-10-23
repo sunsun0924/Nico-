@@ -26,7 +26,7 @@
                 <div class="user-avatar lake-avatar"></div>
                 <div class="user-info-text">
                     <span class="user-name">みさき 🌷</span>
-                    <a href="${pageContext.request.contextPath}/profile/edit" class="btn-edit-profile">
+                    <a href="${pageContext.request.contextPath}/mypage/profile.jsp" class="btn-edit-profile">
                         <i class="fa-solid fa-pen"></i> プロフィールを編集
                     </a>
                 </div>
