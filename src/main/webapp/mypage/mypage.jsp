@@ -41,7 +41,7 @@
                 <i class="fa-solid fa-chevron-right arrow-icon"></i>
             </a>
 
-            <a href="${pageContext.request.contextPath}/user/settings" class="menu-item-card">
+            <a href="${pageContext.request.contextPath}/mypage/mypage_detail.jsp" class="menu-item-card">
                 <div class="menu-item-left">
                     <div class="menu-icon-wrapper purple-gear"><i class="fa-solid fa-gear"></i></div>
                     <span class="menu-item-title">設定</span>
