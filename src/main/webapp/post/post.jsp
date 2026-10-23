@@ -32,7 +32,7 @@
             <h3>投稿一覧</h3>
 
             <!-- posts（投稿一覧）を繰り返し表示 -->
-            <c:forEach var="post" items="${posts}">
+            <c:forEach var="post" items="${postList}">
 
                 <div class="post-item">
 

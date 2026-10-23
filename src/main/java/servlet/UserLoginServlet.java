@@ -57,7 +57,7 @@ public class UserLoginServlet extends HttpServlet {
 
                 // ログイン後の画面へ移動
                 response.sendRedirect(
-                        request.getContextPath() + "/post.jsp");
+                        request.getContextPath() + "/PostServlet");
 
             } else {
                 // ログイン失敗
