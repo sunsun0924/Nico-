@@ -104,21 +104,10 @@
                 </button>
             </div>
 
-            <!-- サーバー側のログインエラー -->
-            <%
-                String errorMessage =
-                    (String) request.getAttribute("errorMessage");
-
-                if (errorMessage != null && !errorMessage.isEmpty()) {
-                    String safeMessage = errorMessage
-                        .replace("&", "&amp;")
-                        .replace("<", "&lt;")
-                        .replace(">", "&gt;")
-                        .replace("\"", "&quot;")
-                        .replace("'", "&#39;");
-            %>
+            <!-- エラーメッセージ -->
+            <% if (request.getAttribute("errorMessage") != null) { %>
                 <p class="error-message">
-                    <%= safeMessage %>
+                    <%= request.getAttribute("errorMessage") %>
                 </p>
             <% } %>
 
