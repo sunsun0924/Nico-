@@ -1,13 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ご登録情報の変更</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage_detail.css">
-</head>
-<body>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ include file="../header.jsp" %>
 
   <div class="container">
     <div class="page-title">ご登録情報の変更</div>
@@ -43,5 +35,4 @@
     </form>
   </div>
 
-</body>
-</html>
+<%@ include file="../footer.jsp" %>

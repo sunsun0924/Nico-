@@ -1,14 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>マイページ画面</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
-</head>
-
-<body>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ include file="../header.jsp" %>
 
     <div class="mypage-container">
         <!-- ページヘッダー -->
@@ -65,5 +56,7 @@
             </a>
         </div>
     </div>
-</body>
-</html>
+
+
+<%@ include file="../footer.jsp" %>
+  

@@ -64,7 +64,7 @@
 
     <!-- 一番下のマイページ -->
     <div class="menu-bottom">
-        <a href="#"
+        <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
            class="mypage-item">
 
             <span class="profile-icon">👤</span>
