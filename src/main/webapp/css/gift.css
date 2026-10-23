@@ -1,4 +1,3 @@
-
 /* =========================
    全体設定
 ========================= */
@@ -8,25 +7,46 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    min-height: 100%;
+}
+
 body {
     font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
-    background: #f5eee6;
-    color: #59483e;
-    padding: 24px;
+    background-color: #ffe8d1;
+    color: #59483d;
 }
 
 /* =========================
-   メインコンテナ
+   画面全体のレイアウト
+========================= */
+.page-layout {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* メイン画面 */
+.main-content {
+    width: calc(100% - 266px);
+    min-height: calc(100vh - 40px);
+    margin: 20px 20px 20px 246px;
+    padding: 0;
+}
+
+/* =========================
+   ギフト画面コンテナ
 ========================= */
 .gift-container {
     width: 100%;
     max-width: 1000px;
+    min-height: calc(100vh - 40px);
     margin: 0 auto;
     padding: 30px 36px;
-    background: #fffdf9;
-    border: 1px solid #f0e5d9;
-    border-radius: 24px;
-    box-shadow: 0 4px 18px rgba(120, 88, 60, 0.06);
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
 }
 
 /* =========================
@@ -47,7 +67,7 @@ body {
     font-size: 28px;
     font-weight: 700;
     letter-spacing: 2px;
-    color: #59483e;
+    color: #654b39;
 }
 
 /* =========================
@@ -65,6 +85,7 @@ body {
         #f9e9dc,
         #f5e1d0
     );
+    border: 1px solid #f0dfd1;
     border-radius: 20px;
 }
 
@@ -77,7 +98,7 @@ body {
 }
 
 .message-text span {
-    color: #d79579;
+    color: #ed947c;
     font-size: 25px;
     margin-left: 4px;
 }
@@ -98,7 +119,7 @@ body {
 .section-header h2 {
     font-size: 21px;
     font-weight: 700;
-    color: #59483e;
+    color: #654b39;
 }
 
 /* =========================
@@ -117,22 +138,26 @@ body {
     display: block;
     min-width: 0;
     padding: 16px;
-    background: #fffaf5;
-    border: 1px solid #f1e7dd;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
     border-radius: 16px;
     color: inherit;
     text-decoration: none;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .gift-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 14px rgba(140, 100, 70, 0.10);
+    border-color: #edc5b2;
+    box-shadow: 0 5px 14px rgba(100, 75, 50, 0.10);
 }
 
 .gift-card:focus-visible {
-    outline: 2px solid #c99178;
+    outline: 2px solid #ed947c;
     outline-offset: 3px;
 }
 
@@ -144,7 +169,7 @@ body {
     width: 100%;
     height: 90px;
     margin-bottom: 12px;
-    background: #f5e9dc;
+    background-color: #f7eee5;
     border-radius: 12px;
     font-size: 34px;
 }
@@ -153,9 +178,10 @@ body {
 .gift-card h3 {
     overflow-wrap: anywhere;
     margin-bottom: 6px;
-    color: #5d4b40;
+    color: #59483d;
     font-size: 16px;
     font-weight: 700;
+    line-height: 1.5;
 }
 
 /* 価格 */
@@ -166,64 +192,37 @@ body {
 }
 
 /* =========================
-   タブレット対応
+   スマートフォン対応
 ========================= */
-@media (max-width: 700px) {
-    body {
-        padding: 12px;
+@media screen and (max-width: 600px) {
+    .main-content {
+        width: calc(100% - 100px);
+        min-height: calc(100vh - 20px);
+        margin: 10px 10px 10px 90px;
+        padding: 0;
     }
 
     .gift-container {
-        padding: 22px 18px;
-        border-radius: 18px;
+        width: 100%;
+        max-width: none;
+        min-height: calc(100vh - 20px);
+        margin: 0;
+        padding: 18px 12px;
+        border-radius: 16px;
     }
 
     .gift-header {
-        margin-bottom: 22px;
+        gap: 8px;
+        margin-bottom: 18px;
     }
 
-    .gift-header h1 {
+    .gift-icon {
         font-size: 24px;
     }
 
-    .gift-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-    }
-
-    .gift-card {
-        padding: 12px;
-    }
-
-    .gift-placeholder {
-        height: 80px;
-    }
-
-    .gift-message {
-        min-height: 110px;
-        padding: 20px;
-        margin-bottom: 24px;
-    }
-
-    .message-text p {
-        font-size: 16px;
-    }
-
-    .section-header h2 {
-        font-size: 19px;
-    }
-}
-
-/* =========================
-   スマートフォン対応
-========================= */
-@media (max-width: 380px) {
-    body {
-        padding: 8px;
-    }
-
-    .gift-container {
-        padding: 18px 12px;
+    .gift-header h1 {
+        font-size: 20px;
+        letter-spacing: 1px;
     }
 
     .gift-grid {
@@ -248,7 +247,26 @@ body {
         font-size: 13px;
     }
 
+    .gift-message {
+        min-height: 100px;
+        padding: 14px 12px;
+        margin-bottom: 22px;
+    }
+
     .message-text p {
         font-size: 14px;
+        letter-spacing: 0;
+    }
+
+    .message-text span {
+        font-size: 18px;
+    }
+
+    .section-header {
+        margin-bottom: 16px;
+    }
+
+    .section-header h2 {
+        font-size: 17px;
     }
 }

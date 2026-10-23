@@ -1,4 +1,3 @@
-
 /* 画面全体の基本設定 */
 body {
     margin: 0;
@@ -10,10 +9,10 @@ body {
 
 /* 投稿画面全体 */
 .home-header {
-    width: 90%;
+    width: calc(100% - 266px);
     max-width: 900px;
     min-height: 90vh;
-    margin: 20px auto;
+    margin: 20px 20px 20px 246px;
     padding: 30px;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
@@ -106,8 +105,10 @@ body {
 /* スマートフォン向け */
 @media screen and (max-width: 600px) {
     .home-header {
-        width: 96%;
-        margin: 10px auto;
+        width: calc(100% - 100px);
+        max-width: none;
+        min-height: 90vh;
+        margin: 10px 10px 10px 90px;
         padding: 18px 12px;
         border-radius: 16px;
     }

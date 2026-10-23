@@ -22,7 +22,7 @@
 
         <!-- ユーザーアイコン -->
         <div class="user-icon">
-            <span class="user-symbol">♙</span>
+            <span class="user-symbol"></span>
         </div>
 
         <!-- 見出し -->
@@ -42,7 +42,7 @@
             <div class="form-group">
                 <div class="input-box">
 
-                    <span class="field-icon">♙</span>
+                    <span class="field-icon"></span>
 
                     <div class="input-content">
                         <label for="userId">ID</label>
@@ -63,7 +63,7 @@
             <div class="form-group">
                 <div class="input-box">
 
-                    <span class="field-icon">♧</span>
+                    <span class="field-icon"></span>
 
                     <div class="input-content">
                         <label for="password">パスワード</label>

@@ -1,33 +1,55 @@
-
-/* 全体 */
+/* =========================
+   全体設定
+========================= */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 html,
 body {
-    margin: 0;
     min-height: 100%;
 }
 
 body {
-    font-family: "Noto Sans JP", sans-serif;
-    background: #fffaf6;
-    color: #665248;
-    padding: 16px;
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    background-color: #ffe8d1;
+    color: #59483d;
 }
 
-/* 詳細画面全体 */
+/* =========================
+   画面全体のレイアウト
+========================= */
+.page-layout {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* メイン画面 */
+.main-content {
+    width: calc(100% - 266px);
+    min-height: calc(100vh - 40px);
+    margin: 20px 20px 20px 246px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   詳細画面全体
+========================= */
 .detail-container {
     width: 100%;
     max-width: 440px;
-    min-height: calc(100vh - 32px);
+    min-height: calc(100vh - 40px);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
 }
 
-/* 上部ヘッダー */
+/* =========================
+   上部ヘッダー
+========================= */
 .detail-header {
     margin-bottom: 14px;
 }
@@ -36,10 +58,14 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #94766a;
+    color: #806b5d;
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
+}
+
+.back-link:hover {
+    color: #654b39;
 }
 
 .back-arrow {
@@ -47,25 +73,35 @@ body {
     line-height: 1;
 }
 
-/* 商品カード */
+/* =========================
+   商品カード
+========================= */
 .gift-detail {
-    background: #fffdfb;
-    border: 1px solid #f0e1d7;
-    border-radius: 16px;
-    padding: 14px;
-    box-shadow: 0 3px 10px rgba(125, 88, 65, 0.04);
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    padding: 16px;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
 }
 
-/* 商品画像 */
+/* =========================
+   商品画像
+========================= */
 .gift-image-placeholder {
     width: 100%;
     height: 190px;
-    border-radius: 11px;
-    background: linear-gradient(135deg, #fbefe5, #f2dfd2);
+    border-radius: 15px;
+    background: linear-gradient(
+        135deg,
+        #f7eee5,
+        #f5d9c8
+    );
     margin-bottom: 14px;
 }
 
-/* 商品名 */
+/* =========================
+   商品名
+========================= */
 .gift-name-area {
     display: flex;
     align-items: center;
@@ -74,8 +110,9 @@ body {
 }
 
 .gift-flower {
-    color: #d99a96;
+    color: #ed947c;
     font-size: 22px;
+    flex-shrink: 0;
 }
 
 .gift-name-area h1 {
@@ -83,24 +120,31 @@ body {
     font-size: 21px;
     font-weight: 700;
     line-height: 1.5;
+    color: #654b39;
+    overflow-wrap: anywhere;
 }
 
-/* 価格 */
+/* =========================
+   価格
+========================= */
 .gift-price {
     margin: 0 4px 14px;
-    color: #bc8174;
+    color: #c78263;
     font-size: 16px;
     font-weight: 700;
 }
 
-/* 商品説明 */
+/* =========================
+   商品説明
+========================= */
 .gift-description {
     margin: 0 4px;
     padding-top: 12px;
-    border-top: 1px solid #f3e8e0;
+    border-top: 1px solid #eee4d8;
     font-size: 13px;
     line-height: 1.9;
     overflow-wrap: anywhere;
+    color: #75665c;
 }
 
 .gift-description p {
@@ -111,7 +155,9 @@ body {
     margin-bottom: 0;
 }
 
-/* 下部ボタン */
+/* =========================
+   下部ボタン
+========================= */
 .detail-footer {
     display: flex;
     gap: 10px;
@@ -134,18 +180,25 @@ body {
     font-weight: 700;
     text-decoration: none;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
+/* 戻るボタン */
 .btn-back {
     color: #a77969;
-    background: #fffaf6;
+    background-color: #fffdf8;
     border: 1px solid #dfb2a3;
+}
+
+.btn-back:hover {
+    background-color: #fff0e7;
 }
 
 .btn-arrow {
     font-size: 17px;
 }
 
+/* 確認フォーム */
 .confirm-form {
     display: flex;
     flex: 1;
@@ -153,39 +206,70 @@ body {
     margin: 0;
 }
 
+/* 確認ボタン */
 .btn-confirm {
     width: 100%;
     border: none;
-    background: #dfa09a;
-    color: white;
+    background-color: #ed947c;
+    color: #ffffff;
 }
 
 .btn-confirm:hover {
-    background: #d48e88;
+    background-color: #df8068;
 }
 
-/* 小さな画面 */
-@media (max-width: 380px) {
-    body {
-        padding: 10px;
+/* =========================
+   スマートフォン対応
+========================= */
+@media screen and (max-width: 600px) {
+    .main-content {
+        width: calc(100% - 100px);
+        min-height: calc(100vh - 20px);
+        margin: 10px 10px 10px 90px;
+        padding: 0;
     }
 
     .detail-container {
+        width: 100%;
+        max-width: none;
         min-height: calc(100vh - 20px);
+        margin: 0;
+    }
+
+    .detail-header {
+        margin-bottom: 12px;
+    }
+
+    .gift-detail {
+        padding: 12px;
+        border-radius: 16px;
     }
 
     .gift-image-placeholder {
-        height: 160px;
+        height: 150px;
+        border-radius: 12px;
     }
 
     .gift-name-area h1 {
         font-size: 19px;
     }
 
+    .gift-price {
+        font-size: 15px;
+    }
+
     .gift-description {
         font-size: 12px;
     }
+
+    .detail-footer {
+        gap: 8px;
+        padding-top: 16px;
+    }
+
+    .btn {
+        height: 44px;
+        gap: 4px;
+        font-size: 12px;
+    }
 }
-
-
-

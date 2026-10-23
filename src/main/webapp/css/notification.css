@@ -1,33 +1,47 @@
-/* 画面全体の基本設定 */
+
+/* =========================
+   画面全体の基本設定
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
     margin: 0;
     padding: 0;
-    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
     background-color: #ffe8d1;
     color: #59483d;
 }
 
-/* 通知画面全体のコンテナ */
+/* =========================
+   通知画面全体
+========================= */
 .notification-container {
-    width: 90%;
+    width: calc(100% - 266px);
     max-width: 900px;
     min-height: 90vh;
-    margin: 20px auto;
+    margin: 20px 20px 20px 246px;
     padding: 30px;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 22px;
-    box-sizing: border-box;
     box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
 }
 
-/* タイトル部分 */
+/* =========================
+   タイトル部分
+========================= */
 .notification-header {
     margin-bottom: 25px;
     text-align: center;
 }
 
-/* 通知のタイトル */
 .notification-header h1 {
     margin: 0;
     font-size: 32px;
@@ -35,20 +49,23 @@ body {
     color: #654b39;
 }
 
-/* 通知タブ全体 */
+/* =========================
+   通知タブ全体
+========================= */
 .notification-tabs {
     display: flex;
     gap: 8px;
     margin-bottom: 25px;
     padding: 5px;
     background-color: #f7eee5;
-    border: 1px solid #f0e5da;
+    border: 1px solid #eee4d8;
     border-radius: 35px;
 }
 
-/* 各タブの基本設定 */
+/* 各タブ */
 .notification-tabs .tab {
     flex: 1;
+    min-width: 0;
     padding: 13px 10px;
     text-align: center;
     text-decoration: none;
@@ -60,7 +77,6 @@ body {
     transition: background-color 0.2s, color 0.2s;
 }
 
-/* マウスを乗せたとき */
 .notification-tabs .tab:hover {
     background-color: #f8d9ca;
 }
@@ -71,7 +87,9 @@ body {
     background-color: #ed947c;
 }
 
-/* 通知一覧全体 */
+/* =========================
+   通知一覧
+========================= */
 .notification-list {
     display: flex;
     flex-direction: column;
@@ -84,9 +102,8 @@ body {
     align-items: center;
     padding: 25px 22px;
     background-color: #fffdf8;
-    border: 1px solid #f0e8de;
+    border: 1px solid #eee4d8;
     border-radius: 20px;
-    box-sizing: border-box;
     min-height: 150px;
 }
 
@@ -123,7 +140,9 @@ body {
     color: #a39a92;
 }
 
-/* 通知がない場合のメッセージ */
+/* =========================
+   通知がない場合
+========================= */
 .no-notification {
     padding: 40px 10px;
     text-align: center;
@@ -131,54 +150,97 @@ body {
     color: #998a7e;
 }
 
-/* スマートフォン向けの設定 */
+/* =========================
+   スマートフォン対応
+========================= */
 @media screen and (max-width: 600px) {
 
-    /* 画面全体の余白を調整 */
+    /* 通知画面全体 */
     .notification-container {
-        width: 96%;
-        margin: 10px auto;
+        width: calc(100% - 100px);
+        max-width: none;
+        min-height: calc(100vh - 20px);
+        margin: 10px 10px 10px 90px;
         padding: 18px 12px;
         border-radius: 16px;
     }
 
-    /* タイトルの文字サイズ */
-    .notification-header h1 {
-        font-size: 26px;
+    /* タイトル */
+    .notification-header {
+        margin-bottom: 20px;
     }
 
-    /* タブの間隔を調整 */
+    .notification-header h1 {
+        font-size: 24px;
+    }
+
+    /* タブ */
     .notification-tabs {
         gap: 4px;
         padding: 4px;
+        margin-bottom: 20px;
     }
 
-    /* タブの文字サイズ */
     .notification-tabs .tab {
         padding: 11px 4px;
         font-size: 14px;
+        overflow-wrap: anywhere;
     }
 
-    /* 通知枠の余白を調整 */
+    /* 通知枠 */
     .notification-item {
         padding: 18px 14px;
         min-height: 120px;
         border-radius: 15px;
     }
 
-    /* 通知のメイン文章 */
+    /* 通知本文 */
     .notification-message {
         font-size: 16px;
     }
 
-    /* コメント・ギフトの詳細 */
     .notification-detail {
         padding-left: 5px;
         font-size: 14px;
     }
 
-    /* 日時aa */
+    /* 日時 */
     .notification-date {
         font-size: 13px;
+    }
+
+    .no-notification {
+        padding: 30px 8px;
+        font-size: 14px;
+    }
+}
+
+/* =========================
+   小さなスマートフォン
+========================= */
+@media screen and (max-width: 380px) {
+    .notification-container {
+        padding: 14px 8px;
+    }
+
+    .notification-header h1 {
+        font-size: 21px;
+    }
+
+    .notification-tabs .tab {
+        font-size: 12px;
+        padding: 10px 2px;
+    }
+
+    .notification-item {
+        padding: 14px 10px;
+    }
+
+    .notification-message {
+        font-size: 14px;
+    }
+
+    .notification-detail {
+        font-size: 12px;
     }
 }
