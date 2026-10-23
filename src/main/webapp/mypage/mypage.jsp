@@ -4,7 +4,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>マイページ詳細画面</title>
+    <title>マイページ画面</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
 </head>
 
