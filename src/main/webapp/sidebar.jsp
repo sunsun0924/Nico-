@@ -47,12 +47,27 @@
         <%-- 🟡 管理者だけユーザー新規登録表示 --%>
         <%-- 
         <%
-        if (userId != null && "ADMIN".equals(loginUser.getRole())) {
+        if (userId != null {
         %>
         <a href="${pageContext.request.contextPath}/login/userLogin.jsp"
            class="menu-item">
             <span class="menu-icon">👤</span>
             <span>ユーザー新規登録</span>
+        </a>
+        <%
+        }
+        %>
+        --%>
+        
+        <%-- 🟡 管理者だけユーザー新規登録表示 --%>
+        <%-- 
+        <%
+        if (userId != null && "ADMIN".equals(loginUser.getRole())) {
+        %>
+        <a href="${pageContext.request.contextPath}/login/userLogin.jsp"
+           class="menu-item">
+            <span class="menu-icon">🏢</span>
+            <span>企業登録</span>
         </a>
         <%
         }
