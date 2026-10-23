@@ -36,7 +36,7 @@
             <a href="${pageContext.request.contextPath}/user/likes" class="menu-item-card">
                 <div class="menu-item-left">
                     <div class="menu-icon-wrapper red-heart"><i class="fa-regular fa-heart"></i></div>
-                    <span class="menu-item-title">いいねした投稿</span>
+                    <span class="menu-item-title">ブックマークした投稿</span>
                 </div>
                 <i class="fa-solid fa-chevron-right arrow-icon"></i>
             </a>
