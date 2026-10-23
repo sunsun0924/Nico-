@@ -1,8 +1,8 @@
-package bean;
+package beanl;Action.java
 
 import java.io.Serializable;
 
-public class ChatRoomBean implements Serializable {
+public class ChatMessage implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int messageId;     
@@ -11,9 +11,9 @@ public class ChatRoomBean implements Serializable {
     private String message;    
     private String sentAt;     
 
-    public ChatRoomBean() {}
+    public Chat() {}
 
-    public ChatRoomBean(int messageId, int senderId, int receiverId, String message, String sentAt) {
+    public ChatMessage(int messageId, int senderId, int receiverId, String message, String sentAt) {
         this.messageId = messageId;
         this.senderId = senderId;
         this.receiverId = receiverId;
