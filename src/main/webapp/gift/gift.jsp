@@ -1,10 +1,10 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="../header.jsp" %>
 
 <!-- ギフト画面のCSSを読み込む -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/gift.css">
-
 
 <!-- サイドバーとギフト画面を横並びにする -->
 <div class="page-layout">
@@ -37,55 +37,33 @@
                     <h2>人気のギフト</h2>
                 </div>
 
+                <!-- DBから取得したギフト一覧 -->
                 <div class="gift-grid">
 
-                    <!-- 花束 -->
-                    <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=flower"
-                       class="gift-card">
-                        <div class="gift-placeholder">🌷</div>
-                        <h3>花束</h3>
-                        <p class="gift-price">¥3,000</p>
-                    </a>
+                    <c:forEach var="gift" items="${giftList}">
 
-                    <!-- スイーツセット -->
-                    <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=sweets"
-                       class="gift-card">
-                        <div class="gift-placeholder">🍪</div>
-                        <h3>スイーツセット</h3>
-                        <p class="gift-price">¥2,500</p>
-                    </a>
+                        <!-- ギフトカード -->
+                        <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?giftId=${gift.giftId}"
+                           class="gift-card">
 
-                    <!-- カフェチケット -->
-                    <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=cafe"
-                       class="gift-card">
-                        <div class="gift-placeholder">☕</div>
-                        <h3>カフェチケット</h3>
-                        <p class="gift-price">¥1,500</p>
-                    </a>
+                            <div class="gift-placeholder">🎁</div>
 
-                    <!-- ハンドクリーム -->
-                    <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=handcream"
-                       class="gift-card">
-                        <div class="gift-placeholder">🧴</div>
-                        <h3>ハンドクリーム</h3>
-                        <p class="gift-price">¥2,000</p>
-                    </a>
+                            <h3>
+                                <c:out value="${gift.giftName}" />
+                            </h3>
 
-                    <!-- フォトフレーム -->
-                    <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=photo"
-                       class="gift-card">
-                        <div class="gift-placeholder">🖼️</div>
-                        <h3>フォトフレーム</h3>
-                        <p class="gift-price">¥2,800</p>
-                    </a>
+                            <p class="gift-description">
+                                <c:out value="${gift.giftText}" />
+                            </p>
 
-                    <!-- 雑貨セット -->
-                    <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?gift=goods"
-                       class="gift-card">
-                        <div class="gift-placeholder">🍫</div>
-                        <h3>雑貨セット</h3>
-                        <p class="gift-price">¥3,500</p>
-                    </a>
+                        </a>
+
+                    </c:forEach>
+
+                    <!-- ギフトが登録されていない場合 -->
+                    <c:if test="${empty giftList}">
+                        <p>現在、ギフトは登録されていません。</p>
+                    </c:if>
 
                 </div>
             </section>
