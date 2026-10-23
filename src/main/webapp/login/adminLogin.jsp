@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -30,7 +29,10 @@
         </p>
 
         <!-- ログインフォーム -->
-        <form id="adminLoginForm" novalidate>
+        <form id="adminLoginForm"
+              action="${pageContext.request.contextPath}/AdminLoginServlet"
+              method="post"
+              novalidate>
 
             <!-- ID -->
             <div class="form-group">
@@ -47,6 +49,7 @@
                             autocomplete="username">
                     </div>
                 </div>
+
                 <p class="error-message" id="idError"></p>
             </div>
 
@@ -73,8 +76,23 @@
                         ◎
                     </button>
                 </div>
+
                 <p class="error-message" id="passwordError"></p>
             </div>
+
+            <!-- DB認証エラーメッセージ -->
+            <%
+                String errorMessage =
+                        (String) request.getAttribute("errorMessage");
+
+                if (errorMessage != null) {
+            %>
+                <p class="error-message">
+                    <%= errorMessage %>
+                </p>
+            <%
+                }
+            %>
 
             <!-- ログインボタン -->
             <button type="submit" class="login-button">
@@ -165,26 +183,24 @@
 
         // ログインボタンを押したとき
         form.addEventListener("submit", function(event) {
-            event.preventDefault();
 
+            // 入力チェックに失敗した場合だけ送信を止める
             const idValid = validateId();
             const passwordValid = validatePassword();
 
-            if (!idValid) {
-                userId.focus();
+            if (!idValid || !passwordValid) {
+                event.preventDefault();
+
+                if (!idValid) {
+                    userId.focus();
+                } else {
+                    password.focus();
+                }
+
                 return;
             }
 
-            if (!passwordValid) {
-                password.focus();
-                return;
-            }
-
-            // 現時点ではログイン認証は未実装
-            alert(
-                "入力チェックに成功しました。\n" +
-                "ログイン認証はまだ実装されていません。"
-            );
+            // 入力チェック成功時はAdminLoginServletへ送信する
         });
     </script>
 
