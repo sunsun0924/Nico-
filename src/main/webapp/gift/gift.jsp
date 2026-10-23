@@ -2,6 +2,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="../header.jsp" %>
 
+<!-- ギフト画面のCSSを読み込む -->
+<link rel="stylesheet"
+      href="${pageContext.request.contextPath}/css/gift.css">
+
+
 <!-- サイドバーとギフト画面を横並びにする -->
 <div class="page-layout">
 

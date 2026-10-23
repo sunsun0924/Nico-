@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>パスワードの変更</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/password_change.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage_detail.css">
 </head>
 <body>
 
