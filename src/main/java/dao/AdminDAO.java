@@ -31,7 +31,7 @@ public class AdminDAO extends DAO {
         }
     }
 
-    // 管理者を新規登録する
+    // 管理者を新規登録するyo
     public void register(String userId, String password,
                          String email, String companyId)
             throws Exception {
