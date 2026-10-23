@@ -30,4 +30,30 @@ public class AdminDAO extends DAO {
             }
         }
     }
+
+    // 管理者を新規登録するyo
+    public void register(String userId, String password,
+                         String email, String companyId)
+            throws Exception {
+
+        // 管理者情報を登録するSQL
+        String sql =
+                "INSERT INTO cp_admin "
+              + "(cp_userid, cp_userpass, cp_usermail, cp_id) "
+              + "VALUES (?, ?, ?, ?)";
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement st = con.prepareStatement(sql)
+        ) {
+            // 登録する管理者情報を設定
+            st.setString(1, userId);
+            st.setString(2, password);
+            st.setString(3, email);
+            st.setString(4, companyId);
+
+            // データベースに登録
+            st.executeUpdate();
+        }
+    }
 }
