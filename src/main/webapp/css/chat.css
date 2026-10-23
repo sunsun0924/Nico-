@@ -1,39 +1,39 @@
-/* --- 共通の土台・リセット --- */
+```css
+/* =========================
+   全体設定
+========================= */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
 }
 
 body {
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
     background-color: #ffe8d1;
-    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
     color: #59483d;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
 }
 
-/* サイドバーとメイン画面を横並びにする */
+/* =========================
+   画面全体のレイアウト
+========================= */
 .page-layout {
-    display: flex;
     width: 100%;
     min-height: 100vh;
-    align-items: stretch;
 }
 
-/* 左側のサイドバー */
-.sidebar {
-    width: 220px;
-    min-width: 220px;
-    flex-shrink: 0;
-}
-
-/* 右側のメイン画面 */
+/* メイン画面
+   投稿画面と同じ余白に設定 */
 .main-content {
-    flex: 1;
-    min-width: 0;
+    width: calc(100% - 266px);
     min-height: 100vh;
-    padding: 26px;
-    box-sizing: border-box;
+    margin: 20px 20px 20px 246px;
+    padding: 0;
 }
 
 /* 仮アイコン用の丸デザイン */
@@ -41,33 +41,33 @@ body {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background-color: #d1d5db;
+    background-color: #edaa8d;
     flex-shrink: 0;
 }
 
-/* ==========================================
-   1. チャット一覧画面（chat.jsp用）
-   ========================================== */
-
+/* =========================
+   1. チャット一覧画面
+========================= */
 .chat-container {
     width: 100%;
     max-width: 1000px;
-    min-height: calc(100vh - 52px);
+    min-height: calc(100vh - 40px);
     margin: 0 auto;
     background-color: #fffdf8;
-    border: 1px solid #eee5dd;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(120, 95, 75, 0.08);
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
     overflow: hidden;
 }
 
+/* ヘッダー */
 .chat-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
     background-color: #fffdf8;
-    border-bottom: 1px solid #eee5dd;
+    border-bottom: 1px solid #eee4d8;
 }
 
 .chat-header h2 {
@@ -84,21 +84,23 @@ body {
 .icon {
     cursor: pointer;
     font-size: 20px;
+    color: #ed947c;
 }
 
+/* 検索欄 */
 .search-box {
     padding: 14px 20px;
     background-color: #fffdf8;
-    border-bottom: 1px solid #eee5dd;
+    border-bottom: 1px solid #eee4d8;
 }
 
 .search-box input {
     width: 100%;
     padding: 11px 16px;
-    border: 1px solid #eee5dd;
+    border: 1px solid #eee4d8;
     border-radius: 20px;
     background-color: #f7eee5;
-    box-sizing: border-box;
+    font-family: inherit;
     font-size: 14px;
     color: #59483d;
 }
@@ -113,6 +115,7 @@ body {
     background-color: #ffffff;
 }
 
+/* チャット一覧 */
 .chat-list {
     display: flex;
     flex-direction: column;
@@ -121,10 +124,11 @@ body {
 .chat-item {
     display: flex;
     align-items: center;
+    min-width: 0;
     padding: 16px 20px;
-    border-bottom: 1px solid #f2eae2;
+    border-bottom: 1px solid #f0e8de;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 0.2s ease;
     text-decoration: none;
     color: inherit;
 }
@@ -152,15 +156,16 @@ body {
 }
 
 .user-name {
-    font-weight: bold;
+    font-weight: 700;
     font-size: 15px;
     color: #59483d;
+    overflow-wrap: anywhere;
 }
 
 .chat-time {
     flex-shrink: 0;
     font-size: 12px;
-    color: #99887c;
+    color: #a39a92;
 }
 
 .chat-bottom {
@@ -173,7 +178,7 @@ body {
 .last-message {
     margin: 0;
     font-size: 13px;
-    color: #806b5d;
+    color: #75665c;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -185,7 +190,7 @@ body {
     background-color: #ed947c;
     color: #ffffff;
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 700;
     padding: 3px 7px;
     border-radius: 10px;
     min-width: 20px;
@@ -193,30 +198,31 @@ body {
     flex-shrink: 0;
 }
 
-/* ==========================================
-   2. 個別チャットルーム画面（chat_room.jsp用）
-   ========================================== */
-
+/* =========================
+   2. 個別チャットルーム
+========================= */
 .room-container {
     width: 100%;
     max-width: 1000px;
-    height: calc(100vh - 52px);
+    height: calc(100vh - 40px);
     min-height: 400px;
     margin: 0 auto;
-    background-color: #fcf9f5;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(120, 95, 75, 0.08);
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
+/* ルームヘッダー */
 .room-header {
     display: flex;
     align-items: center;
     padding: 12px 20px;
     background-color: #fffdf8;
-    border-bottom: 1px solid #eee5dd;
+    border-bottom: 1px solid #eee4d8;
 }
 
 .back-btn {
@@ -224,6 +230,10 @@ body {
     text-decoration: none;
     color: #806b5d;
     margin-right: 12px;
+}
+
+.back-btn:hover {
+    color: #654b39;
 }
 
 .header-title {
@@ -235,6 +245,7 @@ body {
     margin: 0;
     font-size: 16px;
     color: #654b39;
+    overflow-wrap: anywhere;
 }
 
 .online-status {
@@ -243,12 +254,13 @@ body {
 }
 
 .header-menu {
-    font-weight: bold;
+    font-weight: 700;
     color: #806b5d;
     letter-spacing: 2px;
     cursor: pointer;
 }
 
+/* メッセージ表示エリア */
 .message-area {
     flex: 1;
     min-height: 0;
@@ -257,12 +269,14 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    background-color: #fffdf8;
 }
 
 .message-row {
     display: flex;
     align-items: flex-end;
     max-width: 80%;
+    min-width: 0;
 }
 
 .message-row.other {
@@ -286,6 +300,7 @@ body {
     min-width: 0;
 }
 
+/* メッセージ吹き出し */
 .bubble {
     padding: 10px 14px;
     border-radius: 16px;
@@ -295,7 +310,7 @@ body {
 }
 
 .message-row.other .bubble {
-    background-color: #ffffff;
+    background-color: #f7eee5;
     color: #59483d;
     border-top-left-radius: 4px;
 }
@@ -308,75 +323,103 @@ body {
 
 .message-time {
     font-size: 10px;
-    color: #99887c;
+    color: #a39a92;
     white-space: nowrap;
 }
 
 .read-status {
     font-size: 9px;
-    color: #99887c;
+    color: #a39a92;
     text-align: right;
     white-space: nowrap;
 }
 
+/* メッセージ入力欄 */
 .input-area {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 12px 16px;
     background-color: #fffdf8;
-    border-top: 1px solid #eee5dd;
+    border-top: 1px solid #eee4d8;
 }
 
 .plus-btn {
     background: none;
     border: none;
+    font-family: inherit;
     font-size: 22px;
     color: #806b5d;
     cursor: pointer;
     flex-shrink: 0;
 }
 
+.plus-btn:hover {
+    color: #ed947c;
+}
+
 .input-area input {
     flex: 1;
     min-width: 0;
     padding: 10px 14px;
-    border: 1px solid #eee5dd;
+    border: 1px solid #eee4d8;
     border-radius: 20px;
     background-color: #f7eee5;
+    font-family: inherit;
     font-size: 13px;
     outline: none;
+    color: #59483d;
 }
 
 .input-area input:focus {
     border-color: #ed947c;
+    background-color: #ffffff;
+}
+
+.input-area input::placeholder {
+    color: #a99d95;
 }
 
 .send-btn {
     background: none;
     border: none;
+    font-family: inherit;
     font-size: 18px;
-    color: #c78263;
+    color: #ed947c;
     cursor: pointer;
     flex-shrink: 0;
 }
 
-/* ==========================================
-   3. スマートフォン対応
-   ========================================== */
+.send-btn:hover {
+    color: #df8068;
+}
 
-@media (max-width: 600px) {
+/* =========================
+   スマートフォン対応
+========================= */
+@media screen and (max-width: 600px) {
+
+    /* メイン画面
+       投稿画面と同じ左余白に設定 */
     .main-content {
-        padding: 12px;
+        width: calc(100% - 100px);
+        min-height: calc(100vh - 20px);
+        margin: 10px 10px 10px 90px;
+        padding: 0;
     }
 
+    /* チャット一覧 */
     .chat-container {
-        min-height: calc(100vh - 24px);
+        min-height: calc(100vh - 20px);
         border-radius: 16px;
     }
 
     .chat-header {
-        padding: 16px;
+        padding: 16px 12px;
+    }
+
+    .chat-header h2 {
+        font-size: 19px;
     }
 
     .search-box {
@@ -384,15 +427,70 @@ body {
     }
 
     .chat-item {
-        padding: 14px 12px;
+        padding: 14px 10px;
     }
 
+    .chat-item .no-image {
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+    }
+
+    .user-name {
+        font-size: 13px;
+    }
+
+    .chat-time {
+        font-size: 10px;
+    }
+
+    .last-message {
+        font-size: 12px;
+    }
+
+    /* 個別チャットルーム */
     .room-container {
-        height: calc(100vh - 24px);
+        height: calc(100vh - 20px);
+        min-height: 300px;
         border-radius: 16px;
     }
 
-    .message-area {
+    .room-header {
         padding: 12px;
     }
+
+    .message-area {
+        padding: 12px 8px;
+        gap: 12px;
+    }
+
+    .message-row {
+        max-width: 95%;
+    }
+
+    .message-row.other .no-image {
+        width: 28px;
+        height: 28px;
+        margin-right: 6px;
+    }
+
+    .bubble {
+        padding: 9px 11px;
+        font-size: 12px;
+    }
+
+    .message-time {
+        font-size: 9px;
+    }
+
+    .input-area {
+        gap: 6px;
+        padding: 10px 8px;
+    }
+
+    .input-area input {
+        padding: 10px;
+        font-size: 12px;
+    }
 }
+```

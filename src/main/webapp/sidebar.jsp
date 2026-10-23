@@ -45,6 +45,7 @@
         </a>
         
         <%-- 🟡 管理者だけユーザー新規登録表示 --%>
+        <%-- 
         <%
         if (userId != null && "ADMIN".equals(loginUser.getRole())) {
         %>
@@ -56,6 +57,7 @@
         <%
         }
         %>
+        --%>
  
 
     </nav>

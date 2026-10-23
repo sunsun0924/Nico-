@@ -1,32 +1,53 @@
+
 @charset "UTF-8";
 
+/* =========================
+   全体設定
+========================= */
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
-    background-color: #f7f3ed; /* 温かみのある背景色 */
-    font-family: 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    min-height: 100%;
 }
 
+body {
+    background-color: #ffe8d1;
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    color: #59483d;
+}
+
+/* =========================
+   マイページ全体
+========================= */
 .mypage-container {
-    max-width: 400px;
-    margin: 0 auto;
-    background-color: #fff9f5;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: calc(100% - 266px);
+    max-width: 440px;
+    margin: 20px 20px 20px 246px;
+    padding: 24px;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
 }
 
-/* ヘッダー */
+/* =========================
+   ヘッダー
+========================= */
 .mypage-header {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 20px;
-    color: #6b5048;
+    color: #654b39;
 }
 
 .mypage-header .header-icon {
     font-size: 1.5rem;
+    color: #ed947c;
 }
 
 .mypage-header h2 {
@@ -35,10 +56,12 @@ body {
     font-weight: bold;
 }
 
-/* プロフィールカード */
+/* =========================
+   プロフィールカード
+========================= */
 .profile-card {
     background-color: #ffffff;
-    border: 1px solid #f2e6de;
+    border: 1px solid #eee4d8;
     border-radius: 16px;
     padding: 20px;
     display: flex;
@@ -53,7 +76,7 @@ body {
     height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ffe3d9;
+    border: 2px solid #f5d9c8;
 }
 
 .profile-info {
@@ -61,6 +84,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+    min-width: 0;
 }
 
 /* ユーザー名 */
@@ -68,29 +92,34 @@ body {
     margin: 0;
     font-size: 1.1rem;
     font-weight: bold;
-    color: #4a3b32;
+    color: #59483d;
+    overflow-wrap: anywhere;
 }
 
-/* プロフィール編集ボタン */
+/* =========================
+   プロフィール編集ボタン
+========================= */
 .edit-profile-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 6px 14px;
-    border: 1px solid #f7b2a9;
+    border: 1px solid #dfb2a3;
     border-radius: 20px;
-    color: #e06d63;
-    background-color: #fff8f7;
+    color: #a77969;
+    background-color: #fffaf6;
     text-decoration: none;
     font-size: 0.85rem;
     transition: background-color 0.2s;
 }
 
 .edit-profile-btn:hover {
-    background-color: #ffebe8;
+    background-color: #fff0e7;
 }
 
-/* メニューリスト共通 */
+/* =========================
+   メニューリスト
+========================= */
 .menu-list {
     display: flex;
     flex-direction: column;
@@ -101,34 +130,41 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
     background-color: #ffffff;
-    border: 1px solid #f2e6de;
+    border: 1px solid #eee4d8;
     border-radius: 12px;
     padding: 14px 16px;
     text-decoration: none;
-    color: #52433d;
-    transition: transform 0.1s, background-color 0.2s;
+    color: #59483d;
+    transition: background-color 0.2s, border-color 0.2s;
 }
 
 .menu-item:hover {
-    background-color: #fffaf7;
+    background-color: #fff8f1;
+    border-color: #e8cbb8;
 }
 
 .menu-left {
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 0;
 }
 
 .menu-text {
     font-size: 0.95rem;
     font-weight: 500;
+    overflow-wrap: anywhere;
 }
 
-/* アイコン用丸枠 */
+/* =========================
+   アイコン用丸枠
+========================= */
 .icon-circle {
     width: 32px;
     height: 32px;
+    flex-shrink: 0;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -136,25 +172,118 @@ body {
     font-size: 0.9rem;
 }
 
-/* ハートアイコン（いいね） */
+/* いいねアイコン */
 .heart-icon {
-    background-color: #ffebe9;
-    color: #e06d63;
+    background-color: #fff0e7;
+    color: #e58b79;
 }
 
-/* 歯車アイコン（設定） */
+/* 設定アイコン */
 .gear-icon {
-    background-color: #f0ebf7;
-    color: #8e7bb0;
+    background-color: #f5e9dc;
+    color: #a77969;
 }
 
 /* ログアウトアイコン */
 .logout-icon {
-    background-color: #ffebe9;
-    color: #e06d63;
+    background-color: #fff0e7;
+    color: #e58b79;
 }
 
+/* 右矢印 */
 .arrow-icon {
-    color: #c4b5ab;
+    color: #c4aa99;
     font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* =========================
+   スマートフォン対応
+========================= */
+@media screen and (max-width: 600px) {
+    .mypage-container {
+        width: calc(100% - 100px);
+        max-width: none;
+        margin: 10px 10px 10px 90px;
+        padding: 16px 12px;
+        border-radius: 16px;
+    }
+
+    .mypage-header {
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+
+    .mypage-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .profile-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 12px;
+        margin-bottom: 16px;
+    }
+
+    .profile-avatar img {
+        width: 58px;
+        height: 58px;
+    }
+
+    .user-name {
+        font-size: 1rem;
+    }
+
+    .edit-profile-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    .menu-list {
+        gap: 10px;
+    }
+
+    .menu-item {
+        padding: 12px 10px;
+    }
+
+    .menu-left {
+        gap: 8px;
+    }
+
+    .menu-text {
+        font-size: 0.85rem;
+    }
+
+    .icon-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================
+   小さなスマートフォン
+========================= */
+@media screen and (max-width: 380px) {
+    .mypage-container {
+        padding: 12px 8px;
+    }
+
+    .profile-card {
+        padding: 12px 8px;
+    }
+
+    .menu-item {
+        padding: 10px 8px;
+    }
+
+    .menu-left {
+        gap: 6px;
+    }
+
+    .menu-text {
+        font-size: 0.8rem;
+    }
 }

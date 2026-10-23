@@ -1,28 +1,37 @@
 
-/* 画面全体の基本設定 */
+/* =========================
+   画面全体の基本設定
+========================= */
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
-    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
     background-color: #ffe8d1;
     color: #59483d;
 }
 
-/* 新規投稿画面全体 */
+/* =========================
+   新規投稿画面全体
+========================= */
 .home-header {
-    width: 90%;
+    width: calc(100% - 266px);
     max-width: 480px;
     min-height: 550px;
-    margin: 20px auto;
+    margin: 20px 20px 20px 246px;
     padding: 30px;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 22px;
-    box-sizing: border-box;
     box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
 }
 
-/* タイトル */
+/* =========================
+   タイトル
+========================= */
 .home-header h1 {
     margin: 0 0 25px;
     font-size: 32px;
@@ -30,7 +39,9 @@ body {
     color: #654b39;
 }
 
-/* ユーザー表示欄 */
+/* =========================
+   ユーザー表示欄
+========================= */
 .post-toolbar {
     display: flex;
     align-items: center;
@@ -38,9 +49,8 @@ body {
     margin-bottom: 18px;
     padding: 12px;
     background-color: #f7eee5;
-    border: 1px solid #f0e5da;
+    border: 1px solid #eee4d8;
     border-radius: 16px;
-    box-sizing: border-box;
 }
 
 /* ユーザーアイコン */
@@ -75,25 +85,25 @@ body {
     font-size: 24px;
 }
 
-/* 画像マークにマウスを乗せたとき */
 .image-button:hover {
     opacity: 0.7;
 }
 
-/* ファイル選択ボタンを非表示にする */
+/* ファイル選択ボタンを非表示 */
 .image-input {
     display: none;
 }
 
-/* 投稿本文入力欄 */
+/* =========================
+   投稿本文入力欄
+========================= */
 .home-header textarea {
     display: block;
     width: 100%;
     height: 200px;
     padding: 15px;
-    box-sizing: border-box;
     resize: vertical;
-    border: 1px solid #f0e5da;
+    border: 1px solid #eee4d8;
     border-radius: 16px;
     background-color: #fffaf4;
     color: #59483d;
@@ -103,17 +113,17 @@ body {
     outline: none;
 }
 
-/* 入力欄にフォーカスしたとき */
 .home-header textarea:focus {
     border-color: #ed947c;
 }
 
-/* プレースホルダー */
 .home-header textarea::placeholder {
     color: #a39a92;
 }
 
-/* 文字数カウンター */
+/* =========================
+   文字数カウンター
+========================= */
 .home-header form p {
     margin: 8px 2px 0;
     text-align: right;
@@ -121,7 +131,9 @@ body {
     font-size: 14px;
 }
 
-/* 投稿ボタン */
+/* =========================
+   投稿ボタン
+========================= */
 .home-header input[type="submit"] {
     display: block;
     width: 95%;
@@ -138,12 +150,13 @@ body {
     transition: background-color 0.2s;
 }
 
-/* ボタンにマウスを乗せたとき */
 .home-header input[type="submit"]:hover {
     background-color: #df8068;
 }
 
-/* 投稿一覧に戻るリンク */
+/* =========================
+   投稿一覧に戻るリンク
+========================= */
 .home-header a {
     display: inline-block;
     margin-top: 20px;
@@ -157,25 +170,78 @@ body {
     text-decoration: underline;
 }
 
-/* スマートフォン向け */
+/* =========================
+   スマートフォン向け
+========================= */
 @media screen and (max-width: 600px) {
     .home-header {
-        width: 96%;
-        margin: 10px auto;
-        padding: 20px 14px;
+        width: calc(100% - 100px);
+        max-width: none;
+        min-height: 0;
+        margin: 10px 10px 10px 90px;
+        padding: 20px 12px;
         border-radius: 16px;
     }
 
     .home-header h1 {
-        font-size: 26px;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .post-toolbar {
+        gap: 7px;
+        padding: 9px;
+    }
+
+    .post-toolbar .user-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .post-toolbar input[type="text"] {
+        font-size: 12px;
+    }
+
+    .image-button {
+        font-size: 21px;
     }
 
     .home-header textarea {
         height: 180px;
+        padding: 12px;
         font-size: 14px;
     }
 
+    .home-header form p {
+        font-size: 12px;
+    }
+
     .home-header input[type="submit"] {
+        width: 100%;
+        padding: 13px;
         font-size: 15px;
+    }
+}
+
+/* =========================
+   小さなスマートフォン
+========================= */
+@media screen and (max-width: 380px) {
+    .home-header {
+        padding: 16px 9px;
+    }
+
+    .home-header h1 {
+        font-size: 21px;
+    }
+
+    .home-header textarea {
+        height: 160px;
+        padding: 10px;
+    }
+
+    .post-toolbar {
+        gap: 5px;
+        padding: 7px;
     }
 }
