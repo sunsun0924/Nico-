@@ -4,16 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import bean.Gift;
+
+// ギフト情報を操作するDAO
 public class GiftDAO extends DAO {
 
     // ギフト一覧を取得
-    public List<Map<String, String>> selectAll() throws Exception {
+    public List<Gift> selectAll() throws Exception {
 
-        List<Map<String, String>> list = new ArrayList<>();
+        List<Gift> list = new ArrayList<>();
 
         String sql =
                 "SELECT gift_id, gift_name, gift_text " +
@@ -25,11 +26,11 @@ public class GiftDAO extends DAO {
 
             while (rs.next()) {
 
-                Map<String, String> gift = new HashMap<>();
+                Gift gift = new Gift();
 
-                gift.put("giftId", rs.getString("gift_id").trim());
-                gift.put("giftName", rs.getString("gift_name"));
-                gift.put("giftText", rs.getString("gift_text"));
+                gift.setGiftId(rs.getString("gift_id").trim());
+                gift.setGiftName(rs.getString("gift_name"));
+                gift.setGiftText(rs.getString("gift_text"));
 
                 list.add(gift);
             }
