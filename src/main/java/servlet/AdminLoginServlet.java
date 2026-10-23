@@ -48,7 +48,7 @@ public class AdminLoginServlet extends HttpServlet {
                     dao.login(userId.trim(), password);
 
             if (loginSuccess) {
-                // ログイン成功
+                // ログイン成功yea
                 HttpSession session = request.getSession();
                 session.setAttribute("adminUserId", userId.trim());
 
