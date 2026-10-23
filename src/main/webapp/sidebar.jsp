@@ -38,7 +38,8 @@
         </a>
 
         <!-- ギフト -->
-        <a href="${pageContext.request.contextPath}/GiftServlet">
+        <a href="${pageContext.request.contextPath}/gift/gift.jsp"
+           class="menu-item">
             <span class="menu-icon">♔</span>
             <span>ギフト</span>
         </a>
