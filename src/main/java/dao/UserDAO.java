@@ -146,32 +146,32 @@ public class UserDAO extends DAO {
 
 }
 
-//新規チャット用：自分以外の全ユーザーを取得するメソッド
-public List<ChatListBean> getAllUsers(int myUserId) throws Exception {
-    List<ChatListBean> userList = new ArrayList<>();
-    Connection con = getConnection();
+	//新規チャット用：自分以外の全ユーザーを取得するメソッド
+	public List<ChatListBean> getAllUsers(int myUserId) throws Exception {
+		List<ChatListBean> userList = new ArrayList<>();
+		Connection con = getConnection();
 
-    // ログイン中のユーザー以外のユーザーを名前順で取得
-    PreparedStatement st = con.prepareStatement(
-        "SELECT userId, userName FROM user WHERE userId != ? ORDER BY userName ASC"
-    );
-    st.setInt(1, myUserId); // int型としてセット
+		// ログイン中のユーザー以外のユーザーを名前順で取得
+		PreparedStatement st = con.prepareStatement(
+			"SELECT userId, userName FROM user WHERE userId != ? ORDER BY userName ASC"
+		);
+		st.setInt(1, myUserId); // int型としてセット
 
-    ResultSet rs = st.executeQuery();
+		ResultSet rs = st.executeQuery();
 
-    while (rs.next()) {
-        ChatListBean user = new ChatListBean();
+		while (rs.next()) {
+			ChatListBean user = new ChatListBean();
         
-        // データベースからint型として取得し、ChatListBeanにセット
-        user.setUserId(rs.getInt("userId"));
-        user.setUserName(rs.getString("userName"));
+			// データベースからint型として取得し、ChatListBeanにセット
+			user.setUserId(rs.getInt("userId"));
+			user.setUserName(rs.getString("userName"));
         
-        userList.add(user);
-    }
+			userList.add(user);
+		}
 
-    rs.close();
-    st.close();
-    con.close();
+		rs.close();
+		st.close();
+		con.close();
 
-    return userList;
-}
+		return userList;
+	}
