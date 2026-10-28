@@ -1,25 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="../header.jsp" %>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理者用ログイン</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminLogin.css">
 
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/adminLogin.css">
-</head>
-
-<body>
     <main class="login-container">
 
         <!-- ヘッダー -->
         <header class="login-header">
+
             <div class="admin-icon">
-                <svg viewBox="0 0 48 48"
-                     aria-hidden="true">
+                <svg viewBox="0 0 48 48" aria-hidden="true">
                     <circle cx="24" cy="14" r="8" fill="currentColor"/>
                     <path d="M9 36c0-8 6-13 15-13s15 5 15 13"
                           fill="currentColor"/>
@@ -28,6 +18,7 @@
 
             <h1>管理者用ログイン</h1>
             <p class="description">アカウント情報を入力してください</p>
+
         </header>
 
         <!-- ログインフォーム -->
@@ -35,8 +26,9 @@
               action="${pageContext.request.contextPath}/servlet/AdminLoginServlet.action"
               method="post">
 
-            <!-- ID -->
+            <!-- 管理者ID -->
             <div class="input-box">
+
                 <div class="field-icon">
                     <svg viewBox="0 0 24 24"
                          fill="none"
@@ -49,21 +41,23 @@
                         <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
                     </svg>
                 </div>
-                
 
                 <div class="input-content">
-                    <label for="userId">ID</label>
+                    <label for="cpUserid">管理者ID</label>
+
                     <input type="text"
-                           id="userId"
-                           name="userId"
+                           id="cpUserid"
+                           name="cpUserid"
                            placeholder="例）admin123"
                            autocomplete="username"
                            required>
                 </div>
+
             </div>
 
             <!-- パスワード -->
             <div class="input-box">
+
                 <div class="field-icon">
                     <svg viewBox="0 0 24 24"
                          fill="none"
@@ -80,29 +74,38 @@
                 </div>
 
                 <div class="input-content">
-                    <label for="password">パスワード</label>
+                    <label for="cpUserpass">パスワード</label>
+
                     <input type="password"
-                           id="password"
-                           name="password"
+                           id="cpUserpass"
+                           name="cpUserpass"
                            placeholder="パスワードを入力してください"
                            autocomplete="current-password"
                            required>
                 </div>
 
-                <!-- 表示・非表示ボタン -->
+                <!-- パスワード表示・非表示ボタン -->
                 <button type="button"
                         id="togglePassword"
                         class="eye-button"
                         aria-label="パスワードを表示"
                         aria-pressed="false">
+
                     <svg xmlns="http://www.w3.org/2000/svg"
                          viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
                          aria-hidden="true">
                         <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
                         <circle cx="12" cy="12" r="3"/>
                         <path id="eyeSlash" d="M3 3l18 18"/>
                     </svg>
+
                 </button>
+
             </div>
 
             <!-- エラーメッセージ -->
@@ -117,6 +120,7 @@
                 <span>ログイン</span>
                 <span class="button-arrow" aria-hidden="true">→</span>
             </button>
+
         </form>
 
         <!-- 新規登録画面へのリンク -->
@@ -130,7 +134,7 @@
 
     <!-- パスワード表示切り替え -->
     <script>
-        const password = document.getElementById("password");
+        const password = document.getElementById("cpUserpass");
         const togglePassword = document.getElementById("togglePassword");
         const eyeSlash = document.getElementById("eyeSlash");
 
@@ -145,9 +149,11 @@
                 isHidden ? "パスワードを非表示" : "パスワードを表示"
             );
 
-            togglePassword.setAttribute("aria-pressed", String(isHidden));
+            togglePassword.setAttribute(
+                "aria-pressed",
+                String(isHidden)
+            );
         });
     </script>
 
-</body>
-</html>
+<%@ include file="../footer.jsp" %>

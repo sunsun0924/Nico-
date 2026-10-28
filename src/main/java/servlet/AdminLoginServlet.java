@@ -1,4 +1,3 @@
-
 package servlet;
 
 import bean.Admin;
@@ -11,53 +10,44 @@ import tool.Action;
 // 管理者ログイン処理
 public class AdminLoginServlet extends Action {
 
-    // executeメソッド：FrontControllerから呼ばれるメイン処理
+	// executeメソッド：FrontControllerから呼ばれるメイン処理
     public String execute(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+        HttpServletRequest request, HttpServletResponse response
+    ) throws Exception {
+        request.setCharacterEncoding("UTF-8");
 
-        // セッションを取得（なければ新しく作成）
-        HttpSession session = request.getSession();
-
-        // フォームから管理者IDを取得
-        String userId = request.getParameter("userId");
-
-        // フォームからパスワードを取得
-        String password = request.getParameter("password");
+        // ログイン画面から管理者IDとパスワードを取得
+        String cpUserid = request.getParameter("cpUserid");
+        String cpUserpass = request.getParameter("cpUserpass");
+        
 
         // 未入力チェック
-        if (userId == null || userId.trim().isEmpty()
-                || password == null || password.isEmpty()) {
+        if (cpUserid == null || cpUserid.trim().isEmpty()
+                || cpUserpass == null || cpUserpass.isEmpty()) {
 
-            request.setAttribute(
-                    "errorMessage",
-                    "＊管理者IDとパスワードを入力してください");
+            request.setAttribute("errorMessage",
+                    "管理者IDとパスワードを入力してください");
 
             return "/login/adminLogin.jsp";
         }
 
-        // 管理者IDの前後の空白を除去
-        userId = userId.trim();
-
-        // DAOを使って管理者を検索（認証処理）
+        // 管理者情報を検索
         AdminDAO dao = new AdminDAO();
-        Admin admin = dao.search(userId, password);
+        Admin admin = dao.search(cpUserid.trim(), cpUserpass);
 
-        // 管理者が見つかった場合（ログイン成功）
+        // ログイン成功
         if (admin != null) {
 
-            // セッションに管理者情報を保存
+            HttpSession session = request.getSession();
             session.setAttribute("admin", admin);
 
-            // 管理者画面へ遷移
             return "/post/post.jsp";
 
         } else {
 
-            // IDまたはパスワードが一致しない場合
-            request.setAttribute(
-                    "errorMessage",
-                    "＊ログインに失敗しました\n＊管理者IDまたはパスワードが違います");
+            // ログイン失敗
+            request.setAttribute("errorMessage",
+                    "管理者IDまたはパスワードが違います");
 
             return "/login/adminLogin.jsp";
         }
