@@ -78,7 +78,7 @@ public class CompanyRegisterServlet extends Action {
                     "message",
                     "＊企業の新規登録が完了しました");
 
-            return "/company/company.jsp";
+            return "/post/post.jsp";
 
         } else {
 
