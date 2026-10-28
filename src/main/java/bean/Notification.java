@@ -2,19 +2,19 @@ package bean;
 
 import java.time.LocalDateTime;
 
-// 通知情報を管理するBean
+
 public class Notification {
 
     // 通知ID
     private String notificationId;
 
-    // ユーザーID（通知を受け取るユーザー）
+    // ユーザーID
     private String userId;
 
     // 送信者ID
     private String senderId;
 
-    // 通知タイプ（comment / gift）
+    // 通知タイプ
     private String notificationType;
 
     // メッセージ内容
