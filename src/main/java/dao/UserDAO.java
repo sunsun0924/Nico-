@@ -1,150 +1,157 @@
+
 package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
+import bean.ChatListBean;
 import bean.User;
 
-
 public class UserDAO extends DAO {
-	// ログイン用
+
+    // ログイン用
     public User search(String userId, String userPass) throws Exception {
 
-        // 戻り値用（最初は見つかっていないのでnull）
         User u = null;
 
         // DB接続を取得
         Connection con = getConnection();
 
-        // SQLを準備（?で値を後からセットする＝SQLインジェクション対策）
+        // SQLを準備
         PreparedStatement st = con.prepareStatement(
-            "select * from user where userId = ? and userPass = ?"
+            "SELECT * FROM \"user\" WHERE user_id = ? AND user_pass = ?"
         );
 
-        // 1つ目の?にログイン名をセット
+        // ユーザーIDとパスワードを設定
         st.setString(1, userId);
-
-        // 2つ目の?にパスワードをセット
         st.setString(2, userPass);
 
-        // SQLを実行（SELECTなのでexecuteQuery）
+        // SQLを実行
         ResultSet rs = st.executeQuery();
 
-        // 検索結果を1件ずつ取り出す
+        // 検索結果があればBeanに格納
         if (rs.next()) {
 
-            // データが見つかったらCustomerオブジェクトを作成
             u = new User();
 
-            // カラム名を指定して値を取得 → Beanにセット
-            u.setUserId(rs.getString("userId"));
-            u.setUserPass(rs.getString("userPass"));
+            u.setUserId(rs.getString("user_id"));
+            u.setUserPass(rs.getString("user_pass"));
+            u.setUserAddress(rs.getString("user_address"));
+            u.setUserNumber(rs.getString("user_number"));
+            u.setUserMail(rs.getString("user_mail"));
+            u.setUserBirthday(rs.getDate("user_birthday"));
+            u.setUserName(rs.getString("user_name"));
+            u.setUserImg(rs.getString("user_img"));
         }
-        
-        
-        // リソースを解放（必ず閉じる）
+
+        // リソースを解放
         rs.close();
         st.close();
         con.close();
 
-        // 見つかればCustomer、なければnullを返す
         return u;
     }
-    
+
+
     // 新規登録用
     public int insert(User user) throws Exception {
 
         // DB接続を取得
         Connection con = getConnection();
 
-        // SQLを準備（?で値を後からセットする＝SQLインジェクション対策）
+        // SQLを準備
         PreparedStatement st = con.prepareStatement(
-            "insert into user (userId, userPass) values(?, ?)"
+            "INSERT INTO \"user\" (user_id, user_pass) VALUES (?, ?)"
         );
 
-        // 1つ目の?にログイン名をセット
+        // ユーザーIDとパスワードを設定
         st.setString(1, user.getUserId());
-
-        // 2つ目の?にパスワードをセット
         st.setString(2, user.getUserPass());
 
         // SQLを実行
         int line = st.executeUpdate();
 
-        // リソースを解放（必ず閉じる）
+        // リソースを解放
         st.close();
         con.close();
 
-
         return line;
     }
-    
-    // 重複確認用
+
+
+    // ユーザーIDの重複確認用
     public boolean isExist(String userId) throws Exception {
-    	
-    	// DB接続を取得
+
+        // DB接続を取得
         Connection con = getConnection();
-        
+
         // SQLを準備
         PreparedStatement st = con.prepareStatement(
-            "select * from user where userId = ?"
+            "SELECT * FROM \"user\" WHERE user_id = ?"
         );
 
-        // 1つ目の?にログイン名をセット
+        // ユーザーIDを設定
         st.setString(1, userId);
 
-        // SQLを実行（SELECTなのでexecuteQuery）
+        // SQLを実行
         ResultSet rs = st.executeQuery();
 
         boolean exists = rs.next();
 
-        // リソースを解放（必ず閉じる）
+        // リソースを解放
         rs.close();
         st.close();
         con.close();
 
         return exists;
     }
-    
+
+
     // プロフィール更新用
     public int update(User user) throws Exception {
-    	
-    	// DB接続を取得
+
+        // DB接続を取得
         Connection con = getConnection();
-        
+
         // SQLを準備
         PreparedStatement st = con.prepareStatement(
-            "UPDATE user SET userAddress = ?, userNumber = ?, userMail = ?, " +
-            "userBirthday = ?, userName = ?, userImg = ? WHERE userId = ?"
+            "UPDATE \"user\" SET " +
+            "user_address = ?, " +
+            "user_number = ?, " +
+            "user_mail = ?, " +
+            "user_birthday = ?, " +
+            "user_name = ?, " +
+            "user_img = ? " +
+            "WHERE user_id = ?"
         );
-        
-        // 1つ目の?に住所をセット
-        st.setString(1, user.getUserAddress());
-        // 2つ目の?に電話番号をセット
-        st.setString(2, user.getUserNumber());
-        // 3つ目の?にメールアドレスをセット
-        st.setString(3, user.getUserMail());
-        // 4つ目の?に誕生日をセット
-        st.setDate(4, user.getUserBirthday());
-        // 5つ目の?にユーザー名をセット
-        st.setString(5, user.getUserName());
-        // 6つ目の?にユーザーアイコンをセット
-        st.setString(6, user.getUserImg());
-        // 7つ目の?にユーザーIDをセット
-        st.setString(6, user.getUserId());
 
+        // 住所
+        st.setString(1, user.getUserAddress());
+        // 電話番号
+        st.setString(2, user.getUserNumber());
+        // メールアドレス
+        st.setString(3, user.getUserMail());
+        // 生年月日
+        st.setDate(4, user.getUserBirthday());
+        // 名前
+        st.setString(5, user.getUserName());
+        // 画像
+        st.setString(6, user.getUserImg());
+        // ユーザーID
+        st.setString(7, user.getUserId());
+        
         // SQLを実行
         int line = st.executeUpdate();
-        
-        // リソースを解放（必ず閉じる）
+
+        // リソースを解放
         st.close();
         con.close();
 
         return line;
     }
-
-}
 
 	//新規チャット用：自分以外の全ユーザーを取得するメソッド
 	public List<ChatListBean> getAllUsers(int myUserId) throws Exception {
@@ -175,3 +182,4 @@ public class UserDAO extends DAO {
 
 		return userList;
 	}
+}

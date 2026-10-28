@@ -60,6 +60,18 @@ body {
     background-color: #df8068;
 }
 
+/* 登録完了メッセージ */
+.success-message {
+    margin: 15px 0;
+    padding: 12px 15px;
+    color: #654b39;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 /* 投稿一覧 */
 .post-item {
     margin-bottom: 15px;
@@ -136,5 +148,10 @@ body {
 
     .reserve-btn {
         font-size: 14px;
+    }
+
+    .success {
+        font-size: 14px;
+        padding: 10px;
     }
 }

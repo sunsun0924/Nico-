@@ -15,7 +15,7 @@ public class RegisterServlet extends Action {
     ) throws Exception {
     	
     	// フォームから送信されたユーザーIDを取得
-        String userId = request.getParameter("useId");
+        String userId = request.getParameter("userId");
         
         // フォームから送信されたパスワードを取得
         String userPass = request.getParameter("userPass");
@@ -26,14 +26,14 @@ public class RegisterServlet extends Action {
         // 未入力チェック（最小）
         if (userId == null || userId.equals("") ||
         		userPass == null || userPass.equals("")) {
-        	request.setAttribute("error",
+        	request.setAttribute("errorMessage",
         			"＊未入力があります\n＊すべて入力してください");
             return "/register/register.jsp";
         }
             
         // 重複確認
         if (dao.isExist(userId)) {
-        	request.setAttribute("error1", "＊このユーザーIDは既に使われています");
+        	request.setAttribute("errorMessage", "＊このユーザーIDは既に使われています");
             return "/register/register.jsp";
         }
         
@@ -55,9 +55,10 @@ public class RegisterServlet extends Action {
 
         // lineは「更新された行数」
         if (line > 0) {
+        	request.setAttribute("message", "＊ユーザーの新規登録が完了しました");
         	return "/post/post.jsp";
         } else {
-            request.setAttribute("error", "＊登録に失敗しました");
+            request.setAttribute("errorMessage", "＊登録に失敗しました");
             return "/register/register.jsp";
         }
 

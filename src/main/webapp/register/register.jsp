@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="../header.jsp" %>
- <link rel="stylesheet"
-       href="${pageContext.request.contextPath}/css/register.css">
+<link rel="stylesheet"
+      href="${pageContext.request.contextPath}/css/register.css">
        
     <main class="register-container">
     
@@ -30,7 +30,7 @@
         </header>
 
         <!-- 登録フォーム -->
-        <form action="${pageContext.request.contextPath}/RegisterServlet"
+        <form action="${pageContext.request.contextPath}/servlet/RegisterServlet.action"
               method="post"
               class="register-form">
 
@@ -158,7 +158,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const password = document.getElementById("password");
+    const password = document.getElementById("userPass");
     const togglePassword = document.getElementById("togglePassword");
     const eyeSlash = document.getElementById("eyeSlash");
 
