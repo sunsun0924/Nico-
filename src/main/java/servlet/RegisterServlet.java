@@ -5,7 +5,6 @@ import dao.UserDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tool.Action;
-import tool.PasswordUtil;
 
 
 public class RegisterServlet extends Action {
@@ -16,40 +15,40 @@ public class RegisterServlet extends Action {
     ) throws Exception {
     	
     	// フォームから送信されたユーザーIDを取得
-        String user_id = request.getParameter("user_id");
+        String userId = request.getParameter("useId");
         
         // フォームから送信されたパスワードを取得
-        String user_pass = request.getParameter("user_pass");
+        String userPass = request.getParameter("userPass");
     
         // データベース操作(登録･検索)を行うためのDAOを作成
         UserDAO dao = new UserDAO();
             
         // 未入力チェック（最小）
-        if (user_id == null || user_id.equals("") ||
-        		user_pass == null || user_pass.equals("")) {
+        if (userId == null || userId.equals("") ||
+        		userPass == null || userPass.equals("")) {
         	request.setAttribute("error",
         			"＊未入力があります\n＊すべて入力してください");
             return "/register/register.jsp";
         }
             
         // 重複確認
-        if (dao.isExist(user_id)) {
+        if (dao.isExist(userId)) {
         	request.setAttribute("error1", "＊このユーザーIDは既に使われています");
             return "/register/register.jsp";
         }
         
         // パスワードをハッシュ化
-        String hashpassword = PasswordUtil.hash(user_pass);
+        // String hashpassword = PasswordUtil.hash(userPass);
 
         // 登録処理
         // データ保存用オブジェクトを作成
-        User staff = new User(); 
+        User user = new User(); 
          
         // 1番目の ? にユーザーIDを設定
-        staff.setUser_id(user_id);
+        user.setUserId(userId);
         
         // 2番目の ? にパスワードを設定
-        staff.setUser_pass(user_pass);
+        user.setUserPass(userPass);
 
         // SQLを実行
         int line = dao.insert(user);

@@ -96,12 +96,12 @@
 			    </div>
 			
 			    <div class="input-content">
-			        <label for="password">パスワード</label>
+			        <label for="userPass">パスワード</label>
 			
 			        <input
 			            type="password"
-			            id="password"
-			            name="password"
+			            id="userPass"
+			            name="userPass"
 			            placeholder="例）8文字以上の半角英数字"
 			            minlength="8"
 			            autocomplete="new-password"
