@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/company.css">
 
 
-<form action="CompanyRegister" method="post" class="company-register">
+<form action="${pageContext.request.contextPath}/servlet/CompanyRegisterServlet.action" method="post" class="company-register">
 <!-- 企業登録画面 -->
 <h2>企業登録</h2>
 

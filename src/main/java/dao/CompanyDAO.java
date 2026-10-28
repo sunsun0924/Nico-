@@ -1,24 +1,68 @@
+
 package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
+// 企業情報を操作するDAO
 public class CompanyDAO extends DAO {
 
-    // 企業情報を登録
-    public void insert(String companyId, String companyName)
+    // 新規登録用
+    public int insert(String companyId, String companyName)
             throws Exception {
 
-        String sql =
-                "INSERT INTO company (cp_id, cp_name) VALUES (?, ?)";
+        // DB接続を取得
+        Connection con = getConnection();
 
-        try (Connection con = getConnection();
-             PreparedStatement st = con.prepareStatement(sql)) {
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "INSERT INTO company (cp_id, cp_name) VALUES (?, ?)"
+        );
 
-            st.setString(1, companyId);
-            st.setString(2, companyName);
+        // 1番目の ? に企業IDを設定
+        st.setString(1, companyId);
 
-            st.executeUpdate();
-        }
+        // 2番目の ? に企業名を設定
+        st.setString(2, companyName);
+
+        // SQLを実行
+        int line = st.executeUpdate();
+
+        // リソースを解放
+        st.close();
+        con.close();
+
+        return line;
     }
+
+
+    // 企業IDの重複確認用
+    public boolean isExist(String companyId) throws Exception {
+
+        // DB接続を取得
+        Connection con = getConnection();
+
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "SELECT * FROM company WHERE cp_id = ?"
+        );
+
+        // 企業IDを設定
+        st.setString(1, companyId);
+
+        // SQLを実行
+        ResultSet rs = st.executeQuery();
+
+        // 検索結果があればtrue
+        boolean exists = rs.next();
+
+        // リソースを解放
+        rs.close();
+        st.close();
+        con.close();
+
+        return exists;
+    }
+
 }
