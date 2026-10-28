@@ -2,85 +2,85 @@ package bean;
 
 import java.io.Serializable;
 
-// チャットルームのメッセージ情報を管理するBean
-public class ChatRoomBean implements Serializable {
+// チャット一覧のユーザー情報や最新メッセージを管理するBean
+public class ChatListBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    // メッセージID
-    private int messageId;
+    // ユーザーID
+    private int userId;
 
-    // 送信者ID
-    private int senderId;
+    // ユーザー名
+    private String userName;
 
-    // 受信者ID
-    private int receiverId;
+    // 最後のメッセージ本文
+    private String lastMessage;
 
-    // メッセージ本文
-    private String message;
+    // 最後のメッセージの送信日時（または時間）
+    private String lastTime;
 
-    // 送信日時
-    private String sentAt;
+    // 未読件数
+    private int unreadCount;
 
     // デフォルトコンストラクタ
-    public ChatRoomBean() {
+    public ChatListBean() {
     }
 
     // 全フィールド初期化用コンストラクタ
-    public ChatRoomBean(int messageId, int senderId, int receiverId, String message, String sentAt) {
-        this.messageId = messageId;
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.message = message;
-        this.sentAt = sentAt;
+    public ChatListBean(int userId, String userName, String lastMessage, String lastTime, int unreadCount) {
+        this.userId = userId;
+        this.userName = userName;
+        this.lastMessage = lastMessage;
+        this.lastTime = lastTime;
+        this.unreadCount = unreadCount;
     }
 
-    // メッセージIDを取得
-    public int getMessageId() {
-        return messageId;
+    // ユーザーIDを取得
+    public int getUserId() {
+        return userId;
     }
 
-    // メッセージIDを設定
-    public void setMessageId(int messageId) {
-        this.messageId = messageId;
+    // ユーザーIDを設定
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    // 送信者IDを取得
-    public int getSenderId() {
-        return senderId;
+    // ユーザー名を取得
+    public String getUserName() {
+        return userName;
     }
 
-    // 送信者IDを設定
-    public void setSenderId(int senderId) {
-        this.senderId = senderId;
+    // ユーザー名を設定
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    // 受信者IDを取得
-    public int getReceiverId() {
-        return receiverId;
+    // 最後のメッセージを取得
+    public String getLastMessage() {
+        return lastMessage;
     }
 
-    // 受信者IDを設定
-    public void setReceiverId(int receiverId) {
-        this.receiverId = receiverId;
+    // 最後のメッセージを設定
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
-    // メッセージ本文を取得
-    public String getMessage() {
-        return message;
+    // 最後のメッセージの時間を取得
+    public String getLastTime() {
+        return lastTime;
     }
 
-    // メッセージ本文を設定
-    public void setMessage(String message) {
-        this.message = message;
+    // 最後のメッセージの時間設定
+    public void setLastTime(String lastTime) {
+        this.lastTime = lastTime;
     }
 
-    // 送信日時を取得
-    public String getSentAt() {
-        return sentAt;
+    // 未読件数を取得
+    public int getUnreadCount() {
+        return unreadCount;
     }
 
-    // 送信日時を設定
-    public void setSentAt(String sentAt) {
-        this.sentAt = sentAt;
+    // 未読件数を設定
+    public void setUnreadCount(int unreadCount) {
+        this.unreadCount = unreadCount;
     }
 }
