@@ -1,19 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="../header.jsp" %>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>ログイン</title>
-
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/register.css">
-</head>
-
-<body>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
 
     <main class="register-container">
 
@@ -44,7 +32,7 @@
         </header>
 
         <!-- 登録フォーム -->
-        <form action="${pageContext.request.contextPath}/RegisterServlet"
+        <form action="${pageContext.request.contextPath}/servlet/UserLoginServlet.action"
               method="post"
               class="register-form">
 
@@ -98,12 +86,12 @@
 			    </div>
 			
 			    <div class="input-content">
-			        <label for="password">パスワード</label>
+			        <label for="Pass">パスワード</label>
 			
 			        <input
 			            type="password"
-			            id="password"
-			            name="password"
+			            id="userPass"
+			            name="userPass"
 			            placeholder="例）8文字以上の半角英数字"
 			            minlength="8"
 			            autocomplete="new-password"
@@ -172,7 +160,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const password = document.getElementById("password");
+    const password = document.getElementById("userPass");
     const togglePassword = document.getElementById("togglePassword");
     const eyeSlash = document.getElementById("eyeSlash");
 
@@ -197,7 +185,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
-
-</body>
-</html>
+<%@ include file="../footer.jsp" %>

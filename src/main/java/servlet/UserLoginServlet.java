@@ -1,79 +1,53 @@
 package servlet;
 
-import java.io.IOException;
-
 import bean.User;
 import dao.UserDAO;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import tool.Action;
 
-// ユーザーログイン処理を行うServlet
-@WebServlet("/UserLoginServlet")
-public class UserLoginServlet extends HttpServlet {
+public class UserLoginServlet extends Action {
 
-    // ログインフォームから送信された情報を処理する
-    @Override
-    protected void doPost(
-            HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
+    // executeメソッド：FrontControllerから呼ばれるメイン処理
+    public String execute(
+        HttpServletRequest request, HttpServletResponse response
+    ) throws Exception {
 
-        // 文字化けを防ぐ
-        request.setCharacterEncoding("UTF-8");
+        // セッションを取得（なければ新しく作成）
+        HttpSession session = request.getSession();
 
-        // ログイン画面から入力値を取得する
+        // フォームから送られてきたログインIDとパスワードを取得
         String userId = request.getParameter("userId");
-        String password = request.getParameter("password");
+        String userPass = request.getParameter("userPass");
+        
+        // 未入力チェック（最小）
+        if (userId == null || userId.equals("") ||
+        		userPass == null || userPass.equals("")) {
+        	request.setAttribute("error",
+        			"＊ログインIDとパスワードを入力してください");
+            return "/login/userLogin.jsp";
+        }
+        
+        // パスワードをハッシュ化
+        //String hashpassword = PasswordUtil.hash(userPass);
 
-        try {
-            // 入力内容が空の場合
-            if (userId == null || userId.trim().isEmpty()
-                    || password == null || password.isEmpty()) {
+        // DAOを使ってDBからユーザー検索（認証処理）
+        UserDAO dao = new UserDAO();
+        User user = dao.search(userId, userPass);
 
-                request.setAttribute(
-                        "errorMessage",
-                        "ユーザーIDとパスワードを入力してください。");
-
-                request.getRequestDispatcher(
-                        "/login/userLogin.jsp")
-                        .forward(request, response);
-                return;
-            }
-
-            // DBからユーザー情報を検索する
-            UserDAO dao = new UserDAO();
-            User user = dao.login(userId.trim(), password);
-
-            // ログイン成功
-            if (user != null) {
-
-                // セッションにユーザー情報を保存する
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user);
-
-                // ログイン後の画面へ移動
-                response.sendRedirect(
-                        request.getContextPath() + "/PostServlet");
-
-            } else {
-                // ログイン失敗
-                request.setAttribute(
-                        "errorMessage",
-                        "ユーザーIDまたはパスワードが違います。");
-
-                request.getRequestDispatcher(
-                        "/login/userLogin.jsp")
-                        .forward(request, response);
-            }
-
-        } catch (Exception e) {
-            // DB接続などでエラーが発生した場合
-            throw new ServletException(
-                    "ログイン処理に失敗しました。", e);
+        // ユーザーが見つかった場合（ログイン成功）
+        if (user != null) {
+            // セッションにユーザー情報を保存（ログイン状態を保持）
+            session.setAttribute("user", user);
+            // ログイン成功ページへ遷移
+            return "/post/post.jsp";
+        } else {
+        	// ログインIDとパスワードが一致しない場合(ログイン失敗)
+        	// ユーザーが見つからなかった場合(ログイン失敗)
+        	request.setAttribute("error",
+        			"＊ログインに失敗しました\n＊ログインIDまたはパスワードが違います");
+        	return "/login/userLogin.jsp";
         }
     }
 }
