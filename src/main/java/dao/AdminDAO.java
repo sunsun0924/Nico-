@@ -1,59 +1,119 @@
+
 package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import bean.Admin;
+
 // 管理者情報を操作するDAO
 public class AdminDAO extends DAO {
 
-    // 管理者IDとパスワードでログイン認証する
-    public boolean login(String userId, String password)
+    // ログイン用
+    public Admin search(String userId, String userPass)
             throws Exception {
 
-        // 管理者情報を検索するSQL
-        String sql =
-                "SELECT cp_userid FROM cp_admin "
-              + "WHERE cp_userid = ? AND cp_userpass = ?";
+        Admin admin = null;
 
-        try (
-            Connection con = getConnection();
-            PreparedStatement st = con.prepareStatement(sql)
-        ) {
-            // 入力されたIDとパスワードを設定
-            st.setString(1, userId);
-            st.setString(2, password);
+        // DB接続を取得
+        Connection con = getConnection();
 
-            try (ResultSet rs = st.executeQuery()) {
-                // 管理者が存在する場合
-                return rs.next();
-            }
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "SELECT * FROM cp_admin " +
+            "WHERE cp_userid = ? AND cp_userpass = ?"
+        );
+
+        // 管理者IDとパスワードを設定
+        st.setString(1, userId);
+        st.setString(2, userPass);
+
+        // SQLを実行
+        ResultSet rs = st.executeQuery();
+
+        // 検索結果があればBeanに格納
+        if (rs.next()) {
+
+            admin = new Admin();
+
+            admin.setCpUserid(rs.getString("cp_userid"));
+            admin.setCpUserpass(rs.getString("cp_userpass"));
+            admin.setCpUsermail(rs.getString("cp_usermail"));
+            admin.setCpId(rs.getString("cp_id"));
         }
+
+        // リソースを解放
+        rs.close();
+        st.close();
+        con.close();
+
+        return admin;
     }
 
-    // 管理者を新規登録するyo
-    public void register(String userId, String password,
-                         String email, String companyId)
-            throws Exception {
 
-        // 管理者情報を登録するSQL
-        String sql =
-                "INSERT INTO cp_admin "
-              + "(cp_userid, cp_userpass, cp_usermail, cp_id) "
-              + "VALUES (?, ?, ?, ?)";
+    // 新規登録用
+    public int insert(Admin admin) throws Exception {
 
-        try (
-            Connection con = getConnection();
-            PreparedStatement st = con.prepareStatement(sql)
-        ) {
-            // 登録する管理者情報を設定
-            st.setString(1, userId);
-            st.setString(2, password);
-            st.setString(3, email);
-            st.setString(4, companyId);
+        // DB接続を取得
+        Connection con = getConnection();
 
-            // データベースに登録
-            st.executeUpdate();
-        }
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "INSERT INTO cp_admin " +
+            "(cp_userid, cp_userpass, cp_usermail, cp_id) " +
+            "VALUES (?, ?, ?, ?)"
+        );
+
+        // 管理者IDを設定
+        st.setString(1, admin.getCpUserid());
+
+        // パスワードを設定
+        st.setString(2, admin.getCpUserpass());
+
+        // メールアドレスを設定
+        st.setString(3, admin.getCpUsermail());
+
+        // 企業IDを設定
+        st.setString(4, admin.getCpId());
+
+        // SQLを実行
+        int line = st.executeUpdate();
+
+        // リソースを解放
+        st.close();
+        con.close();
+
+        return line;
     }
+
+
+    // 管理者IDの重複確認用
+    public boolean isExist(String userId) throws Exception {
+
+        // DB接続を取得
+        Connection con = getConnection();
+
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "SELECT * FROM cp_admin WHERE cp_userid = ?"
+        );
+
+        // 管理者IDを設定
+        st.setString(1, userId);
+
+        // SQLを実行
+        ResultSet rs = st.executeQuery();
+
+        // 検索結果があればtrue
+        boolean exists = rs.next();
+
+        // リソースを解放
+        rs.close();
+        st.close();
+        con.close();
+
+        return exists;
+    }
+
 }
