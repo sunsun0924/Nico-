@@ -32,7 +32,7 @@
 
         <!-- ログインフォーム -->
         <form id="adminLoginForm"
-              action="${pageContext.request.contextPath}/AdminLoginServlet"
+              action="${pageContext.request.contextPath}/servlet/AdminLoginServlet.action"
               method="post">
 
             <!-- ID -->
