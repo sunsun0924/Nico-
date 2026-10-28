@@ -1,30 +1,28 @@
+
 package servlet;
 
-import java.io.IOException;
-
+import bean.Admin;
 import dao.AdminDAO;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import tool.Action;
 
 // 管理者ログイン処理
-@WebServlet("/AdminLoginServlet")
-public class AdminLoginServlet extends HttpServlet {
+public class AdminLoginServlet extends Action {
 
-    @Override
-    protected void doPost(
+    // executeメソッド：FrontControllerから呼ばれるメイン処理
+    public String execute(
             HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
+            HttpServletResponse response) throws Exception {
 
-        // 文字化けを防ぐ
-        request.setCharacterEncoding("UTF-8");
+        // セッションを取得（なければ新しく作成）
+        HttpSession session = request.getSession();
 
-        // ログイン画面から入力値を取得
+        // フォームから管理者IDを取得
         String userId = request.getParameter("userId");
+
+        // フォームからパスワードを取得
         String password = request.getParameter("password");
 
         // 未入力チェック
@@ -33,43 +31,35 @@ public class AdminLoginServlet extends HttpServlet {
 
             request.setAttribute(
                     "errorMessage",
-                    "IDとパスワードを入力してください。");
+                    "＊管理者IDとパスワードを入力してください");
 
-            request.getRequestDispatcher(
-                    "/login/adminLogin.jsp")
-                    .forward(request, response);
-            return;
+            return "/login/adminLogin.jsp";
         }
 
-        try {
-            // 管理者情報をDBで確認
-            AdminDAO dao = new AdminDAO();
-            boolean loginSuccess =
-                    dao.login(userId.trim(), password);
+        // 管理者IDの前後の空白を除去
+        userId = userId.trim();
 
-            if (loginSuccess) {
-                // ログイン成功yea
-                HttpSession session = request.getSession();
-                session.setAttribute("adminUserId", userId.trim());
+        // DAOを使って管理者を検索（認証処理）
+        AdminDAO dao = new AdminDAO();
+        Admin admin = dao.search(userId, password);
 
-                // 管理者画面へ移動
-                response.sendRedirect(
-                        request.getContextPath() + "/post.jsp");
+        // 管理者が見つかった場合（ログイン成功）
+        if (admin != null) {
 
-            } else {
-                // ログイン失敗
-                request.setAttribute(
-                        "errorMessage",
-                        "IDまたはパスワードが違います。");
+            // セッションに管理者情報を保存
+            session.setAttribute("admin", admin);
 
-                request.getRequestDispatcher(
-                        "/login/adminLogin.jsp")
-                        .forward(request, response);
-            }
+            // 管理者画面へ遷移
+            return "/post/post.jsp";
 
-        } catch (Exception e) {
-            throw new ServletException(
-                    "管理者ログイン処理に失敗しました。", e);
+        } else {
+
+            // IDまたはパスワードが一致しない場合
+            request.setAttribute(
+                    "errorMessage",
+                    "＊ログインに失敗しました\n＊管理者IDまたはパスワードが違います");
+
+            return "/login/adminLogin.jsp";
         }
     }
 }
