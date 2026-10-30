@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -5,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import bean.Admin;
+import tool.PasswordUtil;
 
 public class AdminDAO extends DAO {
 
@@ -12,6 +14,9 @@ public class AdminDAO extends DAO {
     public Admin search(String cpUserid, String cpUserpass) throws Exception {
 
         Admin a = null;
+
+        // 入力されたパスワードをハッシュ化
+        String hashPassword = PasswordUtil.hash(cpUserpass);
 
         // DB接続を取得
         Connection con = getConnection();
@@ -21,9 +26,9 @@ public class AdminDAO extends DAO {
             "SELECT * FROM \"cp_admin\" WHERE cp_userid = ? AND cp_userpass = ?"
         );
 
-        // ユーザーIDとパスワードを設定
+        // ユーザーIDとハッシュ化したパスワードを設定
         st.setString(1, cpUserid);
-        st.setString(2, cpUserpass);
+        st.setString(2, hashPassword);
 
         // SQLを実行
         ResultSet rs = st.executeQuery();
@@ -50,6 +55,9 @@ public class AdminDAO extends DAO {
     // 新規登録用
     public int insert(Admin admin) throws Exception {
 
+        // パスワードをハッシュ化
+        String hashPassword = PasswordUtil.hash(admin.getCpUserpass());
+
         // DB接続を取得
         Connection con = getConnection();
 
@@ -58,12 +66,11 @@ public class AdminDAO extends DAO {
             "INSERT INTO \"cp_admin\" (cp_userid, cp_userpass, cp_usermail, cp_id) VALUES (?, ?, ?, ?)"
         );
 
-        // ユーザーID、パスワード、メールアドレス、企業コードを設定
+        // ユーザーID、ハッシュ化したパスワード、メールアドレス、企業コードを設定
         st.setString(1, admin.getCpUserid());
-        st.setString(2, admin.getCpUserpass());
+        st.setString(2, hashPassword);
         st.setString(3, admin.getCpUsermail());
         st.setString(4, admin.getCpId());
-
 
         // SQLを実行
         int line = st.executeUpdate();

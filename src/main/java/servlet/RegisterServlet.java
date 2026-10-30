@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
+// ユーザー新規登録処理
 public class RegisterServlet extends Action {
 
     public String execute(
@@ -22,8 +23,10 @@ public class RegisterServlet extends Action {
 
         // 管理者がログインしていない場合
         if (session == null || session.getAttribute("admin") == null) {
+
             request.setAttribute("errorMessage",
                     "＊管理者ログインをしてください");
+
             return "/login/adminLogin.jsp";
         }
 
@@ -35,8 +38,10 @@ public class RegisterServlet extends Action {
 
         // 企業コードが取得できない場合
         if (cpId == null || cpId.length() != 4) {
+
             request.setAttribute("errorMessage",
                     "＊企業コードを取得できませんでした");
+
             return "/register/register.jsp";
         }
 
@@ -110,6 +115,9 @@ public class RegisterServlet extends Action {
         User user = new User();
 
         user.setUserId(userId);
+
+        // 入力されたパスワードを設定
+        // ハッシュ化はUserDAOのinsertメソッドで行う
         user.setUserPass(userPass);
 
         // データベースに登録

@@ -8,6 +8,7 @@ import java.util.List;
 
 import bean.ChatListBean;
 import bean.User;
+import tool.PasswordUtil;
 
 public class UserDAO extends DAO {
 
@@ -15,6 +16,9 @@ public class UserDAO extends DAO {
     public User search(String userId, String userPass) throws Exception {
 
         User u = null;
+
+        // 入力されたパスワードをハッシュ化
+        String hashPassword = PasswordUtil.hash(userPass);
 
         // DB接続を取得
         Connection con = getConnection();
@@ -24,9 +28,9 @@ public class UserDAO extends DAO {
             "SELECT * FROM \"user\" WHERE user_id = ? AND user_pass = ?"
         );
 
-        // ユーザーIDとパスワードを設定
+        // ユーザーIDとハッシュ化したパスワードを設定
         st.setString(1, userId);
-        st.setString(2, userPass);
+        st.setString(2, hashPassword);
 
         // SQLを実行
         ResultSet rs = st.executeQuery();
@@ -58,6 +62,9 @@ public class UserDAO extends DAO {
     // 新規登録用
     public int insert(User user) throws Exception {
 
+        // パスワードをハッシュ化
+        String hashPassword = PasswordUtil.hash(user.getUserPass());
+
         // DB接続を取得
         Connection con = getConnection();
 
@@ -66,9 +73,9 @@ public class UserDAO extends DAO {
             "INSERT INTO \"user\" (user_id, user_pass) VALUES (?, ?)"
         );
 
-        // ユーザーIDとパスワードを設定
+        // ユーザーIDとハッシュ化したパスワードを設定
         st.setString(1, user.getUserId());
-        st.setString(2, user.getUserPass());
+        st.setString(2, hashPassword);
 
         // SQLを実行
         int line = st.executeUpdate();
@@ -129,19 +136,25 @@ public class UserDAO extends DAO {
 
         // 住所
         st.setString(1, user.getUserAddress());
+
         // 電話番号
         st.setString(2, user.getUserNumber());
+
         // メールアドレス
         st.setString(3, user.getUserMail());
+
         // 生年月日
         st.setDate(4, user.getUserBirthday());
+
         // 名前
         st.setString(5, user.getUserName());
+
         // 画像
         st.setString(6, user.getUserImg());
+
         // ユーザーID
         st.setString(7, user.getUserId());
-        
+
         // SQLを実行
         int line = st.executeUpdate();
 
@@ -152,45 +165,74 @@ public class UserDAO extends DAO {
         return line;
     }
 
-	//新規チャット用：自分以外の全ユーザーを取得するメソッド
- 	public List<ChatListBean> getAllUsers(int myUserId) throws Exception {
- 		List<ChatListBean> userList = new ArrayList<>();
- 		Connection con = null;
- 		PreparedStatement st = null;
- 		ResultSet rs = null;
 
- 		try {
- 			con = getConnection();
+    // 新規チャット用：自分以外の全ユーザーを取得するメソッド
+    public List<ChatListBean> getAllUsers(int myUserId) throws Exception {
 
- 			// テーブル名とカラム名をスネークケース（user_id, user_name, "user"）に合わせる
- 			String sql = "SELECT user_id, user_name FROM \"user\" WHERE user_id != ? ORDER BY user_name ASC";
- 			st = con.prepareStatement(sql);
- 			st.setInt(1, myUserId); // int型としてセット
+        List<ChatListBean> userList = new ArrayList<>();
 
- 			rs = st.executeQuery();
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
 
- 			while (rs.next()) {
- 				ChatListBean user = new ChatListBean();
-         
- 				// データベースから値を取得し、ChatListBeanにセット
- 				user.setUserId(rs.getInt("user_id"));
- 				user.setUserName(rs.getString("user_name"));
-         
- 				userList.add(user);
- 			}
+        try {
 
- 		} finally {
- 			// エラーが発生した場合でも確実にリソースを解放する
- 			if (rs != null) {
- 				try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
- 			}
- 			if (st != null) {
- 				try { st.close(); } catch (Exception e) { e.printStackTrace(); }
- 			}
- 			if (con != null) {
- 				try { con.close(); } catch (Exception e) { e.printStackTrace(); }
- 			}
- 		}
+            con = getConnection();
 
- 		return userList;
- 	}
+            // 自分以外のユーザーを取得
+            String sql =
+                "SELECT user_id, user_name FROM \"user\" " +
+                "WHERE user_id != ? ORDER BY user_name ASC";
+
+            st = con.prepareStatement(sql);
+
+            // 自分のユーザーIDを設定
+            st.setInt(1, myUserId);
+
+            // SQLを実行
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+
+                ChatListBean user = new ChatListBean();
+
+                // ユーザーID
+                user.setUserId(rs.getInt("user_id"));
+
+                // ユーザー名
+                user.setUserName(rs.getString("user_name"));
+
+                userList.add(user);
+            }
+
+        } finally {
+
+            // リソースを解放
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return userList;
+    }
+}

@@ -1,4 +1,3 @@
-
 package servlet;
 
 import bean.Admin;
@@ -7,12 +6,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tool.Action;
 
+// 管理者新規登録処理
 public class AdminRegisterServlet extends Action {
 
     // executeメソッド：FrontControllerから呼ばれるメイン処理
     public String execute(
-        HttpServletRequest request, HttpServletResponse response
-    ) throws Exception {
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        // 文字コードの設定
+        request.setCharacterEncoding("UTF-8");
 
         // フォームから管理者IDを取得
         String cpUserid = request.getParameter("cpUserid");
@@ -26,17 +29,17 @@ public class AdminRegisterServlet extends Action {
         // フォームから企業IDを取得
         String cpId = request.getParameter("cpId");
 
-        // データベース操作（登録・検索）を行うためのDAOを作成
+        // DAOを作成
         AdminDAO dao = new AdminDAO();
 
         // 未入力チェック
-        if (cpUserid == null || cpUserid.equals("") ||
-            cpUserpass == null || cpUserpass.equals("") ||
-            cpUsermail == null || cpUsermail.equals("") ||
-            cpId == null || cpId.equals("")) {
+        if (cpUserid == null || cpUserid.trim().isEmpty()
+                || cpUserpass == null || cpUserpass.isEmpty()
+                || cpUsermail == null || cpUsermail.trim().isEmpty()
+                || cpId == null || cpId.trim().isEmpty()) {
 
             request.setAttribute("errorMessage",
-                "＊未入力があります\n＊すべて入力してください");
+                    "＊未入力があります\n＊すべて入力してください");
 
             return "/register/adminRegister.jsp";
         }
@@ -48,8 +51,9 @@ public class AdminRegisterServlet extends Action {
 
         // 管理者IDは8文字で、3文字目と4文字目はad
         if (!cpUserid.matches("^[a-zA-Z0-9]{2}ad[a-zA-Z0-9]{4}$")) {
+
             request.setAttribute("errorMessage",
-                "＊管理者IDは8文字で、3文字目と4文字目にadを入力してください");
+                    "＊管理者IDは8文字で、3文字目と4文字目にadを入力してください");
 
             return "/register/adminRegister.jsp";
         }
@@ -58,7 +62,7 @@ public class AdminRegisterServlet extends Action {
         if (!cpUserpass.matches("[a-zA-Z0-9]{8,15}")) {
 
             request.setAttribute("errorMessage",
-                "＊パスワードは8～15文字の半角英数字で入力してください");
+                    "＊パスワードは8～15文字の半角英数字で入力してください");
 
             return "/register/adminRegister.jsp";
         }
@@ -67,7 +71,7 @@ public class AdminRegisterServlet extends Action {
         if (cpUsermail.length() > 100) {
 
             request.setAttribute("errorMessage",
-                "＊メールアドレスは100文字以内で入力してください");
+                    "＊メールアドレスは100文字以内で入力してください");
 
             return "/register/adminRegister.jsp";
         }
@@ -76,7 +80,7 @@ public class AdminRegisterServlet extends Action {
         if (cpId.length() != 4) {
 
             request.setAttribute("errorMessage",
-                "＊企業IDは4文字で入力してください");
+                    "＊企業IDは4文字で入力してください");
 
             return "/register/adminRegister.jsp";
         }
@@ -85,7 +89,7 @@ public class AdminRegisterServlet extends Action {
         if (dao.isExist(cpUserid)) {
 
             request.setAttribute("errorMessage",
-                "＊この管理者IDは既に使われています");
+                    "＊この管理者IDは既に使われています");
 
             return "/register/adminRegister.jsp";
         }
@@ -96,7 +100,8 @@ public class AdminRegisterServlet extends Action {
         // 管理者IDを設定
         admin.setCpUserid(cpUserid);
 
-        // パスワードを設定
+        // 入力されたパスワードを設定
+        // ハッシュ化はAdminDAOのinsertメソッドで行う
         admin.setCpUserpass(cpUserpass);
 
         // メールアドレスを設定
@@ -110,18 +115,19 @@ public class AdminRegisterServlet extends Action {
             // 登録処理
             int line = dao.insert(admin);
 
-            // lineは「更新された行数」
+            // 登録成功
             if (line > 0) {
 
                 request.setAttribute("message",
-                    "＊管理者の新規登録が完了しました");
+                        "＊管理者の新規登録が完了しました");
 
                 return "/login/adminLogin.jsp";
 
             } else {
 
+                // 登録失敗
                 request.setAttribute("errorMessage",
-                    "＊管理者の登録に失敗しました");
+                        "＊管理者の登録に失敗しました");
 
                 return "/register/adminRegister.jsp";
             }
@@ -132,7 +138,7 @@ public class AdminRegisterServlet extends Action {
             if ("23505".equals(e.getSQLState())) {
 
                 request.setAttribute("errorMessage",
-                    "＊この管理者IDは既に使われています");
+                        "＊この管理者IDは既に使われています");
 
                 return "/register/adminRegister.jsp";
 
@@ -140,7 +146,7 @@ public class AdminRegisterServlet extends Action {
             } else if ("23503".equals(e.getSQLState())) {
 
                 request.setAttribute("errorMessage",
-                    "＊登録されていない企業IDです");
+                        "＊登録されていない企業IDです");
 
                 return "/register/adminRegister.jsp";
 

@@ -10,16 +10,17 @@ import tool.Action;
 // 管理者ログイン処理
 public class AdminLoginServlet extends Action {
 
-	// executeメソッド：FrontControllerから呼ばれるメイン処理
+    // executeメソッド：FrontControllerから呼ばれるメイン処理
     public String execute(
-        HttpServletRequest request, HttpServletResponse response
-    ) throws Exception {
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        // 文字コードの設定
         request.setCharacterEncoding("UTF-8");
 
         // ログイン画面から管理者IDとパスワードを取得
         String cpUserid = request.getParameter("cpUserid");
         String cpUserpass = request.getParameter("cpUserpass");
-        
 
         // 未入力チェック
         if (cpUserid == null || cpUserid.trim().isEmpty()
@@ -33,12 +34,17 @@ public class AdminLoginServlet extends Action {
 
         // 管理者情報を検索
         AdminDAO dao = new AdminDAO();
+
+        // DAOの中でパスワードをハッシュ化して照合する
         Admin admin = dao.search(cpUserid.trim(), cpUserpass);
 
         // ログイン成功
         if (admin != null) {
 
+            // セッションを取得
             HttpSession session = request.getSession();
+
+            // 管理者情報をセッションに保存
             session.setAttribute("admin", admin);
 
             return "/post/post.jsp";
