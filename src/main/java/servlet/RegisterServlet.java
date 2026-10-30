@@ -1,3 +1,4 @@
+
 package servlet;
 
 import bean.User;
@@ -6,47 +7,72 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tool.Action;
 
-
 public class RegisterServlet extends Action {
 
-	// executeメソッド：FrontControllerから呼ばれるメイン処理
+    // executeメソッド：FrontControllerから呼ばれるメイン処理
     public String execute(
         HttpServletRequest request, HttpServletResponse response
     ) throws Exception {
-    	
-    	// フォームから送信されたユーザーIDを取得
+
+        // フォームから送信されたユーザーIDを取得
         String userId = request.getParameter("userId");
-        
+
         // フォームから送信されたパスワードを取得
         String userPass = request.getParameter("userPass");
-    
-        // データベース操作(登録･検索)を行うためのDAOを作成
+
+        // データベース操作（登録・検索）を行うためのDAOを作成
         UserDAO dao = new UserDAO();
-            
-        // 未入力チェック（最小）
+
+        // 未入力チェック
         if (userId == null || userId.equals("") ||
-        		userPass == null || userPass.equals("")) {
-        	request.setAttribute("errorMessage",
-        			"＊未入力があります\n＊すべて入力してください");
+            userPass == null || userPass.equals("")) {
+
+            request.setAttribute("errorMessage",
+                "＊未入力があります\n＊すべて入力してください");
+
             return "/register/register.jsp";
         }
-            
-        // 重複確認
+
+        // 前後の空白を除去
+        userId = userId.trim();
+
+        // ユーザーIDは8文字
+        if (userId.length() != 8) {
+
+            request.setAttribute("errorMessage",
+                "＊ユーザーIDは8文字で入力してください");
+
+            return "/register/register.jsp";
+        }
+
+        // パスワードは8～15文字の半角英数字
+        if (!userPass.matches("[a-zA-Z0-9]{8,15}")) {
+
+            request.setAttribute("errorMessage",
+                "＊パスワードは8～15文字の半角英数字で入力してください");
+
+            return "/register/register.jsp";
+        }
+
+        // ユーザーIDの重複確認
         if (dao.isExist(userId)) {
-        	request.setAttribute("errorMessage", "＊このユーザーIDは既に使われています");
+
+            request.setAttribute("errorMessage",
+                "＊このユーザーIDは既に使われています");
+
             return "/register/register.jsp";
         }
-        
+
         // パスワードをハッシュ化
         // String hashpassword = PasswordUtil.hash(userPass);
 
         // 登録処理
         // データ保存用オブジェクトを作成
-        User user = new User(); 
-         
+        User user = new User();
+
         // 1番目の ? にユーザーIDを設定
         user.setUserId(userId);
-        
+
         // 2番目の ? にパスワードを設定
         user.setUserPass(userPass);
 
@@ -55,13 +81,18 @@ public class RegisterServlet extends Action {
 
         // lineは「更新された行数」
         if (line > 0) {
-        	request.setAttribute("message", "＊ユーザーの新規登録が完了しました");
-        	return "/post/post.jsp";
+
+            request.setAttribute("message",
+                "＊ユーザーの新規登録が完了しました");
+
+            return "/post/post.jsp";
+
         } else {
-            request.setAttribute("errorMessage", "＊登録に失敗しました");
+
+            request.setAttribute("errorMessage",
+                "＊登録に失敗しました");
+
             return "/register/register.jsp";
         }
-
-       
     }
 }

@@ -1,186 +1,224 @@
+
 <%@ page contentType="text/html; charset=UTF-8" %>
+
 <%@ include file="../header.jsp" %>
+
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/register.css">
-       
-    <main class="register-container">
-    
 
-        <!-- ヘッダー -->
-        <header class="register-header">
+<main class="register-container">
 
-		 
-		
-            <!-- ユーザー登録アイコン -->
-				<div class="register-icon">
-				    <span class="user-symbol"
-				          style="font-size: 32px !important;
-				                 line-height: 1;
-				                 display: inline-block;">♟</span>
-				</div>
-				            
-        
+    <!-- ヘッダー -->
+    <header class="register-header">
 
-            <h1>ユーザー新規登録</h1>
+        <!-- ユーザー登録アイコン -->
+        <div class="register-icon">
+            <span class="user-symbol"
+                  style="font-size: 32px !important;
+                         line-height: 1;
+                         display: inline-block;">♟</span>
+        </div>
 
-            <p>
-                下記の情報を入力して、アカウントを作成してください。
-            </p>
+        <h1>ユーザー新規登録</h1>
 
-        </header>
+        <p>
+            下記の情報を入力して、アカウントを作成してください。
+        </p>
 
-        <!-- 登録フォーム -->
-        <form action="${pageContext.request.contextPath}/servlet/RegisterServlet.action"
-              method="post"
-              class="register-form">
+    </header>
 
-            <!-- ID入力欄 -->
-            <div class="input-group">
+    <!-- 登録フォーム -->
+    <form action="${pageContext.request.contextPath}/servlet.RegisterServlet.action"
+          method="post"
+          class="register-form">
 
-                <div class="input-icon">
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round"
-                         aria-hidden="true">
-                        <circle cx="12" cy="7" r="4"/>
-                        <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
-                    </svg>
-                </div>
+        <!-- ID入力欄 -->
+        <div class="input-group">
 
-                <div class="input-content">
-                    <label for="userId">ID</label>
+            <div class="input-icon">
 
-                    <input
-                        type="text"
-                        id="userId"
-                        name="userId"
-                        placeholder="例）admin123"
-                        autocomplete="username"
-                        required>
-                </div>
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+
+                    <circle cx="12" cy="7" r="4"/>
+                    <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
+
+                </svg>
 
             </div>
 
-       
-			<!-- パスワード入力欄 -->
-			<div class="input-group">
-			
-			    <div class="input-icon">
-			        <svg viewBox="0 0 24 24"
-			             fill="none"
-			             stroke="currentColor"
-			             stroke-width="1.8"
-			             stroke-linecap="round"
-			             stroke-linejoin="round"
-			             aria-hidden="true">
-			            <rect x="4" y="10" width="16" height="12" rx="2"/>
-			            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-			            <circle cx="12" cy="15" r="1"/>
-			            <path d="M12 16v2"/>
-			        </svg>
-			    </div>
-			
-			    <div class="input-content">
-			        <label for="userPass">パスワード</label>
-			
-			        <input
-			            type="password"
-			            id="userPass"
-			            name="userPass"
-			            placeholder="例）8文字以上の半角英数字"
-			            minlength="8"
-			            autocomplete="new-password"
-			            required>
-			    </div>
-			
-	<!-- パスワード表示切り替えボタン -->
-		<button
-		    type="button"
-		    id="togglePassword"
-		    class="eye-button"
-		    aria-label="パスワードを表示"
-		    aria-pressed="false"
-		    style="border: none !important;
-		           outline: none !important;
-		           background: transparent !important;
-		           box-shadow: none !important;
-		           border-radius: 0 !important;
-		           appearance: none;
-		           -webkit-appearance: none;">
-		
-		    <svg
-		        xmlns="http://www.w3.org/2000/svg"
-		        viewBox="0 0 24 24"
-		        width="22"
-		        height="22"
-		        fill="none"
-		        stroke="#b58b78"
-		        stroke-width="1.8"
-		        stroke-linecap="round"
-		        stroke-linejoin="round"
-		        aria-hidden="true">
-		
-		        <!-- 目の輪郭 -->
-		        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
-		
-		        <!-- 黒目 -->
-		        <circle cx="12" cy="12" r="3"/>
-		
-		        <!-- パスワード非表示時の斜線 -->
-		        <path id="eyeSlash" d="M3 3l18 18"/>
-		    </svg>
-		</button>
-			
-			</div>
+            <div class="input-content">
 
-            <!-- エラーメッセージ -->
-            <% if (request.getAttribute("errorMessage") != null) { %>
-                <p class="error-message">
-                    <%= request.getAttribute("errorMessage") %>
-                </p>
-            <% } %>
+                <label for="userId">ID</label>
 
-            <!-- 登録ボタン -->
-            <button type="submit" class="register-button">
-                <span>登録する</span>
-                <span class="button-arrow" aria-hidden="true">→</span>
+                <input
+                    type="text"
+                    id="userId"
+                    name="userId"
+                    placeholder="例）admin123"
+                    autocomplete="username"
+                    minlength="8"
+                    maxlength="8"
+                    required>
+
+            </div>
+
+        </div>
+
+        <!-- パスワード入力欄 -->
+        <div class="input-group">
+
+            <div class="input-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+
+                    <rect x="4" y="10" width="16" height="12" rx="2"/>
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                    <circle cx="12" cy="15" r="1"/>
+                    <path d="M12 16v2"/>
+
+                </svg>
+
+            </div>
+
+            <div class="input-content">
+
+                <label for="userPass">パスワード</label>
+
+                <input
+                    type="password"
+                    id="userPass"
+                    name="userPass"
+                    placeholder="例）8～15文字の半角英数字"
+                    minlength="8"
+                    maxlength="15"
+                    pattern="[A-Za-z0-9]{8,15}"
+                    title="パスワードは8～15文字の半角英数字で入力してください。"
+                    autocomplete="new-password"
+                    required>
+
+            </div>
+
+            <!-- パスワード表示切り替えボタン -->
+            <button
+                type="button"
+                id="togglePassword"
+                class="eye-button"
+                aria-label="パスワードを表示"
+                aria-pressed="false"
+                style="border: none !important;
+                       outline: none !important;
+                       background: transparent !important;
+                       box-shadow: none !important;
+                       border-radius: 0 !important;
+                       appearance: none;
+                       -webkit-appearance: none;">
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="22"
+                    height="22"
+                    fill="none"
+                    stroke="#b58b78"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                    <!-- 目の輪郭 -->
+                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+
+                    <!-- 黒目 -->
+                    <circle cx="12" cy="12" r="3"/>
+
+                    <!-- パスワード非表示時の斜線 -->
+                    <path id="eyeSlash" d="M3 3l18 18"/>
+
+                </svg>
+
             </button>
 
-        </form>
+        </div>
 
-    </main>
+        <!-- エラーメッセージ -->
+        <% if (request.getAttribute("errorMessage") != null) { %>
 
-    <!-- パスワードの表示・非表示 -->
-   
+            <p class="error-message">
+                <%= request.getAttribute("errorMessage") %>
+            </p>
 
+        <% } %>
+
+        <!-- 登録ボタン -->
+        <button type="submit" class="register-button">
+
+            <span>登録する</span>
+
+            <span class="button-arrow" aria-hidden="true">→</span>
+
+        </button>
+
+    </form>
+
+</main>
+
+<!-- パスワードの表示・非表示 -->
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
+
     const password = document.getElementById("userPass");
+
     const togglePassword = document.getElementById("togglePassword");
+
     const eyeSlash = document.getElementById("eyeSlash");
 
     // 必要な要素がそろっているか確認
     if (!password || !togglePassword || !eyeSlash) {
+
         console.error("パスワード表示切り替え用のHTMLが見つかりません。");
+
         return;
     }
 
+    // パスワード表示切り替え
     togglePassword.addEventListener("click", function () {
+
         const isHidden = password.type === "password";
 
+        // パスワードの表示・非表示を切り替える
         password.type = isHidden ? "text" : "password";
+
+        // 目の斜線を切り替える
         eyeSlash.style.display = isHidden ? "none" : "inline";
 
+        // ボタンの説明を変更する
         togglePassword.setAttribute(
             "aria-label",
             isHidden ? "パスワードを非表示" : "パスワードを表示"
         );
-        togglePassword.setAttribute("aria-pressed", String(isHidden));
+
+        togglePassword.setAttribute(
+            "aria-pressed",
+            String(isHidden)
+        );
+
     });
+
 });
+
 </script>
 
 <%@ include file="../footer.jsp" %>
