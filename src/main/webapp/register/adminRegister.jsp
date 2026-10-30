@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+
 <%@ include file="../header.jsp" %>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminRegister.css">
+
 </head>
 
 <body>
@@ -28,7 +31,7 @@
 
         <!-- 新規登録フォーム -->
         <form id="adminRegisterForm"
-              action="${pageContext.request.contextPath}/servlet/AdminRegisterServlet.action"
+              action="${pageContext.request.contextPath}/servlet.AdminRegisterServlet.action"
               method="post">
 
             <!-- メールアドレス -->
@@ -92,10 +95,12 @@
                             type="text"
                             id="userId"
                             name="cpUserid"
-                            placeholder="例：admin001"
+                            placeholder="例：12ad5678"
                             autocomplete="username"
                             minlength="8"
                             maxlength="8"
+                            pattern="[A-Za-z0-9]{2}ad[A-Za-z0-9]{4}"
+                            title="管理者IDは8文字の半角英数字で、3文字目と4文字目に小文字のadを入力してください。"
                             required>
 
                     </div>
@@ -241,7 +246,6 @@
         const eyeOpen = document.getElementById("eyeOpen");
 
         const eyeClosed = document.getElementById("eyeClosed");
-
 
         // パスワード表示切り替え
         togglePassword.addEventListener("click", function () {

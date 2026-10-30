@@ -35,6 +35,7 @@ public class AdminDAO extends DAO {
 
             a.setCpUserid(rs.getString("cp_userid"));
             a.setCpUserpass(rs.getString("cp_userpass"));
+            a.setCpId(rs.getString("cp_id"));
         }
 
         // リソースを解放

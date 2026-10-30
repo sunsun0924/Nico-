@@ -1,46 +1,86 @@
-
 package servlet;
 
+import bean.Admin;
 import bean.User;
 import dao.UserDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
 public class RegisterServlet extends Action {
 
-    // executeメソッド：FrontControllerから呼ばれるメイン処理
     public String execute(
-        HttpServletRequest request, HttpServletResponse response
-    ) throws Exception {
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
 
-        // フォームから送信されたユーザーIDを取得
+        // 文字コードの設定
+        request.setCharacterEncoding("UTF-8");
+
+        // ログイン中の管理者情報を取得
+        HttpSession session = request.getSession(false);
+
+        // 管理者がログインしていない場合
+        if (session == null || session.getAttribute("admin") == null) {
+            request.setAttribute("errorMessage",
+                    "＊管理者ログインをしてください");
+            return "/login/adminLogin.jsp";
+        }
+
+        // セッションから管理者情報を取得
+        Admin admin = (Admin) session.getAttribute("admin");
+
+        // 管理者の企業コードを取得
+        String cpId = admin.getCpId();
+
+        // 企業コードが取得できない場合
+        if (cpId == null || cpId.length() != 4) {
+            request.setAttribute("errorMessage",
+                    "＊企業コードを取得できませんでした");
+            return "/register/register.jsp";
+        }
+
+        // 登録画面から入力された情報を取得
         String userId = request.getParameter("userId");
-
-        // フォームから送信されたパスワードを取得
         String userPass = request.getParameter("userPass");
 
-        // データベース操作（登録・検索）を行うためのDAOを作成
-        UserDAO dao = new UserDAO();
-
         // 未入力チェック
-        if (userId == null || userId.equals("") ||
-            userPass == null || userPass.equals("")) {
+        if (userId == null || userId.trim().isEmpty()
+                || userPass == null || userPass.isEmpty()) {
 
             request.setAttribute("errorMessage",
-                "＊未入力があります\n＊すべて入力してください");
+                    "＊未入力があります\n＊すべて入力してください");
 
             return "/register/register.jsp";
         }
 
-        // 前後の空白を除去
+        // ユーザーIDの前後の空白を削除
         userId = userId.trim();
 
         // ユーザーIDは8文字
         if (userId.length() != 8) {
 
             request.setAttribute("errorMessage",
-                "＊ユーザーIDは8文字で入力してください");
+                    "＊ユーザーIDは8文字で入力してください");
+
+            return "/register/register.jsp";
+        }
+
+        // 最初の4文字が企業コードと一致するか確認
+        if (!userId.substring(0, 4).equals(cpId)) {
+
+            request.setAttribute("errorMessage",
+                    "＊ユーザーIDの最初の4文字は企業コード「"
+                    + cpId + "」にしてください");
+
+            return "/register/register.jsp";
+        }
+
+        // 5～8文字目が半角英数字か確認
+        if (!userId.substring(4).matches("[a-zA-Z0-9]{4}")) {
+
+            request.setAttribute("errorMessage",
+                    "＊ユーザーIDの5～8文字目は半角英数字で入力してください");
 
             return "/register/register.jsp";
         }
@@ -49,48 +89,45 @@ public class RegisterServlet extends Action {
         if (!userPass.matches("[a-zA-Z0-9]{8,15}")) {
 
             request.setAttribute("errorMessage",
-                "＊パスワードは8～15文字の半角英数字で入力してください");
+                    "＊パスワードは8～15文字の半角英数字で入力してください");
 
             return "/register/register.jsp";
         }
 
-        // ユーザーIDの重複確認
+        // DAOを使ってデータベースを操作
+        UserDAO dao = new UserDAO();
+
+        // ユーザーIDがすでに使われていないか確認
         if (dao.isExist(userId)) {
 
             request.setAttribute("errorMessage",
-                "＊このユーザーIDは既に使われています");
+                    "＊このユーザーIDは既に使われています");
 
             return "/register/register.jsp";
         }
 
-        // パスワードをハッシュ化
-        // String hashpassword = PasswordUtil.hash(userPass);
-
-        // 登録処理
-        // データ保存用オブジェクトを作成
+        // User Beanに登録情報を設定
         User user = new User();
 
-        // 1番目の ? にユーザーIDを設定
         user.setUserId(userId);
-
-        // 2番目の ? にパスワードを設定
         user.setUserPass(userPass);
 
-        // SQLを実行
+        // データベースに登録
         int line = dao.insert(user);
 
-        // lineは「更新された行数」
+        // 登録成功
         if (line > 0) {
 
             request.setAttribute("message",
-                "＊ユーザーの新規登録が完了しました");
+                    "＊ユーザーの新規登録が完了しました");
 
             return "/post/post.jsp";
 
         } else {
 
+            // 登録失敗
             request.setAttribute("errorMessage",
-                "＊登録に失敗しました");
+                    "＊登録に失敗しました");
 
             return "/register/register.jsp";
         }

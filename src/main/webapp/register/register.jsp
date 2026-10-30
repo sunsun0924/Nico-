@@ -1,5 +1,4 @@
-
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ include file="../header.jsp" %>
 
@@ -60,10 +59,12 @@
                     type="text"
                     id="userId"
                     name="userId"
-                    placeholder="例）admin123"
+                    placeholder="企業コード4文字＋半角英数字4文字"
                     autocomplete="username"
                     minlength="8"
                     maxlength="8"
+                    pattern="[A-Za-z0-9]{8}"
+                    title="ユーザーIDは企業コード4文字と半角英数字4文字の合計8文字で入力してください。"
                     required>
 
             </div>
@@ -165,7 +166,6 @@
         <button type="submit" class="register-button">
 
             <span>登録する</span>
-
             <span class="button-arrow" aria-hidden="true">→</span>
 
         </button>
@@ -180,16 +180,12 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const password = document.getElementById("userPass");
-
     const togglePassword = document.getElementById("togglePassword");
-
     const eyeSlash = document.getElementById("eyeSlash");
 
     // 必要な要素がそろっているか確認
     if (!password || !togglePassword || !eyeSlash) {
-
         console.error("パスワード表示切り替え用のHTMLが見つかりません。");
-
         return;
     }
 
