@@ -10,7 +10,7 @@ import tool.Action;
 // ユーザーログイン処理
 public class UserLoginServlet extends Action {
 
-    // executeメソッド：FrontControllerから呼ばれるメイン処理
+    @Override
     public String execute(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -26,8 +26,9 @@ public class UserLoginServlet extends Action {
         if (userId == null || userId.trim().isEmpty()
                 || userPass == null || userPass.isEmpty()) {
 
-            request.setAttribute("error",
-                    "＊ログインIDとパスワードを入力してください");
+            request.setAttribute(
+                "error",
+                "＊ログインIDとパスワードを入力してください");
 
             return "/login/userLogin.jsp";
         }
@@ -36,7 +37,6 @@ public class UserLoginServlet extends Action {
         userId = userId.trim();
 
         // DAOを使ってDBからユーザーを検索
-        // DAOの中でパスワードをハッシュ化して照合する
         UserDAO dao = new UserDAO();
 
         User user = dao.search(userId, userPass);
@@ -47,16 +47,20 @@ public class UserLoginServlet extends Action {
             // セッションを取得
             HttpSession session = request.getSession();
 
-            // セッションにユーザー情報を保存
+            // 管理者情報を削除
+            session.removeAttribute("admin");
+
+            // ユーザー情報を保存
             session.setAttribute("user", user);
 
-            return "/post/post.jsp";
+            return "/servlet.PostServlet.action";
 
         } else {
 
             // ログイン失敗
-            request.setAttribute("error",
-                    "＊ログインに失敗しました\n＊ログインIDまたはパスワードが違います");
+            request.setAttribute(
+                "error",
+                "＊ログインに失敗しました\n＊ログインIDまたはパスワードが違います");
 
             return "/login/userLogin.jsp";
         }

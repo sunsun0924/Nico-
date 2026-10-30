@@ -2,16 +2,13 @@
 <%@ include file="../header.jsp" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<!-- 投稿一覧画面のCSS -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/post.css">
 
 <div class="page-layout">
 
-    <!-- 左側：サイドバー -->
     <%@ include file="../sidebar.jsp" %>
 
-    <!-- 右側：投稿画面 -->
     <main class="main-content">
 
         <div class="home-header">
@@ -19,51 +16,73 @@
             <h1>投稿</h1>
 
             <!-- 登録完了メッセージ -->
-            <p class="success-message">${message}</p>
+            <c:if test="${not empty message}">
+                <p class="success-message">${message}</p>
+            </c:if>
 
             <br>
 
             <!-- 新規投稿ボタン -->
-            <form action="postnew.jsp" method="post">
-                <input type="submit"
-                       value="新規投稿"
-                       class="reserve-btn">
-            </form>
+            <a href="${pageContext.request.contextPath}/post/postnew.jsp"
+               class="reserve-btn">
+                新規投稿
+            </a>
 
             <hr>
 
             <h3>投稿一覧</h3>
 
             <!-- 投稿一覧 -->
-            <c:forEach var="post" items="${postList}">
+            <c:choose>
 
-                <div class="post-item">
+                <c:when test="${not empty postList}">
 
-                    <!-- ユーザーID -->
-                    <strong>ユーザーID：${post.user_id}</strong>
+                    <c:forEach var="post" items="${postList}">
 
-                    <!-- 投稿日時 -->
-                    <p>${post.post_datetime}</p>
+                        <div class="post-item">
 
-                    <!-- 投稿本文 -->
-                    <p>${post.post_text}</p>
+                            <!-- 投稿者 -->
+                            <strong>
+                                <c:choose>
+                                    <c:when test="${post.author_type == 'ADMIN'}">
+                                        管理者
+                                    </c:when>
+                                    <c:otherwise>
+                                        ユーザーID：${post.user_id}
+                                    </c:otherwise>
+                                </c:choose>
+                            </strong>
 
-                    <!-- 投稿画像 -->
-                    <c:if test="${not empty post.post_img}">
-                        <img
-                            src="${pageContext.request.contextPath}/images/${post.post_img}"
-                            alt="投稿画像"
-                            width="150">
-                    </c:if>
+                            <!-- 投稿日時 -->
+                            <p>${post.post_datetime}</p>
 
-                    <!-- コメント -->
-                    <p>コメント：${post.comment}</p>
+                            <!-- 投稿本文 -->
+                            <p>${post.post_text}</p>
 
-                </div>
+                            <!-- 投稿画像 -->
+                            <c:if test="${not empty post.post_img}">
+                                <img
+                                    src="${pageContext.request.contextPath}/images/${post.post_img}"
+                                    alt="投稿画像"
+                                    width="150">
+                            </c:if>
 
-                <hr>
+                            <!-- コメント -->
+                            <p>コメント：${post.comment}</p>
 
-            </c:forEach>
+                        </div>
+
+                        <hr>
+
+                    </c:forEach>
+
+                </c:when>
+
+                <c:otherwise>
+                    <p>まだ投稿はありません。</p>
+                </c:otherwise>
+
+            </c:choose>
 
         </div>
 

@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.sql.Connection;
@@ -18,32 +17,34 @@ public class PostDAO extends DAO {
 
         List<Post> list = new ArrayList<>();
 
-        // 投稿テーブルから全件取得するSQL
         String sql =
-            "SELECT user_id, post_id, post_datetime, "
-            + "post_text, post_img, comment "
+            "SELECT user_id, admin_id, author_type, post_id, "
+            + "post_datetime, post_text, post_img, comment "
             + "FROM post "
             + "ORDER BY post_datetime DESC";
 
-        try (Connection con = getConnection();
-             PreparedStatement st = con.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
 
-            // 取得した投稿をBeanに格納する
+        try {
+            con = getConnection();
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+
             while (rs.next()) {
 
                 Post post = new Post();
 
                 post.setUser_id(rs.getString("user_id"));
+                post.setAdmin_id(rs.getString("admin_id"));
+                post.setAuthor_type(rs.getString("author_type"));
                 post.setPost_id(rs.getString("post_id"));
 
-                // 投稿日時をLocalDateTimeに変換する
-                Timestamp datetime =
-                    rs.getTimestamp("post_datetime");
+                Timestamp datetime = rs.getTimestamp("post_datetime");
 
                 if (datetime != null) {
-                    post.setPost_datetime(
-                        datetime.toLocalDateTime());
+                    post.setPost_datetime(datetime.toLocalDateTime());
                 }
 
                 post.setPost_text(rs.getString("post_text"));
@@ -52,54 +53,90 @@ public class PostDAO extends DAO {
 
                 list.add(post);
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+
+        } finally {
+
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return list;
     }
 
-    // 自分の投稿を更新する
-    public int update(Post post, String user_id)
-            throws Exception {
+    // 新しい投稿をDBに登録する
+    public boolean insert(Post post) throws Exception {
 
-        // 投稿IDとユーザーIDが一致する投稿を更新する
         String sql =
-            "UPDATE post "
-            + "SET post_text = ?, post_img = ?, comment = ? "
-            + "WHERE post_id = ? AND user_id = ?";
+            "INSERT INTO post "
+            + "(user_id, admin_id, author_type, post_datetime, "
+            + "post_text, post_img, comment) "
+            + "VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)";
 
-        try (Connection con = getConnection();
-             PreparedStatement st = con.prepareStatement(sql)) {
+        Connection con = null;
+        PreparedStatement st = null;
 
-            // 更新する投稿内容を設定する
-            st.setString(1, post.getPost_text());
-            st.setString(2, post.getPost_img());
-            st.setString(3, post.getComment());
-            st.setString(4, post.getPost_id());
-            st.setString(5, user_id);
+        try {
 
-            // 更新した件数を返す
-            return st.executeUpdate();
-        }
-    }
+            con = getConnection();
+            st = con.prepareStatement(sql);
 
-    // 自分の投稿を削除する
-    public int delete(String post_id, String user_id)
-            throws Exception {
+            st.setString(1, post.getUser_id());
+            st.setString(2, post.getAdmin_id());
+            st.setString(3, post.getAuthor_type());
+            st.setString(4, post.getPost_text());
+            st.setString(5, post.getPost_img());
+            st.setString(6, post.getComment());
 
-        // 投稿IDとユーザーIDが一致する投稿を削除する
-        String sql =
-            "DELETE FROM post "
-            + "WHERE post_id = ? AND user_id = ?";
+            int result = st.executeUpdate();
 
-        try (Connection con = getConnection();
-             PreparedStatement st = con.prepareStatement(sql)) {
+            return result > 0;
 
-            // 削除対象の投稿IDとユーザーIDを設定する
-            st.setString(1, post_id);
-            st.setString(2, user_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
 
-            // 削除した件数を返す
-            return st.executeUpdate();
+        } finally {
+
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

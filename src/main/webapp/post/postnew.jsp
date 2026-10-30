@@ -19,23 +19,15 @@
 
             <h1>投稿</h1>
 
+            <!-- 登録結果・エラーメッセージ -->
+            <c:if test="${not empty message}">
+                <p class="message">${message}</p>
+            </c:if>
+
             <!-- 投稿フォーム -->
-            <form action="#" method="post" enctype="multipart/form-data">
-
-                <!-- ユーザー表示と画像選択 -->
-                <div class="post-toolbar">
-                    <span class="user-icon">👤</span>
-                    <span class="user-name">${user_name}</span>
-                    <input type="text" readonly>
-
-                    <label for="post_img" class="image-button"></label>
-
-                    <input type="file"
-                           id="post_img"
-                           name="post_img"
-                           accept="image/*"
-                           class="image-input">
-                </div>
+            <form
+                action="${pageContext.request.contextPath}/servlet.PostInsertServlet.action"
+                method="post">
 
                 <!-- 投稿内容 -->
                 <textarea
@@ -53,16 +45,19 @@
                 </p>
 
                 <!-- 投稿ボタン -->
-                <input type="submit"
-                       value="投稿する ➤"
-                       class="reserve-btn">
+                <input
+                    type="submit"
+                    value="投稿する ➤"
+                    class="reserve-btn">
 
             </form>
 
             <br>
 
             <!-- 投稿一覧に戻る -->
-            <a href="post.jsp">投稿一覧に戻る</a>
+            <a href="${pageContext.request.contextPath}/servlet.PostServlet.action">
+                投稿一覧に戻る
+            </a>
 
         </div>
 
@@ -73,9 +68,11 @@
 <!-- 本文の文字数表示 -->
 <script>
     function updateCount() {
+
         var text = document.getElementById("post_text").value;
 
         document.getElementById("count").textContent = text.length;
+
     }
 </script>
 

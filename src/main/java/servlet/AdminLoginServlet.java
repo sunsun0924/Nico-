@@ -10,6 +10,7 @@ import tool.Action;
 // 管理者ログイン処理
 public class AdminLoginServlet extends Action {
 
+    @Override
     public String execute(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -25,8 +26,9 @@ public class AdminLoginServlet extends Action {
         if (cpUserid == null || cpUserid.trim().isEmpty()
                 || cpUserpass == null || cpUserpass.isEmpty()) {
 
-            request.setAttribute("errorMessage",
-                    "管理者IDとパスワードを入力してください");
+            request.setAttribute(
+                "errorMessage",
+                "管理者IDとパスワードを入力してください");
 
             return "/login/adminLogin.jsp";
         }
@@ -34,7 +36,6 @@ public class AdminLoginServlet extends Action {
         // 管理者情報を検索
         AdminDAO dao = new AdminDAO();
 
-        // DAOの中でパスワードをハッシュ化して照合する
         Admin admin = dao.search(cpUserid.trim(), cpUserpass);
 
         // ログイン成功
@@ -43,16 +44,20 @@ public class AdminLoginServlet extends Action {
             // セッションを取得
             HttpSession session = request.getSession();
 
-            // 管理者情報をセッションに保存
+            // ユーザー情報を削除
+            session.removeAttribute("user");
+
+            // 管理者情報を保存
             session.setAttribute("admin", admin);
 
-            return "/post/post.jsp";
+            return "/servlet.PostServlet.action";
 
         } else {
 
             // ログイン失敗
-            request.setAttribute("errorMessage",
-                    "管理者IDまたはパスワードが違います");
+            request.setAttribute(
+                "errorMessage",
+                "管理者IDまたはパスワードが違います");
 
             return "/login/adminLogin.jsp";
         }
