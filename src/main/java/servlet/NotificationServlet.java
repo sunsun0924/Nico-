@@ -15,98 +15,103 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
-// 通知一覧を表示するServlet
+// 通知一覧を表示
 public class NotificationServlet extends Action {
 
-    // executeメソッド：FrontControllerから呼ばれるメイン処理
     @Override
     public String execute(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        // 文字化けを防ぐ
         request.setCharacterEncoding("UTF-8");
 
-        // ログイン状態を確認する
+        // ログイン確認
         HttpSession session = request.getSession(false);
 
         if (session == null
                 || session.getAttribute("user") == null) {
-
-            // ログインしていない場合はログイン画面へ
             return "/login/userLogin.jsp";
         }
 
-        // ログイン中のユーザー情報を取得
         User user = (User) session.getAttribute("user");
-
-        // ユーザーIDを取得
         String userId = user.getUserId();
 
         try {
+            // 通知の分類を取得
+            String filter = request.getParameter("filter");
 
-            // 通知情報を取得
+            if (filter == null || filter.isEmpty()) {
+                filter = "all";
+            }
+
+            // 不正な分類を防止
+            if (!filter.equals("all")
+                    && !filter.equals("comment")
+                    && !filter.equals("gift")) {
+                filter = "all";
+            }
+
+            // 通知一覧を取得
             NotificationDAO dao = new NotificationDAO();
-
             List<Notification> notificationList =
                     dao.findByUserId(userId);
 
-            // JSPに渡す通知一覧を作成
             List<Map<String, String>> notifications =
                     new ArrayList<>();
 
-            // 日時の表示形式を設定
             DateTimeFormatter formatter =
                     DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
-            // 通知を1件ずつ取り出す
+            // 通知を分類して画面表示用に変換
             for (Notification notification : notificationList) {
 
-                // JSPに渡すデータを作成
-                Map<String, String> map = new HashMap<>();
-
-                // 通知タイプを取得
                 String type = notification.getNotificationType();
 
-                // 通知の種類を設定
-                map.put("type", type);
+                if (!filter.equals("all") && !filter.equals(type)) {
+                    continue;
+                }
 
-                // 通知メッセージを設定
+                Map<String, String> map = new HashMap<>();
+
+                map.put("type", type != null ? type : "");
+
                 map.put("message",
                         notification.getMessage() != null
-                                ? notification.getMessage()
-                                : "");
+                                ? notification.getMessage() : "");
 
-                // 通知詳細を設定
-                // 現在のNotification Beanには詳細専用の項目がないため空欄
                 map.put("detail", "");
 
-                // 通知日時を設定
-                if (notification.getNotificationDatetime() != null) {
+                map.put("postId",
+                        notification.getPostId() != null
+                                ? notification.getPostId() : "");
 
+                map.put("commentId",
+                        notification.getCommentId() != null
+                                ? notification.getCommentId() : "");
+
+                map.put("giftId",
+                        notification.getGiftId() != null
+                                ? notification.getGiftId() : "");
+
+                if (notification.getNotificationDatetime() != null) {
                     map.put("date",
                             notification.getNotificationDatetime()
                                     .format(formatter));
-
                 } else {
-
                     map.put("date", "");
                 }
 
-                // 通知一覧に追加
                 notifications.add(map);
             }
 
-            // JSPに通知一覧を渡す
+            // JSPにデータを渡す
             request.setAttribute("notifications", notifications);
+            request.setAttribute("filter", filter);
 
-            // 通知画面を表示
             return "/notification/notification.jsp";
 
         } catch (Exception e) {
-
-            throw new Exception(
-                    "通知一覧の取得に失敗しました。", e);
+            throw new Exception("通知一覧の取得に失敗しました。", e);
         }
     }
 }

@@ -14,7 +14,6 @@ public class NotificationDAO extends DAO {
 
     // 通知をすべて取得
     public List<Notification> findAll() throws Exception {
-
         List<Notification> notificationList = new ArrayList<>();
 
         String sql =
@@ -26,7 +25,6 @@ public class NotificationDAO extends DAO {
              ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
-
                 Notification notification = new Notification();
 
                 notification.setNotificationId(
@@ -52,6 +50,8 @@ public class NotificationDAO extends DAO {
                     rs.getString("post_id"));
                 notification.setGiftId(
                     rs.getString("gift_id"));
+                notification.setCommentId(
+                    rs.getString("comment_id"));
 
                 notificationList.add(notification);
             }
@@ -82,7 +82,6 @@ public class NotificationDAO extends DAO {
             try (ResultSet rs = st.executeQuery()) {
 
                 while (rs.next()) {
-
                     Notification notification = new Notification();
 
                     notification.setNotificationId(
@@ -108,6 +107,8 @@ public class NotificationDAO extends DAO {
                         rs.getString("post_id"));
                     notification.setGiftId(
                         rs.getString("gift_id"));
+                    notification.setCommentId(
+                        rs.getString("comment_id"));
 
                     notificationList.add(notification);
                 }
@@ -126,8 +127,8 @@ public class NotificationDAO extends DAO {
         String sql =
             "INSERT INTO notification "
           + "(user_id, sender_id, notification_type, "
-          + "message, notification_datetime, post_id, gift_id) "
-          + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+          + "message, notification_datetime, post_id, gift_id, comment_id) "
+          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -138,10 +139,12 @@ public class NotificationDAO extends DAO {
             st.setString(4, notification.getMessage());
 
             st.setTimestamp(5,
-                Timestamp.valueOf(notification.getNotificationDatetime()));
+                Timestamp.valueOf(
+                    notification.getNotificationDatetime()));
 
             st.setString(6, notification.getPostId());
             st.setString(7, notification.getGiftId());
+            st.setString(8, notification.getCommentId());
 
             return st.executeUpdate();
 

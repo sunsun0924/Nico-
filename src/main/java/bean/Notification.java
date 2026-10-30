@@ -1,7 +1,7 @@
+
 package bean;
 
 import java.time.LocalDateTime;
-
 
 public class Notification {
 
@@ -28,6 +28,9 @@ public class Notification {
 
     // ギフトID
     private String giftId;
+
+    // コメントID
+    private String commentId;
 
     // コンストラクタ
     public Notification() {
@@ -89,8 +92,7 @@ public class Notification {
     }
 
     // 通知日時を設定
-    public void setNotificationDatetime(
-            LocalDateTime notificationDatetime) {
+    public void setNotificationDatetime(LocalDateTime notificationDatetime) {
         this.notificationDatetime = notificationDatetime;
     }
 
@@ -112,5 +114,15 @@ public class Notification {
     // ギフトIDを設定
     public void setGiftId(String giftId) {
         this.giftId = giftId;
+    }
+
+    // コメントIDを取得
+    public String getCommentId() {
+        return commentId;
+    }
+
+    // コメントIDを設定
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 }
