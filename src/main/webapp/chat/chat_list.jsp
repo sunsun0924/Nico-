@@ -3,44 +3,33 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chat.css">
 
-    <!-- サイドバーとチャット画面全体 -->
     <div class="page-layout">
 
-        <!-- 左側：サイドバー -->
         <%@ include file="../sidebar.jsp" %>
 
-        <!-- 右側：チャット一覧 -->
         <main class="main-content">
 
             <div class="chat-container">
 
-                <!-- ヘッダー -->
                 <header class="chat-header">
-                    <!-- 通常時のタイトル -->
                     <h2 id="header-title">チャット</h2>
 
-                    <!-- 編集モード時に出現するアクションボタン群 -->
                     <div id="action-buttons" class="action-buttons" style="display: none;">
                         <button type="button" class="btn-action" onclick="handleAction('unblock')">解除</button>
                         <button type="button" class="btn-action block" onclick="handleAction('block')">ブロック</button>
                         <button type="button" class="btn-close-mode" onclick="toggleEditMode()">✕</button>
                     </div>
 
-                    <!-- ヘッダーアイコン（＋新規チャットボタン ＆ ⚙️設定ボタン） -->
                     <div class="header-icons" id="header-gear">
                         <span class="icon" onclick="openNewChatModal()" title="新規チャット" style="cursor: pointer; margin-right: 12px; font-size: 20px;">＋</span>
                         <span class="icon" onclick="toggleEditMode()" title="編集モード" style="cursor: pointer;">⚙️</span>
                     </div>
                 </header>
 
-                <!-- ユーザー検索エリア -->
                 <div class="search-box">
-                    <input type="text"
-                           name="user_search"
-                           placeholder="ユーザー名で検索">
+                    <input type="text" name="user_search" placeholder="ユーザー名で検索">
                 </div>
 
-                <!-- チャットリスト一覧 -->
                 <div class="chat-list" id="chat-list-area">
                     <c:forEach var="chat" items="${chatList}">
                         <div class="chat-item" onclick="onItemClick(event, this)">
@@ -72,7 +61,6 @@
 
     </div>
 
-    <!-- ================= 新規チャット選択モーダル（ポップアップ） ================= -->
     <div id="new-chat-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000;">
         <div style="background: #fff; width: 420px; max-height: 80vh; border-radius: 12px; padding: 20px; overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
@@ -80,25 +68,13 @@
                 <button type="button" onclick="closeNewChatModal()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #666;">✕</button>
             </div>
 
-            <!-- 全ユーザーのリスト -->
-            <div class="chat-list">
-                <c:forEach var="user" items="${allUsers}">
-                    <div class="chat-item" onclick="location.href='${pageContext.request.contextPath}/chat-room?partnerId=${user.userId}'" style="cursor: pointer; padding: 8px 0; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center;">
-                        <div class="user-icon" style="margin-right: 12px;"><div class="no-image"></div></div>
-                        <div class="chat-info">
-                            <span class="user-name" style="font-weight: bold; color: #333;"><c:out value="${user.userName}" /></span>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
+            <div class="chat-list" id="modal-user-list-area"></div>
         </div>
     </div>
 
-    <!-- JavaScriptによる画面制御 -->
     <script>
         let isEditMode = false;
 
-        // 編集モードの切り替え
         function toggleEditMode() {
             isEditMode = !isEditMode;
             const checkboxes = document.querySelectorAll('.chat-checkbox');
@@ -122,7 +98,6 @@
             }
         }
 
-        // リスト項目をクリックしたときの挙動（個別チャットルームへ遷移）
         function onItemClick(event, itemElement) {
             if (event.target.tagName === 'INPUT') return;
 
@@ -137,17 +112,51 @@
             }
         }
 
-        // 新規チャットモーダルを開く
         function openNewChatModal() {
-            document.getElementById('new-chat-modal').style.display = 'flex';
+            const modal = document.getElementById('new-chat-modal');
+            const userListArea = document.getElementById('modal-user-list-area');
+            
+            modal.style.display = 'flex';
+            userListArea.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">読み込み中...</p>';
+
+            // 絶対パス（contextPath付き）で ChatListServlet に ?action=json を送る
+            fetch('${pageContext.request.contextPath}/chat-list?action=json')
+                .then(response => response.json())
+                .then(users => {
+                    userListArea.innerHTML = '';
+
+                    if (users.length === 0) {
+                        userListArea.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">チャットできるユーザーがいません。</p>';
+                        return;
+                    }
+
+                    users.forEach(user => {
+                        const item = document.createElement('div');
+                        item.className = 'chat-item';
+                        item.style.cssText = 'cursor: pointer; padding: 8px 0; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center;';
+                        item.onclick = function() {
+                            location.href = '${pageContext.request.contextPath}/chat-room?partnerId=' + user.userId;
+                        };
+
+                        item.innerHTML = `
+                            <div class="user-icon" style="margin-right: 12px;"><div class="no-image"></div></div>
+                            <div class="chat-info">
+                                <span class="user-name" style="font-weight: bold; color: #333;">` + user.userName + ` さん</span>
+                            </div>
+                        `;
+                        userListArea.appendChild(item);
+                    });
+                })
+                .catch(error => {
+                    console.error('通信エラー:', error);
+                    userListArea.innerHTML = '<p style="text-align: center; color: #e74c3c; padding: 20px;">ユーザーの取得に失敗しました。</p>';
+                });
         }
 
-        // 新規チャットモーダルを閉じる
         function closeNewChatModal() {
             document.getElementById('new-chat-modal').style.display = 'none';
         }
 
-        // 「解除」や「ブロック」ボタンが押されたときの処理
         function handleAction(actionType) {
             const checkedBoxes = document.querySelectorAll('.chat-checkbox:checked');
             if (checkedBoxes.length === 0) {
