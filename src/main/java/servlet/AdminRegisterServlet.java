@@ -47,8 +47,7 @@ public class AdminRegisterServlet extends Action {
         cpId = cpId.trim();
 
         // 管理者IDは8文字で、3文字目と4文字目はad
-        if (!cpUserid.matches("^.{2}ad.{4}$")) {
-
+        if (!cpUserid.matches("^[a-zA-Z0-9]{2}ad[a-zA-Z0-9]{4}$")) {
             request.setAttribute("errorMessage",
                 "＊管理者IDは8文字で、3文字目と4文字目にadを入力してください");
 
