@@ -23,13 +23,13 @@ public class ChatRoomServlet extends HttpServlet {
         Integer myUserId = (Integer) session.getAttribute("userId");
         
         if (myUserId == null) {
-            response.sendRedirect("login/userLogin.jsp");
+            response.sendRedirect(request.getContextPath() + "/login/userLogin.jsp");
             return;
         }
 
         String partnerIdStr = request.getParameter("partnerId");
         if (partnerIdStr == null) {
-            response.sendRedirect("chat-list");
+            response.sendRedirect(request.getContextPath() + "/chat-list");
             return;
         }
         int partnerUserId = Integer.parseInt(partnerIdStr);
@@ -58,7 +58,7 @@ public class ChatRoomServlet extends HttpServlet {
         Integer myUserId = (Integer) session.getAttribute("userId");
         
         if (myUserId == null) {
-            response.sendRedirect("login/userLogin.jsp");
+            response.sendRedirect(request.getContextPath() + "/login/userLogin.jsp");
             return;
         }
 
@@ -83,6 +83,6 @@ public class ChatRoomServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect("chat-room?partnerId=" + partnerIdStr);
+        response.sendRedirect(request.getContextPath() + "/chat-room?partnerId=" + partnerIdStr);
     }
 }
