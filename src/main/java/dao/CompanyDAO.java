@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 public class CompanyDAO extends DAO {
 
     // 新規登録用
-    public int insert(String companyId, String companyName)
+    public int insert(String cpId, String cpName)
             throws Exception {
 
         // DB接続を取得
@@ -21,10 +21,10 @@ public class CompanyDAO extends DAO {
         );
 
         // 1番目の ? に企業IDを設定
-        st.setString(1, companyId);
+        st.setString(1, cpId);
 
         // 2番目の ? に企業名を設定
-        st.setString(2, companyName);
+        st.setString(2, cpName);
 
         // SQLを実行
         int line = st.executeUpdate();
@@ -38,7 +38,7 @@ public class CompanyDAO extends DAO {
 
 
     // 企業IDの重複確認用
-    public boolean isExist(String companyId) throws Exception {
+    public boolean isExist(String cpId) throws Exception {
 
         // DB接続を取得
         Connection con = getConnection();
@@ -49,7 +49,7 @@ public class CompanyDAO extends DAO {
         );
 
         // 企業IDを設定
-        st.setString(1, companyId);
+        st.setString(1, cpId);
 
         // SQLを実行
         ResultSet rs = st.executeQuery();

@@ -1,111 +1,211 @@
-/* 画面全体 */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
-    background-color: #ffe8d1;
-    color: #59483d;
-}
+/* =========================
+   左側サイドバー
+========================= */
 
-/* 左側メニュー */
 .side-menu {
     display: flex;
     flex-direction: column;
+
     width: 226px;
     height: 100vh;
-    min-height: 500px;
-    background-color: #f0dfd2;
-    box-sizing: border-box;
+    min-height: 0;
 
-    /* サイドバーを画面左側に固定 */
+    background-color: #f0dfd2;
+
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
+
+    overflow: hidden;
 }
 
-/* メニュー一覧 */
+/* =========================
+   メニュー一覧
+========================= */
+
 .menu-list {
     display: flex;
     flex-direction: column;
-    gap: 22px;
-    padding: 70px 25px 20px;
+
+    gap: 18px;
+
+    width: 100%;
+    padding: 50px 15px 15px;
+
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-/* 各メニュー */
+/* =========================
+   メニュー項目
+========================= */
+
 .menu-item {
     display: flex;
     align-items: center;
-    gap: 18px;
-    min-height: 54px;
+
+    gap: 12px;
+
+    width: 100%;
+    min-height: 48px;
+
+    flex-shrink: 0;
+
     color: #8b796d;
-    font-size: 17px;
+    font-size: 15px;
+
     text-decoration: none;
+    white-space: nowrap;
+
     transition: color 0.2s;
 }
 
-/* メニューアイコン */
-.menu-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    flex-shrink: 0;
-    color: #e7a184;
-    font-size: 30px;
-}
-
-/* マウスを乗せたとき */
 .menu-item:hover {
     color: #654b39;
 }
 
-/* マイページを下部に配置 */
+/* =========================
+   メニューアイコン
+========================= */
+
+.menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    color: #e7a184;
+    font-size: 27px;
+}
+
+/* =========================
+   下部マイページ
+========================= */
+
 .menu-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    flex-shrink: 0;
     margin-top: auto;
-    padding: 25px 20px 35px;
+
+    padding: 12px 20px 15px;
+
+    background-color: #f0dfd2;
+
     border-top: 1px solid rgba(150, 120, 100, 0.08);
 }
 
-/* マイページ */
 .mypage-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+
+    gap: 5px;
+
     color: #8b796d;
-    font-size: 15px;
+    font-size: 14px;
+
     text-decoration: none;
 }
 
-/* 丸いユーザーアイコン */
+.mypage-item:hover {
+    color: #654b39;
+}
+
+/* =========================
+   プロフィールアイコン
+========================= */
+
 .profile-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+
+    width: 36px;
+    height: 36px;
+
     background-color: #edaa8d;
     border-radius: 50%;
-    font-size: 24px;
+
+    font-size: 22px;
 }
 
-/* スマートフォン向け */
+/* =========================
+   スクロールバー
+========================= */
+
+.menu-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.menu-list::-webkit-scrollbar-thumb {
+    background-color: #d8bca9;
+    border-radius: 10px;
+}
+
+.menu-list::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* =========================
+   スマートフォン対応
+========================= */
+
 @media screen and (max-width: 600px) {
+
     .side-menu {
-        width: 100%;
+        width: 70px;
         height: 100vh;
-        min-height: 0;
-        overflow-y: auto;
     }
 
     .menu-list {
         gap: 15px;
-        padding: 25px 20px;
+        padding: 25px 5px 12px;
+    }
+
+    .menu-item {
+        flex-direction: column;
+        justify-content: center;
+
+        gap: 3px;
+
+        min-height: 55px;
+
+        font-size: 9px;
+        white-space: normal;
+        text-align: center;
+    }
+
+    .menu-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 23px;
     }
 
     .menu-bottom {
-        padding: 20px;
+        padding: 10px 3px 12px;
+    }
+
+    .mypage-item {
+        gap: 4px;
+        font-size: 10px;
+    }
+
+    .profile-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 19px;
     }
 }

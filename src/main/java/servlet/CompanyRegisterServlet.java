@@ -15,17 +15,17 @@ public class CompanyRegisterServlet extends Action {
             HttpServletResponse response) throws Exception {
 
         // フォームから企業IDを取得
-        String companyId = request.getParameter("companyId");
+        String cpId = request.getParameter("cpId");
 
         // フォームから企業名を取得
-        String companyName = request.getParameter("companyName");
+        String cpName = request.getParameter("cpName");
 
         // データベース操作を行うDAOを作成
         CompanyDAO dao = new CompanyDAO();
 
         // 未入力チェック
-        if (companyId == null || companyId.trim().isEmpty()
-                || companyName == null || companyName.trim().isEmpty()) {
+        if (cpId == null || cpId.trim().isEmpty()
+                || cpName == null || cpName.trim().isEmpty()) {
 
             request.setAttribute(
                     "errorMessage",
@@ -35,11 +35,11 @@ public class CompanyRegisterServlet extends Action {
         }
 
         // 前後の空白を除去
-        companyId = companyId.trim();
-        companyName = companyName.trim();
+        cpId = cpId.trim();
+        cpName = cpName.trim();
 
         // 企業IDは4文字
-        if (companyId.length() != 4) {
+        if (cpId.length() != 4) {
 
             request.setAttribute(
                     "errorMessage",
@@ -49,7 +49,7 @@ public class CompanyRegisterServlet extends Action {
         }
 
         // 企業名は50文字以内
-        if (companyName.length() > 50) {
+        if (cpName.length() > 50) {
 
             request.setAttribute(
                     "errorMessage",
@@ -59,7 +59,7 @@ public class CompanyRegisterServlet extends Action {
         }
 
         // 企業IDの重複確認
-        if (dao.isExist(companyId)) {
+        if (dao.isExist(cpId)) {
 
             request.setAttribute(
                     "errorMessage",
@@ -69,7 +69,7 @@ public class CompanyRegisterServlet extends Action {
         }
 
         // 企業情報の登録処理
-        int line = dao.insert(companyId, companyName);
+        int line = dao.insert(cpId, cpName);
 
         // lineは更新された行数
         if (line > 0) {

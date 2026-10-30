@@ -10,7 +10,6 @@ import tool.Action;
 // 管理者ログイン処理
 public class AdminLoginServlet extends Action {
 
-    // executeメソッド：FrontControllerから呼ばれるメイン処理
     public String execute(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
