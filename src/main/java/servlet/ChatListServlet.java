@@ -2,9 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import bean.ChatListBean;
 import dao.ChatListDAO;
 import dao.UserDAO;
@@ -24,8 +23,9 @@ public class ChatListServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Integer myUserId = (Integer) session.getAttribute("userId");
         
+        // ログイン画面のパスを /login/userLogin.jsp に統一
         if (myUserId == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login/userLogin.jsp");
             return;
         }
 
@@ -52,25 +52,11 @@ public class ChatListServlet extends HttpServlet {
         }
     }
 
-    // tryの二重構造をなくし、1つにまとめたメソッド
+    // テストデータの自動追加メソッド
     private void checkAndInsertTestUser() {
-        String url = "jdbc:postgresql://localhost:5432/nico_db";
-        String dbUser = "postgres";
-        String dbPass = "password"; // 環境に合わせて変更してください
+        String sql = "INSERT INTO public.\"user\" (user_id, user_pass, user_name) " +
+                     "SELECT 'user2', 'pass123', 'みさき' WHERE NOT EXISTS (SELECT 1 FROM public.\"user\" LIMIT 1);";
 
-        // データベース接続、カウント取得、インサートを1つの try-with-resources で処理
-        try (Connection conn = DriverManager.getConnection(url, dbUser, dbPass);
-             PreparedStatement pstmt = conn.prepareStatement(
-                 "SELECT COUNT(*) FROM public.\"user\"; " +
-                 "INSERT INTO public.\"user\" (user_id, user_pass, user_name) " +
-                 "SELECT 'user2', 'pass123', 'みさき' WHERE NOT EXISTS (SELECT 1 FROM public.\"user\" LIMIT 1);"
-             )) {
-            
-            // まとめて実行
-            pstmt.execute();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

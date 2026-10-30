@@ -1,6 +1,7 @@
 
 package servlet;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,47 +51,47 @@ public class NotificationServlet extends Action {
             List<Notification> notificationList =
                     dao.findByUserId(userId);
 
-            // JSPに渡す通知データを作成
+            // JSPに渡す通知一覧を作成
             List<Map<String, String>> notifications =
                     new ArrayList<>();
+
+            // 日時の表示形式を設定
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
             // 通知を1件ずつ取り出す
             for (Notification notification : notificationList) {
 
+                // JSPに渡すデータを作成
                 Map<String, String> map = new HashMap<>();
 
                 // 通知タイプを取得
-                String notificationType =
-                        notification.getNotificationType();
+                String type = notification.getNotificationType();
 
-                // 通知タイプをJSP用に変換
-                if ("comment".equals(notificationType)) {
-                    map.put("type", "comment");
+                // 通知の種類を設定
+                map.put("type", type);
 
-                } else if ("gift".equals(notificationType)) {
-                    map.put("type", "gift");
+                // 通知メッセージを設定
+                map.put("message",
+                        notification.getMessage() != null
+                                ? notification.getMessage()
+                                : "");
 
-                } else {
-                    map.put("type", notificationType);
-                }
+                // 通知詳細を設定
+                // 現在のNotification Beanには詳細専用の項目がないため空欄
+                map.put("detail", "");
 
-                // 通知メッセージ
-                map.put("message", notification.getMessage());
-
-                // 通知日時
+                // 通知日時を設定
                 if (notification.getNotificationDatetime() != null) {
 
                     map.put("date",
                             notification.getNotificationDatetime()
-                                    .toString()
-                                    .replace("T", " "));
+                                    .format(formatter));
 
                 } else {
+
                     map.put("date", "");
                 }
-
-                // コメント・ギフトの詳細
-                map.put("detail", notification.getMessage());
 
                 // 通知一覧に追加
                 notifications.add(map);
@@ -104,7 +105,8 @@ public class NotificationServlet extends Action {
 
         } catch (Exception e) {
 
-            throw new Exception("通知一覧の取得に失敗しました。", e);
+            throw new Exception(
+                    "通知一覧の取得に失敗しました。", e);
         }
     }
 }
