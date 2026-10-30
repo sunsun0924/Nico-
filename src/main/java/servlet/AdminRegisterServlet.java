@@ -1,3 +1,4 @@
+
 package servlet;
 
 import bean.Admin;
@@ -45,16 +46,18 @@ public class AdminRegisterServlet extends Action {
         cpUsermail = cpUsermail.trim();
         cpId = cpId.trim();
 
-        // 管理者IDは8文字
-        if (cpUserid.length() != 8) {
+        // 管理者IDは8文字で、3文字目と4文字目はad
+        if (!cpUserid.matches("^.{2}ad.{4}$")) {
+
             request.setAttribute("errorMessage",
-                "＊管理者IDは8文字で入力してください");
+                "＊管理者IDは8文字で、3文字目と4文字目にadを入力してください");
 
             return "/register/adminRegister.jsp";
         }
 
         // パスワードは8～15文字の半角英数字
         if (!cpUserpass.matches("[a-zA-Z0-9]{8,15}")) {
+
             request.setAttribute("errorMessage",
                 "＊パスワードは8～15文字の半角英数字で入力してください");
 
@@ -63,6 +66,7 @@ public class AdminRegisterServlet extends Action {
 
         // メールアドレスは100文字以内
         if (cpUsermail.length() > 100) {
+
             request.setAttribute("errorMessage",
                 "＊メールアドレスは100文字以内で入力してください");
 
@@ -71,6 +75,7 @@ public class AdminRegisterServlet extends Action {
 
         // 企業IDは4文字
         if (cpId.length() != 4) {
+
             request.setAttribute("errorMessage",
                 "＊企業IDは4文字で入力してください");
 
@@ -79,6 +84,7 @@ public class AdminRegisterServlet extends Action {
 
         // 管理者IDの重複確認
         if (dao.isExist(cpUserid)) {
+
             request.setAttribute("errorMessage",
                 "＊この管理者IDは既に使われています");
 
@@ -107,12 +113,14 @@ public class AdminRegisterServlet extends Action {
 
             // lineは「更新された行数」
             if (line > 0) {
+
                 request.setAttribute("message",
                     "＊管理者の新規登録が完了しました");
 
                 return "/login/adminLogin.jsp";
 
             } else {
+
                 request.setAttribute("errorMessage",
                     "＊管理者の登録に失敗しました");
 
@@ -138,6 +146,7 @@ public class AdminRegisterServlet extends Action {
                 return "/register/adminRegister.jsp";
 
             } else {
+
                 throw e;
             }
         }
