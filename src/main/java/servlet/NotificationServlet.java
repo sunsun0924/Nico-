@@ -1,7 +1,10 @@
 
 package servlet;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import bean.Notification;
 import bean.User;
@@ -29,7 +32,7 @@ public class NotificationServlet extends Action {
         if (session == null
                 || session.getAttribute("user") == null) {
 
-            // ログインしていない場合はユーザーログイン画面へ
+            // ログインしていない場合はログイン画面へ
             return "/login/userLogin.jsp";
         }
 
@@ -41,14 +44,60 @@ public class NotificationServlet extends Action {
 
         try {
 
-            // 通知情報を検索
+            // 通知情報を取得
             NotificationDAO dao = new NotificationDAO();
 
             List<Notification> notificationList =
                     dao.findByUserId(userId);
 
-            // 通知一覧をJSPに渡す
-            request.setAttribute("notificationList", notificationList);
+            // JSPに渡す通知データを作成
+            List<Map<String, String>> notifications =
+                    new ArrayList<>();
+
+            // 通知を1件ずつ取り出す
+            for (Notification notification : notificationList) {
+
+                Map<String, String> map = new HashMap<>();
+
+                // 通知タイプを取得
+                String notificationType =
+                        notification.getNotificationType();
+
+                // 通知タイプをJSP用に変換
+                if ("comment".equals(notificationType)) {
+                    map.put("type", "comment");
+
+                } else if ("gift".equals(notificationType)) {
+                    map.put("type", "gift");
+
+                } else {
+                    map.put("type", notificationType);
+                }
+
+                // 通知メッセージ
+                map.put("message", notification.getMessage());
+
+                // 通知日時
+                if (notification.getNotificationDatetime() != null) {
+
+                    map.put("date",
+                            notification.getNotificationDatetime()
+                                    .toString()
+                                    .replace("T", " "));
+
+                } else {
+                    map.put("date", "");
+                }
+
+                // コメント・ギフトの詳細
+                map.put("detail", notification.getMessage());
+
+                // 通知一覧に追加
+                notifications.add(map);
+            }
+
+            // JSPに通知一覧を渡す
+            request.setAttribute("notifications", notifications);
 
             // 通知画面を表示
             return "/notification/notification.jsp";
