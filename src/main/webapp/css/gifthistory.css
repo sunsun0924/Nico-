@@ -1,0 +1,188 @@
+
+/* =========================
+   全体設定
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    background-color: #ffe8d1;
+    color: #59483d;
+}
+
+/* =========================
+   メイン画面
+========================= */
+.main-container {
+    width: calc(100% - 328px);
+    min-height: 100vh;
+    margin-left: 328px;
+    padding: 40px;
+}
+
+/* =========================
+   メインカード
+========================= */
+.content-card {
+    width: 100%;
+    max-width: 1200px;
+    min-height: calc(100vh - 80px);
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 24px;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
+}
+
+/* =========================
+   タイトル
+========================= */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.card-header i {
+    color: #bd8178;
+    font-size: 27px;
+}
+
+.card-header h2 {
+    color: #654b39;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.page-description {
+    margin-bottom: 35px;
+    color: #a8795e;
+    font-size: 15px;
+}
+
+/* =========================
+   ギフト一覧
+========================= */
+.gift-history-section {
+    width: 100%;
+}
+
+.section-title {
+    margin-bottom: 22px;
+    color: #654b39;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.gift-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.gift-history-item {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    min-height: 135px;
+    padding: 20px;
+    background-color: #f6dece;
+    border: 1px solid #eee4d8;
+    border-radius: 18px;
+}
+
+/* ギフト画像 */
+.gift-image {
+    width: 95px;
+    height: 95px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 14px;
+    background-color: #fffdf8;
+}
+
+.gift-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ギフト情報 */
+.gift-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gift-name {
+    color: #654b39;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.gift-date {
+    color: #a8795e;
+    font-size: 14px;
+}
+
+.gift-date i {
+    margin-right: 6px;
+}
+
+/* =========================
+   ギフトがない場合
+========================= */
+.empty-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    padding: 30px;
+    color: #a8795e;
+    background-color: #f6dece;
+    border-radius: 18px;
+}
+
+.empty-message i {
+    margin-bottom: 18px;
+    font-size: 38px;
+}
+
+.empty-message p {
+    font-size: 16px;
+}
+
+/* =========================
+   戻るボタン
+========================= */
+.back-area {
+    margin-top: 35px;
+    text-align: center;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 200px;
+    padding: 14px 25px;
+    color: #bd8178;
+    background-color: #fffdf8;
+    border: 1px solid #e9b9ae;
+    border-radius: 30px;
+    font-size: 15px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.back-button:hover {
+    background-color: #f6dece;
+}

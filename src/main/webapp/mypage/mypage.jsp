@@ -40,6 +40,17 @@
                 </div>
                 <i class="fa-solid fa-chevron-right arrow-icon"></i>
             </a>
+            
+			            <!-- ギフトの履歴 -->
+			<a href="${pageContext.request.contextPath}/mypage/gift_history.jsp" class="menu-item-card">
+			    <div class="menu-item-left">
+			        <div class="menu-icon-wrapper red-heart">
+			            <i class="fa-solid fa-gift"></i>
+			        </div>
+			        <span class="menu-item-title">ギフト履歴</span>
+			    </div>
+			    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+			</a>
 
             <a href="${pageContext.request.contextPath}/mypage/mypage_detail.jsp" class="menu-item-card">
                 <div class="menu-item-left">
