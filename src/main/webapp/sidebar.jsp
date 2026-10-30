@@ -17,7 +17,7 @@
         <!-- 通知 -->
         <a href="${pageContext.request.contextPath}/tuuti/notification.jsp"
            class="menu-item">
-            <span class="menu-icon">♧</span>
+            <span class="menu-icon">🔔︎</span>
             <span>通知</span>
         </a>
 
@@ -31,7 +31,7 @@
         <!-- チャット -->
         <a href="${pageContext.request.contextPath}/chat/chat_list.jsp"
            class="menu-item">
-            <span class="menu-icon">☏</span>
+            <span class="menu-icon">✉</span>
             <span>チャット</span>
         </a>
 
@@ -45,7 +45,7 @@
         <!-- ギフト -->
         <a href="${pageContext.request.contextPath}/gift/gift.jsp"
            class="menu-item">
-            <span class="menu-icon">♔</span>
+            <span class="menu-icon">🎁︎</span>
             <span>ギフト</span>
         </a>
 
