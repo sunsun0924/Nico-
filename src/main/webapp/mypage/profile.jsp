@@ -28,7 +28,7 @@
             </div>
 
             <%-- プロフィール編集フォーム --%>
-            <form action="${pageContext.request.contextPath}/ProfileEditServlet"
+            <form action="${pageContext.request.contextPath}/servlet.UserProfileServlet.action"
                   method="post"
                   enctype="multipart/form-data"
                   id="profile-form">

@@ -22,7 +22,7 @@
                 住所、電話番号、メールアドレス、誕生日を入力してください。
             </div>
 
-            <form action="${pageContext.request.contextPath}/UserInfoUpdate"
+            <form action="${pageContext.request.contextPath}/servlet.UserInformationServlet.action"
                   method="post">
 
                 <div class="form-group">

@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -154,6 +155,81 @@ public class UserDAO extends DAO {
 
         // ユーザーID
         st.setString(7, user.getUserId());
+
+        // SQLを実行
+        int line = st.executeUpdate();
+
+        // リソースを解放
+        st.close();
+        con.close();
+
+        return line;
+    }
+
+
+    // パスワード変更用
+    public int updatePassword(String userId, String newPassword)
+            throws Exception {
+
+        // 新しいパスワードをハッシュ化
+        String hashPassword = PasswordUtil.hash(newPassword);
+
+        // DB接続を取得
+        Connection con = getConnection();
+
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "UPDATE \"user\" SET user_pass = ? WHERE user_id = ?"
+        );
+
+        // 新しいパスワードを設定
+        st.setString(1, hashPassword);
+
+        // ユーザーIDを設定
+        st.setString(2, userId);
+
+        // SQLを実行
+        int line = st.executeUpdate();
+
+        // リソースを解放
+        st.close();
+        con.close();
+
+        return line;
+    }
+
+
+    // ユーザー情報変更用
+    // メール・電話番号・住所・誕生日を更新
+    public int updateUserInfo(User user) throws Exception {
+
+        // DB接続を取得
+        Connection con = getConnection();
+
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "UPDATE \"user\" SET " +
+            "user_address = ?, " +
+            "user_number = ?, " +
+            "user_mail = ?, " +
+            "user_birthday = ? " +
+            "WHERE user_id = ?"
+        );
+
+        // 住所
+        st.setString(1, user.getUserAddress());
+
+        // 電話番号
+        st.setString(2, user.getUserNumber());
+
+        // メールアドレス
+        st.setString(3, user.getUserMail());
+
+        // 生年月日
+        st.setDate(4, user.getUserBirthday());
+
+        // ユーザーID
+        st.setString(5, user.getUserId());
 
         // SQLを実行
         int line = st.executeUpdate();

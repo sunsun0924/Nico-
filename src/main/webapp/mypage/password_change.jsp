@@ -22,7 +22,7 @@
                 現在のパスワードと新しいパスワードを入力してください。
             </div>
 
-            <form action="${pageContext.request.contextPath}/PasswordUpdate"
+            <form action="${pageContext.request.contextPath}/servlet.UserPasswordChangeServlet.action"
                   method="post">
 
                 <div class="form-group">
