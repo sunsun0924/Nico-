@@ -46,7 +46,7 @@
                                  src="${empty user.userImg
                                      ? pageContext.request.contextPath.concat('/images/default-profile.png')
                                      : pageContext.request.contextPath.concat('/').concat(user.userImg)}"
-                                 alt="プロフィール画像">
+                                 >
 
                         </div>
 
