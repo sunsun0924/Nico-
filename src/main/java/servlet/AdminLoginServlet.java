@@ -50,7 +50,7 @@ public class AdminLoginServlet extends Action {
             // 管理者情報を保存
             session.setAttribute("admin", admin);
 
-            return "/servlet.PostServlet.action";
+            return "/post/post.jsp";
 
         } else {
 
