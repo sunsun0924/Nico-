@@ -275,7 +275,7 @@ public class UserDAO extends DAO {
         }
 
         return userList;
-<<<<<<< HEAD
+
     }
     
      // ユーザーIDから登録情報を取得する
@@ -313,6 +313,3 @@ public class UserDAO extends DAO {
 	     return user;
 	 }
 }
-=======
-    }
->>>>>>> branch 'master' of https://github.com/sunsun0924/Nico-.git
