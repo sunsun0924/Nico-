@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpSession;
 import tool.Action;
 import tool.PasswordUtil;
 
+// パスワード変更処理
 public class UserPasswordChangeServlet extends Action {
 
+    @Override
     public String execute(
             HttpServletRequest req,
             HttpServletResponse resp) throws Exception {
@@ -19,8 +21,9 @@ public class UserPasswordChangeServlet extends Action {
         // セッションからログインユーザーを取得
         HttpSession session = req.getSession(false);
 
+        // ログイン確認
         if (session == null || session.getAttribute("user") == null) {
-            return "/login.jsp";
+            return "/login/userLogin.jsp";
         }
 
         User user = (User) session.getAttribute("user");
@@ -40,7 +43,11 @@ public class UserPasswordChangeServlet extends Action {
                 || newPassword == null || newPassword.isEmpty()
                 || confirmPassword == null || confirmPassword.isEmpty()) {
 
-            req.setAttribute("error", "すべての項目を入力してください。");
+            req.setAttribute(
+                "error",
+                "すべての項目を入力してください。"
+            );
+
             return "/mypage/password_change.jsp";
         }
 
@@ -101,6 +108,7 @@ public class UserPasswordChangeServlet extends Action {
             newPassword
         );
 
+        // 更新成功
         if (result > 0) {
 
             // セッション内のパスワードも更新
@@ -108,19 +116,24 @@ public class UserPasswordChangeServlet extends Action {
 
             session.setAttribute("user", user);
 
-            req.setAttribute(
-                "message",
-                "パスワードを変更しました。"
+            // 設定画面に表示する完了メッセージ
+            session.setAttribute(
+                "mypageMessage",
+                "＊パスワードを変更しました"
             );
+
+            // 一つ前の設定画面に戻る
+            return "/mypage/mypage_detail.jsp";
 
         } else {
 
+            // 更新失敗
             req.setAttribute(
                 "error",
                 "パスワードの変更に失敗しました。"
             );
-        }
 
-        return "/mypage/password_change.jsp";
+            return "/mypage/password_change.jsp";
+        }
     }
 }

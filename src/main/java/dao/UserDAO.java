@@ -211,8 +211,7 @@ public class UserDAO extends DAO {
             "UPDATE \"user\" SET " +
             "user_address = ?, " +
             "user_number = ?, " +
-            "user_mail = ?, " +
-            "user_birthday = ? " +
+            "user_mail = ? " +
             "WHERE user_id = ?"
         );
 
@@ -225,11 +224,8 @@ public class UserDAO extends DAO {
         // メールアドレス
         st.setString(3, user.getUserMail());
 
-        // 生年月日
-        st.setDate(4, user.getUserBirthday());
-
         // ユーザーID
-        st.setString(5, user.getUserId());
+        st.setString(4, user.getUserId());
 
         // SQLを実行
         int line = st.executeUpdate();
@@ -311,4 +307,39 @@ public class UserDAO extends DAO {
 
         return userList;
     }
+    
+     // ユーザーIDから登録情報を取得する
+	 public User findByUserId(String userId) throws Exception {
+	
+	     User user = null;
+	
+	     String sql =
+	         "SELECT user_id, user_address, user_number, user_mail, " +
+	         "user_birthday, user_name, user_img " +
+	         "FROM \"user\" WHERE user_id = ?";
+	
+	     try (Connection con = getConnection();
+	          PreparedStatement st = con.prepareStatement(sql)) {
+	
+	         st.setString(1, userId);
+	
+	         try (ResultSet rs = st.executeQuery()) {
+	
+	             if (rs.next()) {
+	
+	                 user = new User();
+	
+	                 user.setUserId(rs.getString("user_id"));
+	                 user.setUserAddress(rs.getString("user_address"));
+	                 user.setUserNumber(rs.getString("user_number"));
+	                 user.setUserMail(rs.getString("user_mail"));
+	                 user.setUserBirthday(rs.getDate("user_birthday"));
+	                 user.setUserName(rs.getString("user_name"));
+	                 user.setUserImg(rs.getString("user_img"));
+	             }
+	         }
+	     }
+	
+	     return user;
+	 }
 }

@@ -1,17 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>マイページ - Nico+</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+<%@ include file="../header.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css">
 
-    <!-- ひとつ上の階層にある共通パーツを読み込む -->
-    <jsp:include page="../header.jsp" />
-    <jsp:include page="../sidebar.jsp" />
+       <!-- 左側サイドバー -->
+    <%@ include file="../sidebar.jsp" %>
 
     <main class="main-container">
         <div class="content-card">

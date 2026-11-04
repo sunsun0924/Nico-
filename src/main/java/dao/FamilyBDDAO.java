@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.sql.Connection;
@@ -14,192 +13,157 @@ public class FamilyBDDAO extends DAO {
 
     // 家族の誕生日を登録する
     public int insert(FamilyBD familyBirthday) throws Exception {
-        String sql = "INSERT INTO family_birthday "
-                   + "(user_id, relation, birthday) "
-                   + "VALUES (?, ?, ?)";
 
-        Connection con = null;
-        PreparedStatement st = null;
+        // DB接続を取得
+        Connection con = getConnection();
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "INSERT INTO birthday " +
+            "(family_birthday_id, user_id, \"relation\", birthday) " +
+            "VALUES (?, ?, ?, ?)"
+        );
 
-            st.setString(1, familyBirthday.getUserId());
-            st.setString(2, familyBirthday.getRelation());
-            st.setDate(3, Date.valueOf(familyBirthday.getBirthday()));
+        // 家族の誕生日ID
+        st.setString(1, familyBirthday.getFamilyBirthdayId());
 
-            return st.executeUpdate();
+        // ユーザーID
+        st.setString(2, familyBirthday.getUserId());
 
-        } catch (Exception e) {
-            throw e;
+        // 続柄
+        st.setString(3, familyBirthday.getRelation());
 
-        } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        // 誕生日
+        st.setDate(4, Date.valueOf(familyBirthday.getBirthday()));
 
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        // SQLを実行
+        int line = st.executeUpdate();
+
+        // リソースを解放
+        st.close();
+        con.close();
+
+        return line;
     }
 
+
     // ユーザーの家族の誕生日を取得する
-    public List<FamilyBD> findByUserId(String userId)
-            throws Exception {
+    public List<FamilyBD> findByUserId(String userId) throws Exception {
+
         List<FamilyBD> list = new ArrayList<>();
 
-        String sql = "SELECT family_birthday_id, user_id, relation, birthday "
-                   + "FROM family_birthday "
-                   + "WHERE user_id = ? "
-                   + "ORDER BY birthday";
+        // DB接続を取得
+        Connection con = getConnection();
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "SELECT family_birthday_id, user_id, \"relation\", birthday " +
+            "FROM birthday " +
+            "WHERE user_id = ? " +
+            "ORDER BY birthday"
+        );
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, userId);
+        // ユーザーIDを設定
+        st.setString(1, userId);
 
-            rs = st.executeQuery();
+        // SQLを実行
+        ResultSet rs = st.executeQuery();
 
-            while (rs.next()) {
-                FamilyBD familyBirthday = new FamilyBD();
+        // 検索結果をBeanに格納
+        while (rs.next()) {
 
-                familyBirthday.setFamilyBirthdayId(
-                        rs.getString("family_birthday_id"));
-                familyBirthday.setUserId(
-                        rs.getString("user_id"));
-                familyBirthday.setRelation(
-                        rs.getString("relation"));
-                familyBirthday.setBirthday(
-                        rs.getDate("birthday").toLocalDate());
+            FamilyBD familyBirthday = new FamilyBD();
 
-                list.add(familyBirthday);
-            }
+            // 家族の誕生日ID
+            familyBirthday.setFamilyBirthdayId(
+                rs.getString("family_birthday_id")
+            );
 
-        } catch (Exception e) {
-            throw e;
+            // ユーザーID
+            familyBirthday.setUserId(
+                rs.getString("user_id")
+            );
 
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            // 続柄
+            familyBirthday.setRelation(
+                rs.getString("relation")
+            );
 
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            // 誕生日
+            familyBirthday.setBirthday(
+                rs.getDate("birthday").toLocalDate()
+            );
 
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            list.add(familyBirthday);
         }
+
+        // リソースを解放
+        rs.close();
+        st.close();
+        con.close();
 
         return list;
     }
 
-    // 家族の誕生日情報を更新する
-    public int update(FamilyBD familyBirthday) throws Exception {
-        String sql = "UPDATE family_birthday "
-                   + "SET relation = ?, birthday = ? "
-                   + "WHERE family_birthday_id = ? AND user_id = ?";
 
-        Connection con = null;
-        PreparedStatement st = null;
+    // 同じユーザーに同じ続柄が登録されているか確認する
+    public boolean isExist(String userId, String relation) throws Exception {
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
+        // DB接続を取得
+        Connection con = getConnection();
 
-            st.setString(1, familyBirthday.getRelation());
-            st.setDate(2, Date.valueOf(familyBirthday.getBirthday()));
-            st.setString(3, familyBirthday.getFamilyBirthdayId());
-            st.setString(4, familyBirthday.getUserId());
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "SELECT * FROM birthday " +
+            "WHERE user_id = ? AND \"relation\" = ?"
+        );
 
-            return st.executeUpdate();
+        // ユーザーIDを設定
+        st.setString(1, userId);
 
-        } catch (Exception e) {
-            throw e;
+        // 続柄を設定
+        st.setString(2, relation);
 
-        } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        // SQLを実行
+        ResultSet rs = st.executeQuery();
 
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        // 登録済みか確認
+        boolean exists = rs.next();
+
+        // リソースを解放
+        rs.close();
+        st.close();
+        con.close();
+
+        return exists;
     }
 
-    // 家族の誕生日情報を削除する
-    public int delete(String familyBirthdayId, String userId)
-            throws Exception {
-        String sql = "DELETE FROM family_birthday "
-                   + "WHERE family_birthday_id = ? AND user_id = ?";
 
-        Connection con = null;
-        PreparedStatement st = null;
+    // 家族の誕生日を削除する
+    public int delete(String familyBirthdayId, String userId) throws Exception {
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
+        // DB接続を取得
+        Connection con = getConnection();
 
-            st.setString(1, familyBirthdayId);
-            st.setString(2, userId);
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "DELETE FROM birthday " +
+            "WHERE family_birthday_id = ? AND user_id = ?"
+        );
 
-            return st.executeUpdate();
+        // 家族の誕生日IDを設定
+        st.setString(1, familyBirthdayId);
 
-        } catch (Exception e) {
-            throw e;
+        // ユーザーIDを設定
+        st.setString(2, userId);
 
-        } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        // SQLを実行
+        int line = st.executeUpdate();
 
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        // リソースを解放
+        st.close();
+        con.close();
+
+        return line;
     }
 }

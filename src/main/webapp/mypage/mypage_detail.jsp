@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ include file="../header.jsp" %>
 
 <!-- 設定画面のCSSを読み込む -->
@@ -18,14 +19,39 @@
 
             <!-- ヘッダー（戻るボタン＆タイトル） -->
             <div class="header">
+
                 <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
                    id="back-button"
                    class="back-btn"
                    aria-label="戻る">
+
                     <i class="fa-solid fa-chevron-left"></i>
+
                 </a>
-                <div class="header-title" id="header-title">設定</div>
+
+                <div class="header-title" id="header-title">
+                    設定
+                </div>
+
             </div>
+
+            <!-- 保存完了メッセージ -->
+            <%
+                String mypageMessage =
+                    (String) session.getAttribute("mypageMessage");
+
+                if (mypageMessage != null) {
+            %>
+
+                <p class="success-message">
+                    <%= mypageMessage %>
+                </p>
+
+            <%
+                    // 一度表示したらメッセージを削除する
+                    session.removeAttribute("mypageMessage");
+                }
+            %>
 
             <!-- ① 設定メニュー一覧（初期は表示） -->
             <div id="settings-menu-section" class="settings-card">
@@ -33,45 +59,74 @@
                 <!-- パスワードリンク -->
                 <a href="${pageContext.request.contextPath}/mypage/password_change.jsp"
                    class="setting-item">
+
                     <div class="icon-wrapper icon-pink">
                         <i class="fa-solid fa-lock"></i>
                     </div>
+
                     <div class="text-content">
-                        <div class="item-title">パスワード</div>
+
+                        <div class="item-title">
+                            パスワード
+                        </div>
+
                         <div class="item-desc">
                             アカウントのパスワードを変更できます。
                         </div>
+
                     </div>
+
                     <i class="fa-solid fa-chevron-right arrow-icon"></i>
+
                 </a>
 
                 <!-- 住所・連絡先登録・誕生日リンク -->
-                <a href="${pageContext.request.contextPath}/mypage/user_information.jsp"
+                <a href="${pageContext.request.contextPath}/servlet.FamilyBDPageServlet.action"
                    class="setting-item">
+
                     <div class="icon-wrapper icon-pink">
                         <i class="fa-solid fa-house"></i>
                     </div>
+
                     <div class="text-content">
-                        <div class="item-title">住所・連絡先・誕生日</div>
+
+                        <div class="item-title">
+                            住所・連絡先・誕生日
+                        </div>
+
                         <div class="item-desc">
                             住所、電話番号、メールアドレス、誕生日を確認・変更できます。
                         </div>
+
                     </div>
+
                     <i class="fa-solid fa-chevron-right arrow-icon"></i>
+
                 </a>
 
                 <!-- ブロックリストリンク -->
-                <a href="#" class="setting-item" onclick="showBlockList(event)">
+                <a href="#"
+                   class="setting-item"
+                   onclick="showBlockList(event)">
+
                     <div class="icon-wrapper icon-purple">
                         <i class="fa-solid fa-user-slash"></i>
                     </div>
+
                     <div class="text-content">
-                        <div class="item-title">ブロックリスト</div>
+
+                        <div class="item-title">
+                            ブロックリスト
+                        </div>
+
                         <div class="item-desc">
                             ブロックしたユーザーの一覧を確認・管理できます。
                         </div>
+
                     </div>
+
                     <i class="fa-solid fa-chevron-right arrow-icon"></i>
+
                 </a>
 
             </div>
@@ -84,50 +139,78 @@
 
                     <!-- ユーザーA -->
                     <div class="block-item">
+
                         <div class="icon-wrapper icon-purple"
                              style="width: 36px; height: 36px;">
+
                             <i class="fa-solid fa-user"
                                style="font-size: 14px;"></i>
+
                         </div>
-                        <div class="block-user-name">ユーザーA</div>
-                        <button type="button" class="btn-unblock"
+
+                        <div class="block-user-name">
+                            ユーザーA
+                        </div>
+
+                        <button type="button"
+                                class="btn-unblock"
                                 onclick="unblockUser('ユーザーA')">
                             解除
                         </button>
+
                     </div>
 
                     <!-- ユーザーB -->
                     <div class="block-item">
+
                         <div class="icon-wrapper icon-purple"
                              style="width: 36px; height: 36px;">
+
                             <i class="fa-solid fa-user"
                                style="font-size: 14px;"></i>
+
                         </div>
-                        <div class="block-user-name">ユーザーB</div>
-                        <button type="button" class="btn-unblock"
+
+                        <div class="block-user-name">
+                            ユーザーB
+                        </div>
+
+                        <button type="button"
+                                class="btn-unblock"
                                 onclick="unblockUser('ユーザーB')">
                             解除
                         </button>
+
                     </div>
 
                     <!-- ユーザーC -->
                     <div class="block-item">
+
                         <div class="icon-wrapper icon-purple"
                              style="width: 36px; height: 36px;">
+
                             <i class="fa-solid fa-user"
                                style="font-size: 14px;"></i>
+
                         </div>
-                        <div class="block-user-name">ユーザーC</div>
-                        <button type="button" class="btn-unblock"
+
+                        <div class="block-user-name">
+                            ユーザーC
+                        </div>
+
+                        <button type="button"
+                                class="btn-unblock"
                                 onclick="unblockUser('ユーザーC')">
                             解除
                         </button>
+
                     </div>
 
                 </div>
 
                 <!-- 下部の戻るボタン -->
-                <button type="button" class="btn-back-bottom"
+                <button type="button"
+                        class="btn-back-bottom"
                         onclick="hideBlockList()">
                     戻る
                 </button>
@@ -142,22 +225,38 @@
 
 <!-- JavaScriptによる画面切り替えと解除処理 -->
 <script>
+
+    // ブロックリストを表示する
     function showBlockList(event) {
+
         event.preventDefault();
+
         document.getElementById('settings-menu-section').style.display = 'none';
+
         document.getElementById('block-list-section').style.display = 'block';
+
         document.getElementById('header-title').innerText = 'ブロックリスト';
+
     }
 
+    // 設定メニューに戻る
     function hideBlockList() {
+
         document.getElementById('block-list-section').style.display = 'none';
+
         document.getElementById('settings-menu-section').style.display = 'block';
+
         document.getElementById('header-title').innerText = '設定';
+
     }
 
+    // ブロック解除
     function unblockUser(userName) {
+
         alert(userName + ' のブロックを解除しました');
+
     }
+
 </script>
 
 <%@ include file="../footer.jsp" %>

@@ -1,6 +1,7 @@
 /* =========================
    全体設定
 ========================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -21,6 +22,7 @@ body {
 /* =========================
    画面全体のレイアウト
 ========================= */
+
 .page-layout {
     width: 100%;
     min-height: 100vh;
@@ -29,7 +31,8 @@ body {
     background-color: #fcf4ec;
 }
 
-/* メイン画面：サイドバーの幅（240px + 左右余白）を避ける配置 */
+/* メイン画面 */
+
 .main-content {
     width: calc(100% - 266px);
     min-height: calc(100vh - 40px);
@@ -40,8 +43,8 @@ body {
 
 /* =========================
    設定画面・詳細画面の共通コンテナ
-   (.settings-container と .container の両方に対応)
 ========================= */
+
 .settings-container,
 .container {
     width: 100%;
@@ -56,8 +59,9 @@ body {
 }
 
 /* =========================
-   ページタイトル・説明文（パスワード変更や登録情報変更用）
+   ページタイトル・説明文
 ========================= */
+
 .page-title {
     font-size: 26px;
     font-weight: 700;
@@ -76,6 +80,7 @@ body {
 /* =========================
    フォーム関連スタイル
 ========================= */
+
 .form-group {
     margin-bottom: 20px;
 }
@@ -106,21 +111,29 @@ body {
 }
 
 /* =========================
-   ボタンコンテナ & 各種ボタン
+   ボタンコンテナ
+   保存・戻るを横並びで中央配置
 ========================= */
+
 .btn-container {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 32px;
+    justify-content: center;
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
+    margin: 32px auto 0;
 }
 
+/* 保存ボタン */
+
 .btn-save {
+    min-width: 140px;
     padding: 12px 28px;
     background-color: #ed947c;
     color: #fff;
     border: none;
-    border-radius: 20px;
+    border-radius: 12px;
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
@@ -131,15 +144,18 @@ body {
     background-color: #e0826a;
 }
 
+/* 戻るボタン */
+
 .btn-back {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-width: 140px;
     padding: 12px 28px;
     background-color: #fffdf8;
     color: #8b6f5d;
     border: 1px solid #edc5b2;
-    border-radius: 20px;
+    border-radius: 12px;
     font-size: 15px;
     font-weight: 700;
     text-decoration: none;
@@ -154,6 +170,7 @@ body {
 /* =========================
    ヘッダー（設定メニュー用）
 ========================= */
+
 .header {
     display: flex;
     align-items: center;
@@ -189,6 +206,7 @@ body {
 /* =========================
    設定カード（メニュー一覧用）
 ========================= */
+
 .settings-card {
     width: 100%;
     background-color: #fffdf8;
@@ -199,6 +217,7 @@ body {
 }
 
 /* 各項目のリンク */
+
 .setting-item {
     display: flex;
     align-items: center;
@@ -224,7 +243,10 @@ body {
     background-color: #eee4d8;
 }
 
-/* アイコン領域 */
+/* =========================
+   アイコン領域
+========================= */
+
 .icon-wrapper {
     display: flex;
     align-items: center;
@@ -250,7 +272,10 @@ body {
     font-size: 18px;
 }
 
-/* テキスト領域 */
+/* =========================
+   テキスト領域
+========================= */
+
 .text-content {
     flex: 1;
     min-width: 0;
@@ -281,6 +306,7 @@ body {
 /* =========================
    ブロックリスト関連
 ========================= */
+
 #block-list-section {
     width: 100%;
 }
@@ -351,9 +377,41 @@ body {
 }
 
 /* =========================
+   エラーメッセージ
+========================= */
+
+.error-message {
+    margin-bottom: 20px;
+    padding: 13px 16px;
+    border: 1px solid #e7b5a9;
+    border-radius: 10px;
+    background-color: #fff0ed;
+    color: #bd574b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* =========================
+   完了メッセージ
+========================= */
+
+.success-message {
+    margin-bottom: 20px;
+    padding: 13px 16px;
+    border: 1px solid #c8ddc3;
+    border-radius: 10px;
+    background-color: #f0f8ed;
+    color: #547c4d;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* =========================
    スマートフォン対応
 ========================= */
+
 @media screen and (max-width: 600px) {
+
     .main-content {
         width: calc(100% - 100px);
         min-height: calc(100vh - 20px);
@@ -385,14 +443,24 @@ body {
         font-size: 14px;
     }
 
+    /* ボタンはスマートフォンでも横並び */
+
     .btn-container {
-        flex-direction: column;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
         width: 100%;
     }
 
     .btn-save,
     .btn-back {
-        width: 100%;
+        flex: 1;
+        min-width: 0;
+        max-width: 150px;
+        padding: 12px 10px;
         text-align: center;
+        font-size: 14px;
     }
 }
