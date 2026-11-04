@@ -49,14 +49,12 @@ body {
     color: #654b39;
 }
 
-/* =========================
-   通知タブ全体
-========================= */
+/* 通知タブ全体 */
 .notification-tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 25px;
-    padding: 5px;
+    gap: 6px;
+    margin-bottom: 20px;
+    padding: 4px;
     background-color: #f7eee5;
     border: 1px solid #eee4d8;
     border-radius: 35px;
@@ -66,10 +64,10 @@ body {
 .notification-tabs .tab {
     flex: 1;
     min-width: 0;
-    padding: 13px 10px;
+    padding: 9px 8px;
     text-align: center;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     color: #806b5d;
     background-color: #fffaf4;

@@ -94,16 +94,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
     width: 100%;
-
+    box-sizing: border-box;
     flex-shrink: 0;
     margin-top: auto;
-
     padding: 12px 20px 15px;
-
     background-color: #f0dfd2;
-
     border-top: 1px solid rgba(150, 120, 100, 0.08);
 }
 

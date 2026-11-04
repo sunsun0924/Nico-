@@ -48,9 +48,9 @@ body {
 ========================= */
 .chat-container {
     width: 100%;
-    max-width: 1000px;
-    min-height: calc(100vh - 40px);
-    margin: 0 auto;
+    max-width: 900px;  /* 1000px → 900px */
+    min-height: 90vh;  /* calc(100vh - 40px) → 90vh */
+    margin: 20px auto;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 22px;

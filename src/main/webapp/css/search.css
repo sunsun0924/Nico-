@@ -36,10 +36,9 @@ body {
     min-height: calc(100vh - 40px);
     margin: 20px 20px 20px 246px;
     padding: 0;
-
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 /* =========================
@@ -47,18 +46,17 @@ body {
 ========================= */
 .container {
     width: 100%;
-    max-width: 1200px;
-    min-height: calc(100vh - 40px);
+    max-width: 900px;
+    min-height: 90vh;
     margin: 0;
     padding: 30px;
-
+    padding-bottom: 50px;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 22px;
-
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
 }
 
 /* =========================
@@ -67,8 +65,7 @@ body {
 .question-box {
     width: 90%;
     max-width: 900px;
-    height: 96px;
-
+    height: 60px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -77,7 +74,6 @@ body {
     border: 1px solid #eee4d8;
     border-radius: 60px;
     padding: 12px 16px;
-
     box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
 
     transition:
@@ -95,9 +91,9 @@ body {
    ＋ボタン
 ========================= */
 .plus-button {
-    width: 66px;
-    height: 66px;
-    min-width: 66px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
 
     border: none;
     border-radius: 50%;
@@ -130,15 +126,15 @@ body {
     flex: 1;
     min-width: 0;
     height: 100%;
-
     border: none;
     outline: none;
     background: transparent;
-
     padding: 0 24px;
-
     font-family: inherit;
-    font-size: 24px;
+
+    /* 入力する文字の大きさ */
+    font-size: 16px;
+
     color: #59483d;
 }
 
@@ -146,15 +142,16 @@ body {
 .question-input::placeholder {
     color: #a39a92;
     opacity: 1;
+    font-size: 16px;
 }
 
 /* =========================
    送信ボタン
 ========================= */
 .question-box .send-button {
-    width: 66px;
-    height: 66px;
-    min-width: 66px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
     padding: 0;
 
     display: flex;
@@ -181,8 +178,8 @@ body {
 
 /* 紙飛行機のマーク */
 .question-box .send-button svg {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     display: block;
 }
 

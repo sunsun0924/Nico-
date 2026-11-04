@@ -39,8 +39,8 @@ body {
 ========================= */
 .gift-container {
     width: 100%;
-    max-width: 1000px;
-    min-height: calc(100vh - 40px);
+    max-width: 900px;  /* 1000px → 900px */
+    min-height: 90vh;  /* 画面の高さの90% */
     margin: 0 auto;
     padding: 30px 36px;
     background-color: #fffdf8;
