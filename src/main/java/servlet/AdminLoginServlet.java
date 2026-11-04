@@ -28,7 +28,8 @@ public class AdminLoginServlet extends Action {
 
             request.setAttribute(
                 "errorMessage",
-                "管理者IDとパスワードを入力してください");
+                "管理者IDとパスワードを入力してください"
+            );
 
             return "/login/adminLogin.jsp";
         }
@@ -50,14 +51,16 @@ public class AdminLoginServlet extends Action {
             // 管理者情報を保存
             session.setAttribute("admin", admin);
 
-            return "/post/post.jsp";
+            // 投稿一覧Servletを経由して投稿画面を表示
+            return "/servlet.PostServlet.action";
 
         } else {
 
             // ログイン失敗
             request.setAttribute(
                 "errorMessage",
-                "管理者IDまたはパスワードが違います");
+                "管理者IDまたはパスワードが違います"
+            );
 
             return "/login/adminLogin.jsp";
         }
