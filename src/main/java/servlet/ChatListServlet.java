@@ -1,8 +1,8 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,57 +11,191 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import bean.ChatListBean;
-import dao.UserDAO;
+import bean.User;
+import dao.ChatListDAO;
 
 @WebServlet("/chat-list")
 public class ChatListServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Integer myUserId = (Integer) session.getAttribute("userId");
-        if (myUserId == null) {
-            myUserId = 3; // テスト用フォールバック
-        }
+    // GET：チャット一覧・新規チャット用ユーザー一覧取得
+    @Override
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
 
         String action = request.getParameter("action");
+        boolean jsonRequest = "json".equals(action);
+
+        response.setCharacterEncoding("UTF-8");
+
+        HttpSession session = request.getSession(false);
+
+        // ログイン確認
+        if (session == null || session.getAttribute("user") == null) {
+
+            if (jsonRequest) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json; charset=UTF-8");
+                response.getWriter().write(
+                    "{\"error\":\"ログインしてください。\"}"
+                );
+            } else {
+                response.sendRedirect(
+                    request.getContextPath() + "/login/userLogin.jsp"
+                );
+            }
+
+            return;
+        }
+
+        User loginUser = (User) session.getAttribute("user");
+        String myUserId = loginUser.getUserId();
+
+        if (myUserId == null || myUserId.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        ChatListDAO dao = new ChatListDAO();
 
         try {
-            UserDAO userDAO = new UserDAO();
 
-            // 「＋」ボタンからの非同期リクエスト（JSONを返す）
-            if ("json".equals(action)) {
-                response.setContentType("application/json; charset=UTF-8");
-                PrintWriter out = response.getWriter();
-                List<ChatListBean> allUsers = userDAO.getAllUsers(myUserId);
+            // 新規チャット用：自分以外のユーザー一覧をJSONで返す
+            if (jsonRequest) {
 
-                StringBuilder json = new StringBuilder("[");
-                for (int i = 0; i < allUsers.size(); i++) {
-                    ChatListBean u = allUsers.get(i);
-                    json.append("{")
-                        .append("\"userId\":\"").append(u.getUserId()).append("\",")
-                        .append("\"userName\":\"").append(u.getUserName()).append("\"")
-                        .append("}");
-                    if (i < allUsers.size() - 1) json.append(",");
+                List<ChatListBean> userList =
+                    dao.getAllUsers(myUserId);
+
+                response.setContentType(
+                    "application/json; charset=UTF-8"
+                );
+
+                StringBuilder json = new StringBuilder();
+
+                json.append("[");
+
+                for (int i = 0; i < userList.size(); i++) {
+
+                    ChatListBean user = userList.get(i);
+
+                    if (i > 0) {
+                        json.append(",");
+                    }
+
+                    json.append("{");
+
+                    json.append("\"userId\":\"")
+                        .append(escapeJson(user.getUserId()))
+                        .append("\",");
+
+                    json.append("\"userName\":\"")
+                        .append(escapeJson(user.getUserName()))
+                        .append("\"");
+
+                    json.append("}");
                 }
+
                 json.append("]");
-                out.write(json.toString());
+
+                response.getWriter().write(json.toString());
+
                 return;
             }
 
-            // 通常のページ表示リクエスト
-            List<ChatListBean> chatList = userDAO.getChatList(myUserId);
+            // 通常のチャット一覧取得
+            List<ChatListBean> chatList =
+                dao.getChatList(myUserId);
+
             request.setAttribute("chatList", chatList);
-            request.getRequestDispatcher("/chat/chat_list.jsp").forward(request, response);
+
+            request.getRequestDispatcher(
+                "/chat/chat_list.jsp"
+            ).forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            if ("json".equals(action)) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("[]");
+
+            if (jsonRequest) {
+
+                response.setStatus(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+                );
+
+                response.setContentType(
+                    "application/json; charset=UTF-8"
+                );
+
+                response.getWriter().write(
+                    "{\"error\":\"ユーザー一覧の取得に失敗しました。\"}"
+                );
+
             } else {
-                throw new ServletException(e);
+                throw new ServletException(
+                    "チャット一覧の取得に失敗しました。", e
+                );
             }
         }
     }
-}
+
+    // JSON用の文字列エスケープ
+    private String escapeJson(String value) {
+
+        if (value == null) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < value.length(); i++) {
+
+            char c = value.charAt(i);
+
+            switch (c) {
+
+                case '"':
+                    result.append("\\\"");
+                    break;
+
+                case '\\':
+                    result.append("\\\\");
+                    break;
+
+                case '\b':
+                    result.append("\\b");
+                    break;
+
+                case '\f':
+                    result.append("\\f");
+                    break;
+
+                case '\n':
+                    result.append("\\n");
+                    break;
+
+                case '\r':
+                    result.append("\\r");
+                    break;
+
+                case '\t':
+                    result.append("\\t");
+                    break;
+
+                default:
+                    if (c < 0x20) {
+                        result.append(
+                            String.format("\\u%04x", (int) c)
+                        );
+                    } else {
+                        result.append(c);
+                    }
+                    break;
+            }
+        }
+
+        return result.toString();
+    }
+}}
