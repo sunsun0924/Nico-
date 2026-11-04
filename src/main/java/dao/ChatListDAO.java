@@ -5,48 +5,108 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
 import bean.ChatListBean;
 
 public class ChatListDAO extends DAO {
 
-    public List<ChatListBean> getChatList(int userId) throws Exception {
-        List<ChatListBean> chatList = new ArrayList<>();
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+    // 自分以外のユーザー一覧を取得
+    public List<ChatListBean> getAllUsers(String myUserId)
+            throws Exception {
 
-        String sql = "SELECT u.user_id, u.user_name, " +
-                     "(SELECT message FROM messages WHERE (sender_id = u.user_id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.user_id) ORDER BY sent_at DESC LIMIT 1) AS last_message, " +
-                     "(SELECT sent_at FROM messages WHERE (sender_id = u.user_id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.user_id) ORDER BY sent_at DESC LIMIT 1) AS last_time, " +
-                     "(SELECT COUNT(*) FROM messages WHERE sender_id = u.user_id AND receiver_id = ? AND is_read = 0) AS unread_count " +
-                     "FROM \"user\" u WHERE u.user_id != ?";
+        List<ChatListBean> userList = new ArrayList<>();
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
+        String sql =
+            "SELECT user_id, user_name " +
+            "FROM \"user\" " +
+            "WHERE user_id <> ? " +
+            "ORDER BY user_name ASC";
 
-            st.setInt(1, userId);
-            st.setInt(2, userId);
-            st.setInt(3, userId);
-            st.setInt(4, userId);
-            st.setInt(5, userId);
-            st.setInt(6, userId);
+        try (Connection con = getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
 
-            rs = st.executeQuery();
+            st.setString(1, myUserId);
 
-            while (rs.next()) {
-                ChatListBean chat = new ChatListBean();
-                chat.setUserId(rs.getInt("user_id"));
-                chat.setUserName(rs.getString("user_name"));
-                chat.setLastMessage(rs.getString("last_message"));
-                chat.setLastTime(rs.getString("last_time"));
-                chat.setUnreadCount(rs.getInt("unread_count"));
-                chatList.add(chat);
+            try (ResultSet rs = st.executeQuery()) {
+
+                while (rs.next()) {
+
+                    ChatListBean user = new ChatListBean();
+
+                    user.setUserId(rs.getString("user_id"));
+                    user.setUserName(rs.getString("user_name"));
+
+                    userList.add(user);
+                }
             }
-        } finally {
-            if (rs != null) { try { rs.close(); } catch (Exception e) { e.printStackTrace(); } }
-            if (st != null) { try { st.close(); } catch (Exception e) { e.printStackTrace(); } }
-            if (con != null) { try { con.close(); } catch (Exception e) { e.printStackTrace(); } }
+
+        } catch (Exception e) {
+            throw new Exception("ユーザー一覧の取得に失敗しました。", e);
+        }
+
+        return userList;
+    }
+
+    // チャット一覧を取得
+    public List<ChatListBean> getChatList(String userId)
+            throws Exception {
+
+        List<ChatListBean> chatList = new ArrayList<>();
+
+        String sql =
+            "SELECT u.user_id, u.user_name, " +
+            "(SELECT message FROM messages " +
+            "WHERE (sender_id = u.user_id AND receiver_id = ?) " +
+            "OR (sender_id = ? AND receiver_id = u.user_id) " +
+            "ORDER BY sent_at DESC LIMIT 1) AS last_message, " +
+
+            "(SELECT sent_at FROM messages " +
+            "WHERE (sender_id = u.user_id AND receiver_id = ?) " +
+            "OR (sender_id = ? AND receiver_id = u.user_id) " +
+            "ORDER BY sent_at DESC LIMIT 1) AS last_time, " +
+
+            "(SELECT COUNT(*) FROM messages " +
+            "WHERE sender_id = u.user_id " +
+            "AND receiver_id = ? AND is_read = 0) AS unread_count " +
+
+            "FROM \"user\" u " +
+            "WHERE u.user_id <> ? " +
+            "ORDER BY last_time DESC NULLS LAST";
+
+        try (Connection con = getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+
+            st.setString(1, userId);
+            st.setString(2, userId);
+            st.setString(3, userId);
+            st.setString(4, userId);
+            st.setString(5, userId);
+            st.setString(6, userId);
+
+            try (ResultSet rs = st.executeQuery()) {
+
+                while (rs.next()) {
+
+                    ChatListBean chat = new ChatListBean();
+
+                    chat.setUserId(rs.getString("user_id"));
+                    chat.setUserName(rs.getString("user_name"));
+                    chat.setLastMessage(rs.getString("last_message"));
+
+                    if (rs.getTimestamp("last_time") != null) {
+                        chat.setLastTime(
+                            rs.getTimestamp("last_time").toString()
+                        );
+                    }
+
+                    chat.setUnreadCount(rs.getInt("unread_count"));
+
+                    chatList.add(chat);
+                }
+            }
+
+        } catch (Exception e) {
+            throw new Exception("チャット一覧の取得に失敗しました。", e);
         }
 
         return chatList;

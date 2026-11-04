@@ -238,74 +238,44 @@ public class UserDAO extends DAO {
     }
 
 
-    // 新規チャット用：自分以外の全ユーザーを取得するメソッド
-    public List<ChatListBean> getAllUsers(int myUserId) throws Exception {
+ // 新規チャット用：自分以外の全ユーザーを取得するメソッド
+    public List<ChatListBean> getAllUsers(String myUserId) throws Exception {
 
         List<ChatListBean> userList = new ArrayList<>();
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        String sql =
+            "SELECT user_id, user_name FROM \"user\" " +
+            "WHERE user_id != ? ORDER BY user_name ASC";
 
-        try {
-
-            con = getConnection();
-
-            // 自分以外のユーザーを取得
-            String sql =
-                "SELECT user_id, user_name FROM \"user\" " +
-                "WHERE user_id != ? ORDER BY user_name ASC";
-
-            st = con.prepareStatement(sql);
+        try (Connection con = getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
 
             // 自分のユーザーIDを設定
-            st.setInt(1, myUserId);
+            st.setString(1, myUserId);
 
             // SQLを実行
-            rs = st.executeQuery();
+            try (ResultSet rs = st.executeQuery()) {
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                ChatListBean user = new ChatListBean();
+                    ChatListBean user = new ChatListBean();
 
-                // ユーザーID
-                user.setUserId(rs.getInt("user_id"));
+                    // ユーザーID
+                    user.setUserId(rs.getInt("user_id"));
 
-                // ユーザー名
-                user.setUserName(rs.getString("user_name"));
+                    // ユーザー名
+                    user.setUserName(rs.getString("user_name"));
 
-                userList.add(user);
-            }
-
-        } finally {
-
-            // リソースを解放
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    userList.add(user);
                 }
             }
 
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        } catch (Exception e) {
+            throw new Exception("自分以外のユーザー取得に失敗しました。", e);
         }
 
         return userList;
+<<<<<<< HEAD
     }
     
      // ユーザーIDから登録情報を取得する
@@ -343,3 +313,6 @@ public class UserDAO extends DAO {
 	     return user;
 	 }
 }
+=======
+    }
+>>>>>>> branch 'master' of https://github.com/sunsun0924/Nico-.git

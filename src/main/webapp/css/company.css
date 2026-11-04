@@ -1,34 +1,60 @@
 
-/* 企業登録フォーム */
+/* ========================================
+   企業登録フォーム
+======================================== */
+
 .company-register {
     max-width: 600px;
     margin: 30px auto;
     padding: 30px;
+
     background-color: #fffaf5;
     border: 1px solid #f0d3b9;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(89, 72, 61, 0.12);
+
     box-sizing: border-box;
 }
 
+/* ========================================
+   画面タイトル
+======================================== */
 
-/* 画面タイトル */
 .company-register h2 {
     margin: -30px -30px 30px;
     padding: 18px;
+
     background-color: #fffaf5;
     border-radius: 12px 12px 0 0;
+
     color: #59483d;
     text-align: center;
     font-size: 24px;
+
     border-bottom: 1px solid #f0d3b9;
 }
 
+/* ========================================
+   説明文
+======================================== */
 
-/* 入力項目 */
-.company-register p {
+.company-register header p {
     margin-bottom: 24px;
     color: #59483d;
+}
+
+/* ========================================
+   入力項目
+======================================== */
+
+.company-register .input-group {
+    margin-bottom: 24px;
+}
+
+.company-register .input-content label {
+    display: block;
+    color: #59483d;
+    font-weight: bold;
 }
 
 /* 入力欄 */
@@ -37,9 +63,12 @@
     width: 100%;
     margin-top: 8px;
     padding: 11px;
+
     border: 1px solid #d8bda8;
     border-radius: 6px;
+
     box-sizing: border-box;
+
     background-color: #ffffff;
     color: #59483d;
     font-size: 16px;
@@ -52,45 +81,75 @@
     box-shadow: 0 0 4px rgba(255, 155, 66, 0.35);
 }
 
+/* ========================================
+   エラーメッセージ
+======================================== */
+
+.company-register .error-message {
+    margin-top: 15px;
+    color: #d9534f;
+    font-weight: bold;
+}
+
+/* ========================================
+   ボタン配置
+======================================== */
+
+.company-register .button-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    /* 企業名の入力欄からボタンまでの余白 */
+    margin-top: 50px;
+}
+
 /* ボタン共通設定 */
-.company-register input[type="submit"],
-.company-register input[type="button"] {
+.company-register .button-area input {
     padding: 11px 30px;
-    margin-right: 10px;
     border: none;
     border-radius: 7px;
+
     font-size: 15px;
     font-weight: bold;
+
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
-/* 登録ボタン */
-.company-register input[type="submit"] {
-    background-color: #ff9933;
-    color: #ffffff;
-}
+/* ========================================
+   登録ボタン
+======================================== */
 
-/* 登録ボタンにマウスを合わせたとき */
-.company-register input[type="submit"]:hover {
-    background-color: #f58220;
-}
-
-
-/* 登録ボタン */
 .company-register input[type="submit"] {
     background-color: #f5a08a;
     color: #ffffff;
 }
 
-/* 登録ボタンにマウスを合わせたとき */
 .company-register input[type="submit"]:hover {
     background-color: #ee8e78;
 }
 
+/* ========================================
+   戻るボタン
+======================================== */
 
-/* スマートフォン向け */
+.company-register input[type="button"] {
+    background-color: #b8a394;
+    color: #ffffff;
+}
+
+.company-register input[type="button"]:hover {
+    background-color: #a18b7b;
+}
+
+/* ========================================
+   スマートフォン向け
+======================================== */
+
 @media screen and (max-width: 600px) {
+
     .company-register {
         margin: 15px auto;
         padding: 20px;
@@ -101,4 +160,9 @@
         padding: 15px;
         font-size: 21px;
     }
+
+    .company-register .button-area {
+        margin-top: 40px;
+    }
+
 }

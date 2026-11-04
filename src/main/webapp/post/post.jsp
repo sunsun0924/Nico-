@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="../header.jsp" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/post.css">
@@ -55,9 +56,17 @@
                             </strong>
 
                             <!-- 投稿日時 -->
-                            <p>${post.post_datetime}</p>
-
-                            <!-- 投稿本文 -->
+								<p>
+								    <c:if test="${not empty post.post_datetime}">
+								        ${fn:replace(
+								            fn:substring(post.post_datetime, 0, 16),
+								            'T',
+								            ' '
+								        )}
+								    </c:if>
+								</p>
+								
+								                            <!-- 投稿本文 -->
                             <p>${post.post_text}</p>
 
                             <!-- 投稿画像 -->
@@ -94,10 +103,16 @@
 
                                                 <p>${comment.commentText}</p>
 
-                                                <small>
-                                                    ${comment.commentDatetime}
-                                                </small>
-
+                                               <!-- コメント日時 -->
+												<small>
+												    <c:if test="${not empty comment.commentDatetime}">
+												        ${fn:replace(
+												            fn:substring(comment.commentDatetime, 0, 16),
+												            'T',
+												            ' '
+												        )}
+												    </c:if>
+												</small>
                                             </div>
 
                                         </c:forEach>
