@@ -463,4 +463,34 @@ body {
         text-align: center;
         font-size: 14px;
     }
+    
+    /* アイコンの丸い背景 */
+	.icon-wrapper {
+	    width: 70px;
+	    height: 70px;
+	    border-radius: 50%;
+	 
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	 
+	    flex-shrink: 0;
+	}
+	 
+	/* アイコン本体 */
+	.icon-wrapper i {
+	    display: block;
+	    font-size: 26px;
+	    color: #8b6555;
+	}
+	 
+	/* ピンクの丸 */
+	.icon-pink i {
+	    color: #bd827c;
+	}
+	 
+	/* 紫の丸 */
+	.icon-purple i {
+	    color: #9278b5;
+	}
 }
