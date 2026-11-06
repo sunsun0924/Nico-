@@ -1,6 +1,7 @@
 /* =========================
    全体設定
 ========================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -18,9 +19,11 @@ body {
     color: #59483d;
 }
 
+
 /* =========================
    画面全体のレイアウト
 ========================= */
+
 .page-layout {
     width: 100%;
     min-height: 100vh;
@@ -33,9 +36,11 @@ body {
     padding: 0;
 }
 
+
 /* =========================
    プロフィール編集コンテナ
 ========================= */
+
 .profile-container {
     width: 100%;
     max-width: 1100px;
@@ -48,9 +53,11 @@ body {
     box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
 }
 
+
 /* =========================
    ヘッダー
 ========================= */
+
 .profile-header {
     display: flex;
     align-items: center;
@@ -84,9 +91,11 @@ body {
     letter-spacing: 1px;
 }
 
+
 /* =========================
    カード共通
 ========================= */
+
 .profile-card {
     width: 100%;
     margin-bottom: 20px;
@@ -103,9 +112,11 @@ body {
     font-weight: 700;
 }
 
+
 /* =========================
    プロフィール画像
 ========================= */
+
 .image-edit-area {
     display: flex;
     align-items: center;
@@ -137,7 +148,9 @@ body {
     min-width: 0;
 }
 
+
 /* 写真変更・削除ボタン */
+
 .image-btn {
     display: flex;
     align-items: center;
@@ -176,7 +189,9 @@ body {
     border-color: #edaaa8;
 }
 
+
 /* 画像の説明 */
+
 .image-note {
     margin-top: 6px;
     color: #9b918a;
@@ -184,9 +199,11 @@ body {
     line-height: 1.8;
 }
 
+
 /* =========================
    名前入力欄
 ========================= */
+
 .name-card {
     margin-bottom: 30px;
 }
@@ -227,7 +244,9 @@ body {
     color: #c5b4aa;
 }
 
+
 /* 名前を消去するボタン */
+
 .clear-btn {
     display: flex;
     align-items: center;
@@ -245,7 +264,9 @@ body {
     color: #ed947c;
 }
 
+
 /* 入力説明 */
+
 .input-note {
     margin-top: 12px;
     color: #9b918a;
@@ -253,35 +274,95 @@ body {
     line-height: 1.7;
 }
 
+
 /* =========================
-   保存ボタン
+   保存・戻るボタン
+   保存は左・戻るは右
+   全体は中央
 ========================= */
-.save-btn {
-    display: block;
-    width: 85%;
-    min-height: 68px;
+
+.btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
     margin: 36px auto 10px;
-    padding: 16px;
+}
+
+
+/* 保存ボタン（左） */
+
+.btn-save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    min-height: 50px;
+    padding: 12px 28px;
     border: none;
-    border-radius: 50px;
-    background: linear-gradient(100deg, #e99a9e, #e58c95);
+    border-radius: 20px;
+    background-color: #ed947c;
     color: #fffdf8;
     font-family: inherit;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.2s;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
-.save-btn:hover {
-    opacity: 0.88;
+.btn-save:hover {
+    background-color: #e0826a;
 }
 
-.save-btn:active {
+.btn-save:active {
     transform: scale(0.99);
 }
 
-.save-btn:focus-visible {
+.btn-save:focus-visible {
     outline: 3px solid #c97870;
     outline-offset: 4px;
+}
+
+
+/* 戻るボタン（右） */
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    min-height: 50px;
+    padding: 12px 28px;
+    border: 1px solid #edc5b2;
+    border-radius: 20px;
+    background-color: #fffdf8;
+    color: #8b6f5d;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #fdf5ed;
+}
+
+
+/* =========================
+   エラーメッセージ
+========================= */
+
+.error-message {
+    margin-bottom: 20px;
+    padding: 13px 16px;
+    border: 1px solid #e7b5a9;
+    border-radius: 10px;
+    background-color: #fff0ed;
+    color: #bd574b;
+    font-size: 14px;
+    line-height: 1.7;
 }

@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.sql.Connection;
@@ -49,6 +48,15 @@ public class UserDAO extends DAO {
             u.setUserBirthday(rs.getDate("user_birthday"));
             u.setUserName(rs.getString("user_name"));
             u.setUserImg(rs.getString("user_img"));
+
+            // プロフィール画像の表示位置
+            u.setUserImgPositionX(
+                rs.getInt("user_img_position_x")
+            );
+
+            u.setUserImgPositionY(
+                rs.getInt("user_img_position_y")
+            );
         }
 
         // リソースを解放
@@ -131,7 +139,9 @@ public class UserDAO extends DAO {
             "user_mail = ?, " +
             "user_birthday = ?, " +
             "user_name = ?, " +
-            "user_img = ? " +
+            "user_img = ?, " +
+            "user_img_position_x = ?, " +
+            "user_img_position_y = ? " +
             "WHERE user_id = ?"
         );
 
@@ -153,8 +163,14 @@ public class UserDAO extends DAO {
         // 画像
         st.setString(6, user.getUserImg());
 
+        // 画像の横方向の表示位置
+        st.setInt(7, user.getUserImgPositionX());
+
+        // 画像の縦方向の表示位置
+        st.setInt(8, user.getUserImgPositionY());
+
         // ユーザーID
-        st.setString(7, user.getUserId());
+        st.setString(9, user.getUserId());
 
         // SQLを実行
         int line = st.executeUpdate();
@@ -295,7 +311,8 @@ public class UserDAO extends DAO {
         // SQLを準備
         PreparedStatement st = con.prepareStatement(
             "SELECT user_id, user_address, user_number, user_mail, " +
-            "user_birthday, user_name, user_img " +
+            "user_birthday, user_name, user_img, " +
+            "user_img_position_x, user_img_position_y " +
             "FROM \"user\" WHERE user_id = ?"
         );
 
@@ -317,6 +334,15 @@ public class UserDAO extends DAO {
             user.setUserBirthday(rs.getDate("user_birthday"));
             user.setUserName(rs.getString("user_name"));
             user.setUserImg(rs.getString("user_img"));
+
+            // プロフィール画像の表示位置
+            user.setUserImgPositionX(
+                rs.getInt("user_img_position_x")
+            );
+
+            user.setUserImgPositionY(
+                rs.getInt("user_img_position_y")
+            );
         }
 
         // リソースを解放

@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ include file="../header.jsp" %>
 
 <!-- パスワード変更画面のCSSを読み込む -->
@@ -16,43 +17,74 @@
 
         <div class="container">
 
-            <div class="page-title">パスワードの変更</div>
+            <div class="page-title">
+                パスワードの変更
+            </div>
 
             <div class="page-desc">
                 現在のパスワードと新しいパスワードを入力してください。
             </div>
 
+            <!-- エラーメッセージ -->
+            <% if (request.getAttribute("error") != null) { %>
+                <div class="error-message">
+                    <%= request.getAttribute("error") %>
+                </div>
+            <% } %>
+
+            <!-- パスワード変更フォーム -->
             <form action="${pageContext.request.contextPath}/servlet.UserPasswordChangeServlet.action"
                   method="post">
 
                 <div class="form-group">
-                    <label class="form-label">現在のパスワード</label>
+
+                    <label class="form-label">
+                        現在のパスワード
+                    </label>
+
                     <input type="password"
                            name="currentPassword"
                            placeholder="現在のパスワードを入力"
                            class="form-input"
                            required>
+
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">新しいパスワード</label>
+
+                    <label class="form-label">
+                        新しいパスワード
+                    </label>
+
                     <input type="password"
                            name="newPassword"
                            placeholder="新しいパスワードを入力"
                            class="form-input"
+                           minlength="8"
+                           maxlength="15"
                            required>
+
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">新しいパスワード（確認）</label>
+
+                    <label class="form-label">
+                        新しいパスワード（確認）
+                    </label>
+
                     <input type="password"
                            name="confirmPassword"
                            placeholder="新しいパスワードを再入力"
                            class="form-input"
+                           minlength="8"
+                           maxlength="15"
                            required>
+
                 </div>
 
+                <!-- 保存・戻るボタン -->
                 <div class="btn-container">
+
                     <button type="submit" class="btn-save">
                         保存
                     </button>
@@ -61,6 +93,7 @@
                        class="btn-back">
                         戻る
                     </a>
+
                 </div>
 
             </form>

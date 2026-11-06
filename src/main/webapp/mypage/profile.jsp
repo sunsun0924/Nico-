@@ -1,13 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ include file="../header.jsp" %>
 
-<%-- プロフィール編集画面のCSS --%>
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/profile.css">
 
-<%-- サイドバーとメイン画面 --%>
 <div class="page-layout">
 
+    <%-- 左側サイドバー --%>
     <%@ include file="../sidebar.jsp" %>
 
     <main class="main-content">
@@ -20,12 +20,23 @@
                 <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
                    class="back-btn"
                    aria-label="戻る">
+
                     <i class="fa-solid fa-chevron-left"></i>
+
                 </a>
 
                 <h1 class="header-title">プロフィール編集</h1>
 
             </div>
+
+            <%-- エラーメッセージ --%>
+            <% if (request.getAttribute("error") != null) { %>
+
+                <div class="error-message">
+                    <%= request.getAttribute("error") %>
+                </div>
+
+            <% } %>
 
             <%-- プロフィール編集フォーム --%>
             <form action="${pageContext.request.contextPath}/servlet.UserProfileServlet.action"
@@ -40,13 +51,14 @@
 
                     <div class="image-edit-area">
 
+                        <%-- 画像プレビュー --%>
                         <div class="profile-image-wrapper">
 
                             <img id="profile-preview"
                                  src="${empty user.userImg
-                                     ? pageContext.request.contextPath.concat('/images/default-profile.png')
-                                     : pageContext.request.contextPath.concat('/').concat(user.userImg)}"
-                                 >
+                                    ? pageContext.request.contextPath.concat('/images/default-profile.jpg')
+                                    : pageContext.request.contextPath.concat('/images/').concat(user.userImg)}"
+                                 alt="プロフィール画像">
 
                         </div>
 
@@ -64,7 +76,7 @@
                             <input type="file"
                                    id="profile-image"
                                    name="profileImage"
-                                   accept="image/*"
+                                   accept="image/jpeg,image/png,image/gif,image/webp"
                                    hidden>
 
                             <%-- 写真を削除 --%>
@@ -83,11 +95,55 @@
                                    value="false">
 
                             <p class="image-note">
-                                ※ 画像は正方形で、<br>
-                                1 MB以内の画像を設定してください。
+                                ※ 画像は1MB以内にしてください。
                             </p>
 
                         </div>
+
+                    </div>
+
+                    <%-- 画像の表示位置調整 --%>
+                    <div class="image-position-area">
+
+                        <h3 class="position-title">
+                            画像の表示位置
+                        </h3>
+
+                        <%-- 横方向 --%>
+                        <div class="position-control">
+
+                            <label for="position-x">
+                                左右の位置
+                            </label>
+
+                            <input type="range"
+                                   id="position-x"
+                                   name="userImgPositionX"
+                                   min="0"
+                                   max="100"
+                                   value="${user.userImgPositionX}">
+
+                        </div>
+
+                        <%-- 縦方向 --%>
+                        <div class="position-control">
+
+                            <label for="position-y">
+                                上下の位置
+                            </label>
+
+                            <input type="range"
+                                   id="position-y"
+                                   name="userImgPositionY"
+                                   min="0"
+                                   max="100"
+                                   value="${user.userImgPositionY}">
+
+                        </div>
+
+                        <p class="input-note">
+                            スライダーを動かして、丸の中に表示する位置を調整してください。
+                        </p>
 
                     </div>
 
@@ -127,10 +183,21 @@
 
                 </section>
 
-                <%-- 保存ボタン --%>
-                <button type="submit" class="save-btn">
-                    保存する
-                </button>
+                <%-- 保存・戻るボタン --%>
+                <div class="btn-container">
+
+                    <%-- 保存ボタン（左） --%>
+                    <button type="submit" class="btn-save">
+                        保存する
+                    </button>
+
+                    <%-- 戻るボタン（右） --%>
+                    <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
+                       class="btn-back">
+                        戻る
+                    </a>
+
+                </div>
 
             </form>
 
@@ -142,17 +209,49 @@
 
 <%-- 画像プレビュー・入力チェック --%>
 <script>
+
     const imageInput = document.getElementById("profile-image");
     const preview = document.getElementById("profile-preview");
+
     const deleteButton = document.getElementById("delete-image");
     const deleteFlag = document.getElementById("delete-profile-image");
+
     const nameInput = document.getElementById("user-name");
     const clearButton = document.getElementById("clear-name");
+
     const profileForm = document.getElementById("profile-form");
+
+    const positionX = document.getElementById("position-x");
+    const positionY = document.getElementById("position-y");
 
     // 初期画像
     const defaultImage =
-        "${pageContext.request.contextPath}/images/default-profile.png";
+        "${pageContext.request.contextPath}/images/default-profile.jpg";
+
+    // 画像表示位置をプレビューに反映
+    function updateImagePosition() {
+
+        preview.style.objectPosition =
+            positionX.value + "% " + positionY.value + "%";
+
+    }
+
+    // 初期位置を反映
+    updateImagePosition();
+
+    // 横方向の位置を変更
+    positionX.addEventListener("input", function () {
+
+        updateImagePosition();
+
+    });
+
+    // 縦方向の位置を変更
+    positionY.addEventListener("input", function () {
+
+        updateImagePosition();
+
+    });
 
     // 選択した画像をプレビュー表示
     imageInput.addEventListener("change", function () {
@@ -165,34 +264,56 @@
 
         // 画像ファイルか確認
         if (!file.type.startsWith("image/")) {
+
             alert("画像ファイルを選択してください。");
             this.value = "";
             return;
+
         }
 
         // 1MB以内か確認
         if (file.size > 1024 * 1024) {
+
             alert("画像は1MB以内にしてください。");
             this.value = "";
             return;
+
         }
 
         const reader = new FileReader();
 
         reader.onload = function (event) {
+
             preview.src = event.target.result;
+
             deleteFlag.value = "false";
+
+            // 新しい画像は中央から調整
+            positionX.value = 50;
+            positionY.value = 50;
+
+            updateImagePosition();
+
         };
 
         reader.readAsDataURL(file);
+
     });
 
-    // プロフィール画像を削除する指定
+    // プロフィール画像を削除
     deleteButton.addEventListener("click", function () {
 
         preview.src = defaultImage;
+
         imageInput.value = "";
+
         deleteFlag.value = "true";
+
+        // デフォルト画像は中央表示
+        positionX.value = 50;
+        positionY.value = 50;
+
+        updateImagePosition();
 
     });
 
@@ -200,6 +321,7 @@
     clearButton.addEventListener("click", function () {
 
         nameInput.value = "";
+
         nameInput.focus();
 
     });
@@ -210,15 +332,21 @@
         const name = nameInput.value.trim();
 
         if (name.length < 2 || name.length > 20) {
+
             event.preventDefault();
+
             alert("名前は2〜20文字で入力してください。");
+
             nameInput.focus();
+
             return;
+
         }
 
         nameInput.value = name;
 
     });
+
 </script>
 
 <%@ include file="../footer.jsp" %>

@@ -14,6 +14,10 @@ public class User implements Serializable {
     private String userName;
     private String userImg;
 
+    // プロフィール画像の表示位置（初期値は中央）
+    private int userImgPositionX = 50;
+    private int userImgPositionY = 50;
+
     // コンストラクタ
     public User() {
     }
@@ -88,5 +92,23 @@ public class User implements Serializable {
 
     public void setUserImg(String userImg) {
         this.userImg = userImg;
+    }
+
+    // 画像の横方向の表示位置
+    public int getUserImgPositionX() {
+        return userImgPositionX;
+    }
+
+    public void setUserImgPositionX(int userImgPositionX) {
+        this.userImgPositionX = userImgPositionX;
+    }
+
+    // 画像の縦方向の表示位置
+    public int getUserImgPositionY() {
+        return userImgPositionY;
+    }
+
+    public void setUserImgPositionY(int userImgPositionY) {
+        this.userImgPositionY = userImgPositionY;
     }
 }

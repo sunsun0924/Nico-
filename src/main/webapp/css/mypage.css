@@ -1,22 +1,43 @@
-@charset "UTF-8";
+/* =========================
+   全体設定
+========================= */
 
-body {
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
     background-color: #f7efe5;
-    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
     color: #5c4033;
 }
 
+
+/* =========================
+   メイン画面
+========================= */
+
 .main-container {
-    margin-left: 240px; /* サイドバーの幅 a*/
+    width: calc(100% - 240px);
+    margin-left: 240px;
     padding: 30px;
-    box-sizing: border-box;
     min-height: 100vh;
     display: flex;
-    justify-content: center; /* 横方向の中央に配置 */
-    align-items: flex-start;  /* 上から配置（上下も中央にする場合は center） */
+    justify-content: center;
+    align-items: flex-start;
 }
+
+
+/* =========================
+   マイページカード
+========================= */
 
 .content-card {
     background-color: #ffffff;
@@ -25,8 +46,12 @@ body {
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(92, 64, 51, 0.08);
     padding: 24px 32px;
-    box-sizing: border-box;
 }
+
+
+/* =========================
+   ページタイトル
+========================= */
 
 .card-header {
     display: flex;
@@ -48,6 +73,27 @@ body {
     font-size: 1.25rem;
 }
 
+
+/* =========================
+   完了メッセージ
+========================= */
+
+.success-message {
+    margin-bottom: 20px;
+    padding: 13px 16px;
+    border: 1px solid #c8ddc3;
+    border-radius: 10px;
+    background-color: #f0f8ed;
+    color: #547c4d;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   ユーザープロフィール
+========================= */
+
 .user-profile-section {
     background-color: #fdfbf7;
     border: 1px solid #f4ece1;
@@ -59,26 +105,53 @@ body {
     margin-bottom: 20px;
 }
 
-/* 湖面（空と水面）をイメージしたアバターデザイン */
-.lake-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #89f7fe 100%);
-    border: 2px solid #e8bcaf;
+
+/* =========================
+   プロフィール画像
+========================= */
+
+.user-avatar {
+    width: 90px;
+    height: 90px;
     flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: #fcebe8;
+    border: 2px solid #e8bcaf;
 }
+
+.user-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 50%;
+}
+
+
+/* =========================
+   ユーザー名・編集ボタン
+========================= */
 
 .user-info-text {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-width: 0;
 }
 
 .user-name {
     font-size: 1.1rem;
     font-weight: bold;
+    color: #5c4033;
+    overflow-wrap: anywhere;
 }
+
+
+/* =========================
+   プロフィール編集ボタン
+========================= */
 
 .btn-edit-profile {
     display: inline-flex;
@@ -100,6 +173,11 @@ body {
     background-color: #fff5f2;
 }
 
+
+/* =========================
+   メニュー項目
+========================= */
+
 .menu-item-card {
     display: flex;
     align-items: center;
@@ -119,15 +197,27 @@ body {
     border-color: #e8bcaf;
 }
 
+
+/* =========================
+   メニュー左側
+========================= */
+
 .menu-item-left {
     display: flex;
     align-items: center;
     gap: 16px;
+    min-width: 0;
 }
+
+
+/* =========================
+   メニューアイコン
+========================= */
 
 .menu-icon-wrapper {
     width: 38px;
     height: 38px;
+    flex-shrink: 0;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -135,16 +225,92 @@ body {
     font-size: 1rem;
 }
 
-.red-heart { background-color: #faece8; color: #d48373; }
-.purple-gear { background-color: #f0ebf5; color: #8c7aa9; }
-.orange-logout { background-color: #faece8; color: #d48373; }
+
+/* ブックマーク・ギフト */
+
+.red-heart {
+    background-color: #faece8;
+    color: #d48373;
+}
+
+
+/* 設定 */
+
+.purple-gear {
+    background-color: #f0ebf5;
+    color: #8c7aa9;
+}
+
+
+/* ログアウト */
+
+.orange-logout {
+    background-color: #faece8;
+    color: #d48373;
+}
+
+
+/* =========================
+   メニュー文字
+========================= */
 
 .menu-item-title {
     font-size: 0.95rem;
     font-weight: 500;
 }
 
+
+/* =========================
+   右側矢印
+========================= */
+
 .arrow-icon {
     color: #b59b8e;
     font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+
+/* =========================
+   スマートフォン対応
+========================= */
+
+@media screen and (max-width: 768px) {
+
+    .main-container {
+        width: 100%;
+        margin-left: 0;
+        padding: 20px 12px;
+    }
+
+    .content-card {
+        padding: 20px 16px;
+    }
+
+    .user-profile-section {
+        padding: 16px;
+        gap: 14px;
+    }
+
+    .user-avatar {
+        width: 75px;
+        height: 75px;
+    }
+
+    .user-name {
+        font-size: 1rem;
+    }
+
+    .menu-item-card {
+        padding: 14px 16px;
+    }
+
+    .menu-item-left {
+        gap: 12px;
+    }
+
+    .menu-item-title {
+        font-size: 0.9rem;
+    }
+
 }
