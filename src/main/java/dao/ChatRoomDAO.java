@@ -14,16 +14,22 @@ public class ChatRoomDAO extends DAO {
     public boolean insertMessage(ChatRoomBean chat) throws Exception {
 
         String sql =
-            "INSERT INTO messages " +
-            "(sender_id, receiver_id, message, sent_at) " +
-            "VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+            "INSERT INTO chat_message " +
+            "(message_id, chat_id, sender_user_id, chat_text, chat_time) " +
+            "VALUES (?, ?, ?, ?, CURRENT_TIME)";
 
         try (Connection con = getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
-            st.setString(1, chat.getSenderId());
-            st.setString(2, chat.getReceiverId());
-            st.setString(3, chat.getMessage());
+            // message_id は一意になるように生成
+            String messageId = "MSG" + System.currentTimeMillis();
+            // chat_id にはやり取りする相手のIDを指定
+            String chatId = chat.getReceiverId();
+
+            st.setString(1, messageId);
+            st.setString(2, chatId);
+            st.setString(3, chat.getSenderId());
+            st.setString(4, chat.getMessage());
 
             return st.executeUpdate() > 0;
 
@@ -39,11 +45,11 @@ public class ChatRoomDAO extends DAO {
         List<ChatRoomBean> messageList = new ArrayList<>();
 
         String sql =
-            "SELECT message_id, sender_id, receiver_id, message, sent_at " +
-            "FROM messages " +
-            "WHERE (sender_id = ? AND receiver_id = ?) " +
-            "OR (sender_id = ? AND receiver_id = ?) " +
-            "ORDER BY sent_at ASC";
+            "SELECT message_id, chat_id, sender_user_id, chat_text, chat_time " +
+            "FROM chat_message " +
+            "WHERE (sender_user_id = ? AND chat_id = ?) " +
+            "OR (sender_user_id = ? AND chat_id = ?) " +
+            "ORDER BY chat_time ASC";
 
         try (Connection con = getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -59,11 +65,14 @@ public class ChatRoomDAO extends DAO {
 
                     ChatRoomBean chat = new ChatRoomBean();
 
-                    chat.setMessageId(rs.getInt("message_id"));
-                    chat.setSenderId(rs.getString("sender_id"));
-                    chat.setReceiverId(rs.getString("receiver_id"));
-                    chat.setMessage(rs.getString("message"));
-                    chat.setSentAt(rs.getString("sent_at"));
+                    chat.setMessageId(rs.getString("message_id"));
+                    chat.setSenderId(rs.getString("sender_user_id"));
+                    chat.setReceiverId(partnerUserId);
+                    chat.setMessage(rs.getString("chat_text"));
+                    
+                    if (rs.getTime("chat_time") != null) {
+                        chat.setSentAt(rs.getTime("chat_time").toString());
+                    }
 
                     messageList.add(chat);
                 }

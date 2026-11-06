@@ -43,13 +43,21 @@ body {
     flex-shrink: 0;
 }
 
+.no-image-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #edaa8d;
+    flex-shrink: 0;
+}
+
 /* =========================
-1. チャット一覧画面
+   1. チャット一覧画面
 ========================= */
 .chat-container {
     width: 100%;
-    max-width: 900px;  /* 1000px → 900px */
-    min-height: 90vh;  /* calc(100vh - 40px) → 90vh */
+    max-width: 900px;
+    min-height: 90vh;
     margin: 20px auto;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
@@ -253,6 +261,211 @@ body {
 }
 
 /* =========================
+   2. チャットルーム画面
+========================= */
+.chat-room-layout {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.chat-room-container {
+    width: 100%;
+    max-width: 600px; /* スリムなチャット幅に調整 */
+    height: 85vh;
+    margin: 20px auto;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: #fffdf8;
+    border-bottom: 1px solid #eee4d8;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.back-link {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ed947c;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.header-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-user-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: #59483d;
+}
+
+.header-status {
+    font-size: 11px;
+    color: #88786b;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #4cd137;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.header-menu-icon {
+    font-weight: bold;
+    color: #a39a92;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+/* メッセージ表示エリア */
+.chat-messages-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #fffdf8;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.message-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    max-width: 75%;
+}
+
+.message-row.partner {
+    align-self: flex-start;
+}
+
+.message-row.mine {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.message-bubble {
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-all;
+}
+
+.message-row.partner .message-bubble {
+    background-color: #f7eee5;
+    color: #59483d;
+    border-top-left-radius: 4px;
+}
+
+.message-row.mine .message-bubble {
+    background-color: #ed947c;
+    color: #ffffff;
+    border-top-right-radius: 4px;
+}
+
+.message-time {
+    font-size: 10px;
+    color: #a39a92;
+    margin-top: 2px;
+    display: block;
+    text-align: right;
+}
+
+.message-row.mine .message-time {
+    text-align: left;
+}
+
+/* メッセージ入力フォームエリア */
+.chat-input-form {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #fffdf8;
+    border-top: 1px solid #eee4d8;
+    gap: 10px;
+}
+
+.btn-plus {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background-color: #f7eee5;
+    color: #88786b;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.chat-input-form input[type="text"] {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #eee4d8;
+    border-radius: 20px;
+    background-color: #f7eee5;
+    font-size: 14px;
+    color: #59483d;
+}
+
+.chat-input-form input[type="text"]::placeholder {
+    color: #a99d95;
+}
+
+.chat-input-form input[type="text"]:focus {
+    outline: none;
+    border-color: #ed947c;
+    background-color: #ffffff;
+}
+
+.btn-send-round {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ed947c;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+}
+
+.btn-send-round:hover {
+    opacity: 0.85;
+}
+
+/* =========================
    スマートフォン対応
 ========================= */
 @media screen and (max-width: 600px) {
@@ -263,16 +476,20 @@ body {
         padding: 0;
     }
 
-    .chat-container {
+    .chat-container,
+    .chat-room-container {
         min-height: calc(100vh - 20px);
         border-radius: 16px;
+        max-width: 100%;
     }
 
-    .chat-header {
+    .chat-header,
+    .chat-room-header {
         padding: 16px 12px;
     }
 
-    .chat-header h2 {
+    .chat-header h2,
+    .chat-room-header h2 {
         font-size: 19px;
     }
 
@@ -299,6 +516,5 @@ body {
     }
 
     .last-message {
-        font-size: 12px;
+        font-size: 12
     }
-}

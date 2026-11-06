@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.sql.Connection;
@@ -79,7 +78,7 @@ public class ChatListDAO extends DAO {
         return userList;
     }
 
-    // チャット一覧を取得
+    // チャット一覧を取得（chat_message テーブル対応・最新メッセージ表示用）
     public List<ChatListBean> getChatList(String userId)
             throws Exception {
 
@@ -87,19 +86,15 @@ public class ChatListDAO extends DAO {
 
         String sql =
             "SELECT u.user_id, u.user_name, " +
-            "(SELECT message FROM messages " +
-            "WHERE (sender_id = u.user_id AND receiver_id = ?) " +
-            "OR (sender_id = ? AND receiver_id = u.user_id) " +
-            "ORDER BY sent_at DESC LIMIT 1) AS last_message, " +
+            "(SELECT chat_text FROM chat_message " +
+            "WHERE (sender_user_id = u.user_id AND chat_id = ?) " +
+            "OR (sender_user_id = ? AND chat_id = u.user_id) " +
+            "ORDER BY chat_time DESC LIMIT 1) AS last_message, " +
 
-            "(SELECT sent_at FROM messages " +
-            "WHERE (sender_id = u.user_id AND receiver_id = ?) " +
-            "OR (sender_id = ? AND receiver_id = u.user_id) " +
-            "ORDER BY sent_at DESC LIMIT 1) AS last_time, " +
-
-            "(SELECT COUNT(*) FROM messages " +
-            "WHERE sender_id = u.user_id " +
-            "AND receiver_id = ? AND is_read = 0) AS unread_count " +
+            "(SELECT chat_time FROM chat_message " +
+            "WHERE (sender_user_id = u.user_id AND chat_id = ?) " +
+            "OR (sender_user_id = ? AND chat_id = u.user_id) " +
+            "ORDER BY chat_time DESC LIMIT 1) AS last_time " +
 
             "FROM \"user\" u " +
             "WHERE u.user_id <> ? " +
@@ -113,7 +108,6 @@ public class ChatListDAO extends DAO {
             st.setString(3, userId);
             st.setString(4, userId);
             st.setString(5, userId);
-            st.setString(6, userId);
 
             try (ResultSet rs = st.executeQuery()) {
 
@@ -125,13 +119,13 @@ public class ChatListDAO extends DAO {
                     chat.setUserName(rs.getString("user_name"));
                     chat.setLastMessage(rs.getString("last_message"));
 
-                    if (rs.getTimestamp("last_time") != null) {
+                    if (rs.getTime("last_time") != null) {
                         chat.setLastTime(
-                            rs.getTimestamp("last_time").toString()
+                            rs.getTime("last_time").toString()
                         );
                     }
 
-                    chat.setUnreadCount(rs.getInt("unread_count"));
+                    chat.setUnreadCount(0);
 
                     chatList.add(chat);
                 }
