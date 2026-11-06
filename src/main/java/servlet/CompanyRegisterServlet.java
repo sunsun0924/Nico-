@@ -6,22 +6,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tool.Action;
 
-// 企業新規登録Servlet
+// 企業新規登録Action
 public class CompanyRegisterServlet extends Action {
 
-    // executeメソッド：FrontControllerから呼ばれるメイン処理
+    @Override
     public String execute(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        // フォームから企業IDを取得
+        // 企業IDを取得
         String cpId = request.getParameter("cpId");
 
-        // フォームから企業名を取得
+        // 企業名を取得
         String cpName = request.getParameter("cpName");
-
-        // データベース操作を行うDAOを作成
-        CompanyDAO dao = new CompanyDAO();
 
         // 未入力チェック
         if (cpId == null || cpId.trim().isEmpty()
@@ -38,7 +35,7 @@ public class CompanyRegisterServlet extends Action {
         cpId = cpId.trim();
         cpName = cpName.trim();
 
-        // 企業IDは4文字
+        // 企業IDの文字数チェック
         if (cpId.length() != 4) {
 
             request.setAttribute(
@@ -48,7 +45,7 @@ public class CompanyRegisterServlet extends Action {
             return "/company/company.jsp";
         }
 
-        // 企業名は50文字以内
+        // 企業名の文字数チェック
         if (cpName.length() > 50) {
 
             request.setAttribute(
@@ -58,7 +55,10 @@ public class CompanyRegisterServlet extends Action {
             return "/company/company.jsp";
         }
 
-        // 企業IDの重複確認
+        // DAOを作成
+        CompanyDAO dao = new CompanyDAO();
+
+        // 企業IDの重複チェック
         if (dao.isExist(cpId)) {
 
             request.setAttribute(
@@ -68,10 +68,10 @@ public class CompanyRegisterServlet extends Action {
             return "/company/company.jsp";
         }
 
-        // 企業情報の登録処理
+        // 企業情報を登録
         int line = dao.insert(cpId, cpName);
 
-        // lineは更新された行数
+        // 登録結果を確認
         if (line > 0) {
 
             request.setAttribute(
