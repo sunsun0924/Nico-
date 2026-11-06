@@ -108,7 +108,7 @@ public class NotificationServlet extends Action {
             request.setAttribute("notifications", notifications);
             request.setAttribute("filter", filter);
 
-            return "/notification/notification.jsp";
+            return "/tuuti/notification.jsp";
 
         } catch (Exception e) {
             throw new Exception("通知一覧の取得に失敗しました。", e);

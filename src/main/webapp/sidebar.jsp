@@ -14,7 +14,7 @@
     <nav class="menu-list">
 
         <!-- 通知 -->
-        <a href="${pageContext.request.contextPath}/tuuti/notification.jsp"
+        <a href="${pageContext.request.contextPath}/servlet.NotificationServlet.action"
            class="menu-item">
             <span class="menu-icon">🔔︎</span>
             <span>通知</span>
