@@ -263,8 +263,7 @@ public class UserDAO extends DAO {
         return line;
     }
 
-
-    // 新規チャット用：自分以外の全ユーザーを取得するメソッド
+ // 新規チャット用：自分以外の全ユーザーを取得するメソッド
     public List<ChatListBean> getAllUsers(String myUserId) throws Exception {
 
         List<ChatListBean> userList = new ArrayList<>();
@@ -291,8 +290,8 @@ public class UserDAO extends DAO {
 
             ChatListBean user = new ChatListBean();
 
-            // ユーザーID
-            user.setUserId(rs.getInt("user_id"));
+            // ユーザーID（rs.getStringで文字列として取得してセット）
+            user.setUserId(rs.getString("user_id"));
 
             // ユーザー名
             user.setUserName(rs.getString("user_name"));
