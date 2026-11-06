@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="../header.jsp" %>
@@ -61,7 +62,6 @@
                 </a>
 
             </div>
-
         </div>
 
         <%-- ブックマーク --%>
@@ -125,53 +125,77 @@
         </a>
 
         <%-- ログアウト --%>
-		<a href="#" class="menu-item-card"
-		   onclick="openLogoutModal(); return false;">
-		
-		    <div class="menu-item-left">
-		        <div class="menu-icon-wrapper orange-logout">
-		            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-		        </div>
-		        <span class="menu-item-title">ログアウト</span>
-		    </div>
-		
-		    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-		</a>
-		
-		<%-- ログアウト確認ポップアップ --%>
-		<div id="logout-modal" class="logout-modal">
-		    <div class="logout-modal-content">
-		        <h3>ログアウト</h3>
-		
-		        <p>本当にログアウトしますか？</p>
-		
-		        <div class="logout-modal-buttons">
-		            <button type="button"
-		                    class="btn-cancel"
-		                    onclick="closeLogoutModal()">
-		                キャンセル
-		            </button>
-		
-		            <a href="${pageContext.request.contextPath}/login/userLogin.jsp"
-		               class="btn-logout">
-		                ログアウト
-		            </a>
-		        </div>
-		    </div>
-		</div>
-		
-		<script>
-		    function openLogoutModal() {
-		        document.getElementById("logout-modal").style.display = "flex";
-		    }
-		
-		    function closeLogoutModal() {
-		        document.getElementById("logout-modal").style.display = "none";
-		    }
-		</script>
+        <a href="#"
+           class="menu-item-card"
+           onclick="openLogoutModal(); return false;">
+
+            <div class="menu-item-left">
+
+                <div class="menu-icon-wrapper orange-logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </div>
+
+                <span class="menu-item-title">
+                    ログアウト
+                </span>
+
+            </div>
+
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+
+        </a>
+
+    </div>
+
+    <%-- ログアウト確認ポップアップ --%>
+    <div id="logout-modal" class="logout-modal">
+
+        <div class="logout-modal-content">
+
+            <h3>ログアウト</h3>
+
+            <p>本当にログアウトしますか？</p>
+
+            <div class="logout-modal-buttons">
+
+                <%-- キャンセル --%>
+                <button type="button"
+                        class="btn-cancel"
+                        onclick="closeLogoutModal()">
+                    キャンセル
+                </button>
+
+                <%-- ログアウト --%>
+                <a href="${pageContext.request.contextPath}/servlet.LogoutServlet.action"
+                   class="btn-logout">
+                    ログアウト
+                </a>
+
+            </div>
+
+        </div>
 
     </div>
 
 </main>
+
+<script>
+    // ログアウト確認ポップアップを表示
+    function openLogoutModal() {
+        document.getElementById("logout-modal").style.display = "flex";
+    }
+
+    // ログアウト確認ポップアップを閉じる
+    function closeLogoutModal() {
+        document.getElementById("logout-modal").style.display = "none";
+    }
+
+    // ポップアップの背景をクリックした場合も閉じる
+    document.getElementById("logout-modal").addEventListener("click", function(event) {
+        if (event.target === this) {
+            closeLogoutModal();
+        }
+    });
+</script>
 
 <%@ include file="../footer.jsp" %>
