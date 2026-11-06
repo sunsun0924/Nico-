@@ -272,6 +272,81 @@ body {
 
 
 /* =========================
+   ログアウト確認ポップアップ
+========================= */
+
+#logout-modal.logout-modal {
+    display: none;
+    position: fixed !important;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(60, 45, 35, 0.45);
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.logout-modal-content {
+    width: 90%;
+    max-width: 380px;
+    padding: 30px 25px;
+    background: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-shadow: 0 5px 20px rgba(100, 75, 50, 0.15);
+    text-align: center;
+}
+
+.logout-modal-content h3 {
+    margin-bottom: 20px;
+    color: #654b39;
+    font-size: 20px;
+}
+
+.logout-modal-content p {
+    margin-bottom: 25px;
+    color: #59483d;
+    font-size: 15px;
+}
+
+
+/* ボタンの左右を逆にする */
+
+.logout-modal-buttons {
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+    gap: 12px;
+}
+
+.logout-modal-buttons button,
+.logout-modal-buttons a {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-cancel {
+    background: #eee4d8;
+    color: #59483d;
+}
+
+.btn-logout {
+    background: #edaa8d;
+    color: white;
+}
+
+.btn-cancel:hover,
+.btn-logout:hover {
+    opacity: 0.8;
+}
+
+
+/* =========================
    スマートフォン対応
 ========================= */
 
@@ -312,5 +387,4 @@ body {
     .menu-item-title {
         font-size: 0.9rem;
     }
-
 }

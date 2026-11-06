@@ -125,24 +125,50 @@
         </a>
 
         <%-- ログアウト --%>
-        <a href="${pageContext.request.contextPath}/logout"
-           class="menu-item-card">
-
-            <div class="menu-item-left">
-
-                <div class="menu-icon-wrapper orange-logout">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                </div>
-
-                <span class="menu-item-title">
-                    ログアウト
-                </span>
-
-            </div>
-
-            <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
-        </a>
+		<a href="#" class="menu-item-card"
+		   onclick="openLogoutModal(); return false;">
+		
+		    <div class="menu-item-left">
+		        <div class="menu-icon-wrapper orange-logout">
+		            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+		        </div>
+		        <span class="menu-item-title">ログアウト</span>
+		    </div>
+		
+		    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+		</a>
+		
+		<%-- ログアウト確認ポップアップ --%>
+		<div id="logout-modal" class="logout-modal">
+		    <div class="logout-modal-content">
+		        <h3>ログアウト</h3>
+		
+		        <p>本当にログアウトしますか？</p>
+		
+		        <div class="logout-modal-buttons">
+		            <button type="button"
+		                    class="btn-cancel"
+		                    onclick="closeLogoutModal()">
+		                キャンセル
+		            </button>
+		
+		            <a href="${pageContext.request.contextPath}/login/userLogin.jsp"
+		               class="btn-logout">
+		                ログアウト
+		            </a>
+		        </div>
+		    </div>
+		</div>
+		
+		<script>
+		    function openLogoutModal() {
+		        document.getElementById("logout-modal").style.display = "flex";
+		    }
+		
+		    function closeLogoutModal() {
+		        document.getElementById("logout-modal").style.display = "none";
+		    }
+		</script>
 
     </div>
 
