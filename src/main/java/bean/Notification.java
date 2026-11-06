@@ -15,10 +15,13 @@ public class Notification {
     private LocalDateTime notificationDatetime;
     private String postId;
     private String giftId;
+    private String commentId;
 
+    // コンストラクタ
     public Notification() {
     }
 
+    // 通知IDを取得・設定
     public String getNotificationId() {
         return notificationId;
     }
@@ -27,6 +30,7 @@ public class Notification {
         this.notificationId = notificationId;
     }
 
+    // ユーザーIDを取得・設定
     public String getUserId() {
         return userId;
     }
@@ -35,6 +39,7 @@ public class Notification {
         this.userId = userId;
     }
 
+    // 管理者IDを取得・設定
     public String getAdminId() {
         return adminId;
     }
@@ -43,6 +48,7 @@ public class Notification {
         this.adminId = adminId;
     }
 
+    // 送信者ID（ユーザー）を取得・設定
     public String getSenderId() {
         return senderId;
     }
@@ -51,6 +57,7 @@ public class Notification {
         this.senderId = senderId;
     }
 
+    // 送信者ID（管理者）を取得・設定
     public String getSenderAdminId() {
         return senderAdminId;
     }
@@ -59,6 +66,7 @@ public class Notification {
         this.senderAdminId = senderAdminId;
     }
 
+    // 通知タイプを取得・設定
     public String getNotificationType() {
         return notificationType;
     }
@@ -67,6 +75,7 @@ public class Notification {
         this.notificationType = notificationType;
     }
 
+    // メッセージ内容を取得・設定
     public String getMessage() {
         return message;
     }
@@ -75,6 +84,7 @@ public class Notification {
         this.message = message;
     }
 
+    // 通知日時を取得・設定
     public LocalDateTime getNotificationDatetime() {
         return notificationDatetime;
     }
@@ -83,6 +93,7 @@ public class Notification {
         this.notificationDatetime = notificationDatetime;
     }
 
+    // 投稿IDを取得・設定
     public String getPostId() {
         return postId;
     }
@@ -91,11 +102,21 @@ public class Notification {
         this.postId = postId;
     }
 
+    // ギフトIDを取得・設定
     public String getGiftId() {
         return giftId;
     }
 
     public void setGiftId(String giftId) {
         this.giftId = giftId;
+    }
+
+    // コメントIDを取得・設定
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 }
