@@ -1,3 +1,4 @@
+
 package bean;
 
 import java.io.Serializable;
@@ -26,6 +27,9 @@ public class Comment implements Serializable {
 
     // コメント日時
     private LocalDateTime commentDatetime;
+
+    // 自分のコメントかどうか
+    private boolean editable;
 
     // コンストラクタ
     public Comment() {
@@ -99,5 +103,15 @@ public class Comment implements Serializable {
     // コメント日時を設定
     public void setCommentDatetime(LocalDateTime commentDatetime) {
         this.commentDatetime = commentDatetime;
+    }
+
+    // 編集・削除可能かどうかを取得
+    public boolean isEditable() {
+        return editable;
+    }
+
+    // 編集・削除可能かどうかを設定
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 }

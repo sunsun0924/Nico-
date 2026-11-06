@@ -42,15 +42,11 @@ body {
     color: #654b39;
 }
 
-/* 投稿一覧の見出し */
-
 .home-header h3 {
     margin: 25px 0;
     font-size: 22px;
     color: #654b39;
 }
-
-/* 区切り線 */
 
 .home-header hr {
     margin: 25px 0;
@@ -110,8 +106,6 @@ body {
     box-shadow: 0 2px 8px rgba(100, 75, 50, 0.04);
 }
 
-/* 投稿者 */
-
 .post-item > strong {
     display: block;
     margin-bottom: 10px;
@@ -119,15 +113,11 @@ body {
     font-size: 18px;
 }
 
-/* 投稿日時 */
-
 .post-item > p:first-of-type {
     margin: 8px 0 14px;
     color: #a39a92;
     font-size: 13px;
 }
-
-/* 投稿本文 */
 
 .post-item > p {
     margin: 8px 0;
@@ -135,8 +125,6 @@ body {
     font-size: 16px;
     line-height: 1.8;
 }
-
-/* 投稿画像 */
 
 .post-item > img {
     display: block;
@@ -159,8 +147,6 @@ body {
     border-radius: 14px;
 }
 
-/* コメント見出し */
-
 .comment-list h4 {
     margin: 0 0 15px;
     padding-bottom: 10px;
@@ -169,11 +155,10 @@ body {
     border-bottom: 1px solid #f0dfd0;
 }
 
-/* コメント1件 */
-
 .comment-item {
+    position: relative;
     margin-bottom: 12px;
-    padding: 13px 15px;
+    padding: 13px 45px 13px 15px;
     background-color: #fffdf8;
     border: 1px solid #f0e8de;
     border-radius: 11px;
@@ -183,16 +168,12 @@ body {
     margin-bottom: 0;
 }
 
-/* コメント投稿者 */
-
 .comment-item strong {
     display: block;
     margin-bottom: 7px;
     color: #59483d;
     font-size: 14px;
 }
-
-/* コメント本文 */
 
 .comment-item p {
     margin: 5px 0;
@@ -202,16 +183,12 @@ body {
     overflow-wrap: anywhere;
 }
 
-/* コメント日時 */
-
 .comment-item small {
     display: block;
     margin-top: 8px;
     color: #a39a92;
     font-size: 11px;
 }
-
-/* コメントがない場合 */
 
 .comment-list > p {
     margin: 0;
@@ -230,8 +207,6 @@ body {
     margin-top: 15px;
 }
 
-/* コメント入力欄 */
-
 .comment-form textarea {
     flex: 1;
     min-width: 0;
@@ -248,20 +223,14 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* 入力中 */
-
 .comment-form textarea:focus {
     border-color: #ed947c;
     box-shadow: 0 0 0 3px rgba(237, 148, 124, 0.13);
 }
 
-/* プレースホルダー */
-
 .comment-form textarea::placeholder {
     color: #b6a69a;
 }
-
-/* コメント送信ボタン */
 
 .comment-form button {
     flex-shrink: 0;
@@ -281,7 +250,6 @@ body {
     transform: translateY(-1px);
 }
 
-
 /* ========================================
    ブックマーク
 ======================================== */
@@ -292,8 +260,6 @@ body {
     margin-top: 12px;
 }
 
-/* ブックマークボタン */
-
 .bookmark-btn {
     display: flex;
     justify-content: center;
@@ -301,26 +267,19 @@ body {
     width: 46px;
     height: 46px;
     padding: 8px;
-
-    /* 外側は色を変えない */
     border: 1px solid #e8d5c5;
     border-radius: 10px;
     background-color: #fffdf8;
-
     color: #8d7666;
     cursor: pointer;
     transition: all 0.2s ease;
 }
-
-/* しおりアイコン */
 
 .bookmark-btn svg {
     display: block;
     width: 23px;
     height: 27px;
 }
-
-/* 未登録：中は透明 */
 
 .bookmark-btn svg path {
     fill: transparent;
@@ -329,13 +288,9 @@ body {
     transition: fill 0.2s ease, stroke 0.2s ease;
 }
 
-/* マウスを乗せたとき */
-
 .bookmark-btn:hover {
     border-color: #ed947c;
 }
-
-/* 登録済み：しおりの内側だけピンク */
 
 .bookmark-btn.active {
     background-color: #fffdf8;
@@ -343,18 +298,208 @@ body {
     color: #ed947c;
 }
 
-/* リボンの内側を塗りつぶす */
-
 .bookmark-btn.active svg path {
     fill: #ed947c;
     stroke: #ed947c;
 }
-
-/* 登録済みにマウスを乗せたとき */
 
 .bookmark-btn.active:hover {
     background-color: #fffdf8;
     border-color: #ed947c;
 }
 
+/* ========================================
+   三点メニュー
+======================================== */
 
+.post-menu,
+.comment-menu {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 100;
+}
+
+.menu-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #75665c;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.menu-button:hover {
+    background-color: #f3e9df;
+}
+
+/* メニュー本体 */
+
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 35px;
+    right: 0;
+    z-index: 500;
+    width: 115px;
+    padding: 6px;
+    background-color: #ffffff;
+    opacity: 1;
+    border: 1px solid #e8d5c5;
+    border-radius: 9px;
+    box-shadow: 0 4px 12px rgba(70, 50, 35, 0.2);
+}
+
+/* メニュー表示 */
+
+.menu-dropdown.show {
+    display: block;
+}
+
+/* 編集・削除 */
+
+.menu-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #59483d;
+    text-align: left;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.menu-dropdown button:hover {
+    background-color: #fff0e6;
+}
+
+/* ========================================
+   編集モーダル
+======================================== */
+
+.edit-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.edit-modal.show {
+    display: flex;
+}
+
+.edit-modal-content {
+    width: 90%;
+    max-width: 500px;
+    padding: 25px;
+    background-color: #fffdf8;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.edit-modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+.edit-modal-content textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 12px;
+    border: 1px solid #e8d5c5;
+    border-radius: 7px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.edit-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.edit-modal-buttons button {
+    padding: 9px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.edit-save-button {
+    background-color: #ed947c;
+    color: #fff;
+}
+
+.edit-cancel-button {
+    background-color: #eee;
+    color: #333;
+}
+
+/* ========================================
+   削除確認モーダル
+======================================== */
+
+.delete-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.delete-modal.show {
+    display: flex;
+}
+
+.delete-modal-content {
+    width: 90%;
+    max-width: 380px;
+    padding: 25px;
+    background-color: #fffdf8;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.delete-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.delete-modal-buttons button {
+    min-width: 90px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-confirm-button {
+    background-color: #e66b83;
+    color: #fff;
+}
+
+.delete-cancel-button {
+    background-color: #eee;
+    color: #333;
+}

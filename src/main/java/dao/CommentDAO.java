@@ -9,148 +9,196 @@ import java.util.List;
 
 import bean.Comment;
 
+// コメントDAO
 public class CommentDAO extends DAO {
 
-    // 指定した投稿のコメント一覧を取得する
+    // 投稿IDからコメント一覧を取得
     public List<Comment> findByPostId(String postId) throws Exception {
 
-        // コメント一覧を格納するリスト
         List<Comment> list = new ArrayList<>();
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        Connection con = getConnection();
 
-        try {
-            // DB接続を取得
-            con = getConnection();
+        PreparedStatement st = con.prepareStatement(
+            "SELECT * FROM \"comment\" " +
+            "WHERE post_id = ? " +
+            "ORDER BY comment_datetime ASC"
+        );
 
-            // SQLを準備
-            st = con.prepareStatement(
-                "SELECT * FROM \"comment\" "
-                + "WHERE post_id = ? "
-                + "ORDER BY comment_datetime ASC"
-            );
+        st.setString(1, postId);
 
-            // 投稿IDを設定
-            st.setString(1, postId);
+        ResultSet rs = st.executeQuery();
 
-            // SQLを実行
-            rs = st.executeQuery();
+        while (rs.next()) {
 
-            // 検索結果があればBeanに格納
-            while (rs.next()) {
+            Comment comment = new Comment();
 
-                // コメントBeanを作成
-                Comment comment = new Comment();
+            comment.setCommentId(rs.getString("comment_id"));
+            comment.setPostId(rs.getString("post_id"));
+            comment.setUserId(rs.getString("user_id"));
+            comment.setAdminId(rs.getString("admin_id"));
+            comment.setAuthorType(rs.getString("author_type"));
+            comment.setCommentText(rs.getString("comment_text"));
 
-                // コメントID
-                comment.setCommentId(rs.getString("comment_id"));
+            Timestamp datetime = rs.getTimestamp("comment_datetime");
 
-                // 投稿ID
-                comment.setPostId(rs.getString("post_id"));
-
-                // ユーザーID
-                comment.setUserId(rs.getString("user_id"));
-
-                // 管理者ID
-                comment.setAdminId(rs.getString("admin_id"));
-
-                // 投稿者の種類
-                comment.setAuthorType(rs.getString("author_type"));
-
-                // コメント本文
-                comment.setCommentText(rs.getString("comment_text"));
-
-                // コメント日時を取得
-                Timestamp datetime = rs.getTimestamp("comment_datetime");
-
-                // 日時が存在する場合はLocalDateTimeに変換
-                if (datetime != null) {
-                    comment.setCommentDatetime(datetime.toLocalDateTime());
-                }
-
-                // リストに追加
-                list.add(comment);
+            if (datetime != null) {
+                comment.setCommentDatetime(datetime.toLocalDateTime());
             }
 
-        } catch (Exception e) {
-            throw e;
-
-        } finally {
-            // リソースを解放
-            if (rs != null) rs.close();
-            if (st != null) st.close();
-            if (con != null) con.close();
+            list.add(comment);
         }
 
-        // コメント一覧を返す
+        rs.close();
+        st.close();
+        con.close();
+
         return list;
     }
 
-
-    // コメントを新規登録し、登録したコメントIDを返す
+    // コメント登録
     public String insert(Comment comment) throws Exception {
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        Connection con = getConnection();
 
-        // 登録したコメントID
+        PreparedStatement st = con.prepareStatement(
+            "INSERT INTO \"comment\" " +
+            "(post_id, user_id, admin_id, author_type, " +
+            "comment_text, comment_datetime) " +
+            "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
+            "RETURNING comment_id"
+        );
+
+        st.setString(1, comment.getPostId());
+        st.setString(2, comment.getUserId());
+        st.setString(3, comment.getAdminId());
+        st.setString(4, comment.getAuthorType());
+        st.setString(5, comment.getCommentText());
+
+        ResultSet rs = st.executeQuery();
+
         String commentId = null;
 
-        try {
-            // DB接続を取得
-            con = getConnection();
-
-            // SQLを準備
-            // comment_idはDB側で自動採番
-            // comment_datetimeには現在日時を設定
-            // RETURNINGで登録したコメントIDを取得
-            st = con.prepareStatement(
-                "INSERT INTO \"comment\" "
-                + "(post_id, user_id, admin_id, author_type, "
-                + "comment_text, comment_datetime) "
-                + "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) "
-                + "RETURNING comment_id"
-            );
-
-            // 投稿IDを設定
-            st.setString(1, comment.getPostId());
-
-            // ユーザーIDを設定
-            // 管理者の場合はNULL
-            st.setString(2, comment.getUserId());
-
-            // 管理者IDを設定
-            // ユーザーの場合はNULL
-            st.setString(3, comment.getAdminId());
-
-            // 投稿者の種類を設定
-            st.setString(4, comment.getAuthorType());
-
-            // コメント本文を設定
-            st.setString(5, comment.getCommentText());
-
-            // SQLを実行
-            rs = st.executeQuery();
-
-            // 登録したコメントIDを取得
-            if (rs.next()) {
-                commentId = rs.getString("comment_id");
-            }
-
-        } catch (Exception e) {
-            throw e;
-
-        } finally {
-            // リソースを解放
-            if (rs != null) rs.close();
-            if (st != null) st.close();
-            if (con != null) con.close();
+        if (rs.next()) {
+            commentId = rs.getString("comment_id");
+            comment.setCommentId(commentId);
         }
 
-        // 登録したコメントIDを返す
+        rs.close();
+        st.close();
+        con.close();
+
         return commentId;
+    }
+
+    // コメント削除
+    // 自分が投稿したコメントだけ削除できる
+    public int deleteComment(
+            String commentId,
+            String userId,
+            String adminId,
+            boolean isAdmin
+    ) throws Exception {
+
+        Connection con = getConnection();
+        PreparedStatement st = null;
+
+        try {
+
+            if (isAdmin) {
+
+                // 管理者は自分のコメントだけ削除
+                st = con.prepareStatement(
+                    "DELETE FROM \"comment\" " +
+                    "WHERE comment_id = ? " +
+                    "AND admin_id = ? " +
+                    "AND author_type = 'ADMIN'"
+                );
+
+                st.setString(1, commentId);
+                st.setString(2, adminId);
+
+            } else {
+
+                // ユーザーは自分のコメントだけ削除
+                st = con.prepareStatement(
+                    "DELETE FROM \"comment\" " +
+                    "WHERE comment_id = ? " +
+                    "AND user_id = ? " +
+                    "AND author_type = 'USER'"
+                );
+
+                st.setString(1, commentId);
+                st.setString(2, userId);
+            }
+
+            return st.executeUpdate();
+
+        } finally {
+
+            if (st != null) {
+                st.close();
+            }
+
+            con.close();
+        }
+    }
+
+    // コメント編集
+    // 自分が投稿したコメントだけ編集できる
+    public int update(
+            String commentId,
+            String commentText,
+            String userId,
+            String adminId,
+            boolean isAdmin
+    ) throws Exception {
+
+        Connection con = getConnection();
+        PreparedStatement st = null;
+
+        try {
+
+            if (isAdmin) {
+
+                // 管理者は自分のコメントだけ編集
+                st = con.prepareStatement(
+                    "UPDATE \"comment\" " +
+                    "SET comment_text = ? " +
+                    "WHERE comment_id = ? " +
+                    "AND admin_id = ? " +
+                    "AND author_type = 'ADMIN'"
+                );
+
+                st.setString(1, commentText);
+                st.setString(2, commentId);
+                st.setString(3, adminId);
+
+            } else {
+
+                // ユーザーは自分のコメントだけ編集
+                st = con.prepareStatement(
+                    "UPDATE \"comment\" " +
+                    "SET comment_text = ? " +
+                    "WHERE comment_id = ? " +
+                    "AND user_id = ? " +
+                    "AND author_type = 'USER'"
+                );
+
+                st.setString(1, commentText);
+                st.setString(2, commentId);
+                st.setString(3, userId);
+            }
+
+            return st.executeUpdate();
+
+        } finally {
+
+            if (st != null) {
+                st.close();
+            }
+
+            con.close();
+        }
     }
 }

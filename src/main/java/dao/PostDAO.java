@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -16,96 +17,181 @@ public class PostDAO extends DAO {
     public List<Post> findAll() throws Exception {
 
         List<Post> list = new ArrayList<>();
+        Connection con = getConnection();
 
-        String sql =
+        PreparedStatement st = con.prepareStatement(
             "SELECT user_id, admin_id, author_type, post_id, "
             + "post_datetime, post_text, post_img, comment "
-            + "FROM post "
-            + "ORDER BY post_datetime DESC";
+            + "FROM post ORDER BY post_datetime DESC"
+        );
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        ResultSet rs = st.executeQuery();
 
-        try {
-            // DB接続を取得
-            con = getConnection();
+        while (rs.next()) {
 
-            // SQLを準備
-            st = con.prepareStatement(sql);
+            Post post = new Post();
 
-            // SQLを実行
-            rs = st.executeQuery();
+            post.setUser_id(rs.getString("user_id"));
+            post.setAdmin_id(rs.getString("admin_id"));
+            post.setAuthor_type(rs.getString("author_type"));
+            post.setPost_id(rs.getString("post_id"));
 
-            // 検索結果をBeanに格納
-            while (rs.next()) {
+            Timestamp datetime = rs.getTimestamp("post_datetime");
 
-                Post post = new Post();
-
-                post.setUser_id(rs.getString("user_id"));
-                post.setAdmin_id(rs.getString("admin_id"));
-                post.setAuthor_type(rs.getString("author_type"));
-                post.setPost_id(rs.getString("post_id"));
-
-                Timestamp datetime = rs.getTimestamp("post_datetime");
-
-                if (datetime != null) {
-                    post.setPost_datetime(datetime.toLocalDateTime());
-                }
-
-                post.setPost_text(rs.getString("post_text"));
-                post.setPost_img(rs.getString("post_img"));
-                post.setComment(rs.getString("comment"));
-
-                list.add(post);
+            if (datetime != null) {
+                post.setPost_datetime(datetime.toLocalDateTime());
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+            post.setPost_text(rs.getString("post_text"));
+            post.setPost_img(rs.getString("post_img"));
+            post.setComment(rs.getString("comment"));
 
-        } finally {
-
-            // リソースを解放
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            list.add(post);
         }
+
+        rs.close();
+        st.close();
+        con.close();
 
         return list;
     }
-
 
     // 投稿IDを指定して投稿を1件取得する
     public Post findByPostId(String postId) throws Exception {
 
         Post post = null;
+        Connection con = getConnection();
 
-        String sql =
+        PreparedStatement st = con.prepareStatement(
             "SELECT user_id, admin_id, author_type, post_id, "
             + "post_datetime, post_text, post_img, comment "
-            + "FROM post "
-            + "WHERE post_id = ?";
+            + "FROM post WHERE post_id = ?"
+        );
+
+        st.setString(1, postId);
+
+        ResultSet rs = st.executeQuery();
+
+        if (rs.next()) {
+
+            post = new Post();
+
+            post.setUser_id(rs.getString("user_id"));
+            post.setAdmin_id(rs.getString("admin_id"));
+            post.setAuthor_type(rs.getString("author_type"));
+            post.setPost_id(rs.getString("post_id"));
+
+            Timestamp datetime = rs.getTimestamp("post_datetime");
+
+            if (datetime != null) {
+                post.setPost_datetime(datetime.toLocalDateTime());
+            }
+
+            post.setPost_text(rs.getString("post_text"));
+            post.setPost_img(rs.getString("post_img"));
+            post.setComment(rs.getString("comment"));
+        }
+
+        rs.close();
+        st.close();
+        con.close();
+
+        return post;
+    }
+
+    // 新しい投稿をDBに登録する
+    public boolean insert(Post post) throws Exception {
+
+        Connection con = getConnection();
+
+        PreparedStatement st = con.prepareStatement(
+            "INSERT INTO post "
+            + "(user_id, admin_id, author_type, post_datetime, "
+            + "post_text, post_img, comment) "
+            + "VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)"
+        );
+
+        st.setString(1, post.getUser_id());
+        st.setString(2, post.getAdmin_id());
+        st.setString(3, post.getAuthor_type());
+        st.setString(4, post.getPost_text());
+        st.setString(5, post.getPost_img());
+        st.setString(6, post.getComment());
+
+        int line = st.executeUpdate();
+
+        st.close();
+        con.close();
+
+        return line > 0;
+    }
+
+    // ========================================
+    // 投稿編集
+    // 自分が投稿したものだけ編集可能
+    // ========================================
+    public int updatePost(
+            String postId,
+            String postText,
+            String userId,
+            String adminId,
+            boolean isAdmin) throws Exception {
+
+        Connection con = getConnection();
+        PreparedStatement st = null;
+
+        try {
+
+            if (isAdmin) {
+
+                // 管理者は自分が投稿した投稿だけ編集
+                st = con.prepareStatement(
+                    "UPDATE post SET post_text = ? "
+                    + "WHERE post_id = ? "
+                    + "AND admin_id = ? "
+                    + "AND author_type = 'ADMIN'"
+                );
+
+                st.setString(1, postText);
+                st.setString(2, postId);
+                st.setString(3, adminId);
+
+            } else {
+
+                // ユーザーは自分が投稿した投稿だけ編集
+                st = con.prepareStatement(
+                    "UPDATE post SET post_text = ? "
+                    + "WHERE post_id = ? "
+                    + "AND user_id = ? "
+                    + "AND author_type = 'USER'"
+                );
+
+                st.setString(1, postText);
+                st.setString(2, postId);
+                st.setString(3, userId);
+            }
+
+            return st.executeUpdate();
+
+        } finally {
+
+            if (st != null) {
+                st.close();
+            }
+
+            con.close();
+        }
+    }
+
+    // ========================================
+    // 投稿削除
+    // 自分が投稿したものだけ削除可能
+    // ========================================
+    public boolean deletePost(
+            String postId,
+            String userId,
+            String adminId,
+            boolean isAdmin) throws Exception {
 
         Connection con = null;
         PreparedStatement st = null;
@@ -113,129 +199,117 @@ public class PostDAO extends DAO {
 
         try {
 
-            // DB接続を取得
             con = getConnection();
 
-            // SQLを準備
-            st = con.prepareStatement(sql);
+            // トランザクション開始
+            con.setAutoCommit(false);
 
-            // 投稿IDを設定
+            // 投稿情報を取得してロック
+            st = con.prepareStatement(
+                "SELECT user_id, admin_id, author_type "
+                + "FROM post WHERE post_id = ? FOR UPDATE"
+            );
+
             st.setString(1, postId);
 
-            // SQLを実行
             rs = st.executeQuery();
 
-            // 投稿が存在する場合
+            String postUserId = null;
+            String postAdminId = null;
+            String authorType = null;
+
             if (rs.next()) {
+                postUserId = rs.getString("user_id");
+                postAdminId = rs.getString("admin_id");
+                authorType = rs.getString("author_type");
+            } else {
+                rs.close();
+                rs = null;
+                st.close();
+                st = null;
 
-                post = new Post();
-
-                post.setUser_id(rs.getString("user_id"));
-                post.setAdmin_id(rs.getString("admin_id"));
-                post.setAuthor_type(rs.getString("author_type"));
-                post.setPost_id(rs.getString("post_id"));
-
-                Timestamp datetime = rs.getTimestamp("post_datetime");
-
-                if (datetime != null) {
-                    post.setPost_datetime(datetime.toLocalDateTime());
-                }
-
-                post.setPost_text(rs.getString("post_text"));
-                post.setPost_img(rs.getString("post_img"));
-                post.setComment(rs.getString("comment"));
+                con.rollback();
+                return false;
             }
 
+            rs.close();
+            rs = null;
+            st.close();
+            st = null;
+
+            // 投稿者本人か確認
+            boolean canDelete;
+
+            if (isAdmin) {
+
+                canDelete =
+                    "ADMIN".equals(authorType)
+                    && adminId != null
+                    && adminId.equals(postAdminId);
+
+            } else {
+
+                canDelete =
+                    "USER".equals(authorType)
+                    && userId != null
+                    && userId.equals(postUserId);
+            }
+
+            // 本人以外は削除できない
+            if (!canDelete) {
+                con.rollback();
+                return false;
+            }
+
+            // 投稿に紐づくコメントを削除
+            st = con.prepareStatement(
+                "DELETE FROM \"comment\" WHERE post_id = ?"
+            );
+
+            st.setString(1, postId);
+            st.executeUpdate();
+
+            st.close();
+            st = null;
+
+            // 投稿を削除
+            st = con.prepareStatement(
+                "DELETE FROM post WHERE post_id = ?"
+            );
+
+            st.setString(1, postId);
+
+            int line = st.executeUpdate();
+
+            st.close();
+            st = null;
+
+            // 処理を確定
+            con.commit();
+
+            return line > 0;
+
         } catch (Exception e) {
-            e.printStackTrace();
+
+            if (con != null) {
+                con.rollback();
+            }
+
             throw e;
 
         } finally {
 
-            // リソースを解放
             if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                rs.close();
             }
 
             if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                st.close();
             }
 
             if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return post;
-    }
-
-
-    // 新しい投稿をDBに登録する
-    public boolean insert(Post post) throws Exception {
-
-        String sql =
-            "INSERT INTO post "
-            + "(user_id, admin_id, author_type, post_datetime, "
-            + "post_text, post_img, comment) "
-            + "VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)";
-
-        Connection con = null;
-        PreparedStatement st = null;
-
-        try {
-
-            // DB接続を取得
-            con = getConnection();
-
-            // SQLを準備
-            st = con.prepareStatement(sql);
-
-            // 投稿情報を設定
-            st.setString(1, post.getUser_id());
-            st.setString(2, post.getAdmin_id());
-            st.setString(3, post.getAuthor_type());
-            st.setString(4, post.getPost_text());
-            st.setString(5, post.getPost_img());
-            st.setString(6, post.getComment());
-
-            // SQLを実行
-            int result = st.executeUpdate();
-
-            return result > 0;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-
-        } finally {
-
-            // リソースを解放
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                con.setAutoCommit(true);
+                con.close();
             }
         }
     }

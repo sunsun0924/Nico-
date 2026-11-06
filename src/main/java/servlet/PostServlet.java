@@ -1,8 +1,10 @@
+
 package servlet;
 
 import java.util.List;
 
 import bean.Admin;
+import bean.Comment;
 import bean.Post;
 import bean.User;
 import dao.BookmarkDAO;
@@ -19,74 +21,102 @@ public class PostServlet extends Action {
     @Override
     public String execute(
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response
+    ) throws Exception {
 
-        // 文字コードをUTF-8に設定
+        // 文字コードの設定
         request.setCharacterEncoding("UTF-8");
 
         // セッションを取得
         HttpSession session = request.getSession(false);
 
-        // セッションが存在しない場合
+        // ログイン確認
         if (session == null) {
             return "/login/userLogin.jsp";
         }
 
-        // ユーザー情報を取得
         User user = (User) session.getAttribute("user");
-
-        // 管理者情報を取得
         Admin admin = (Admin) session.getAttribute("admin");
 
-        // ログイン確認
         if (user == null && admin == null) {
             return "/login/userLogin.jsp";
         }
 
-        // ログイン者のIDと種類を格納
+        // ログイン情報
         String userId = null;
         String adminId = null;
         String authorType;
 
-        // 管理者がログインしている場合
         if (admin != null) {
 
-            adminId = admin.getCpUserid();
+            adminId = admin.getCpUserid().trim();
             authorType = "ADMIN";
 
         } else {
 
-            // ユーザーがログインしている場合
-            userId = user.getUserId();
+            userId = user.getUserId().trim();
             authorType = "USER";
         }
 
         try {
 
-            // 投稿DAOを作成
             PostDAO postDAO = new PostDAO();
-
-            // コメントDAOを作成
             CommentDAO commentDAO = new CommentDAO();
-
-            // ブックマークDAOを作成
             BookmarkDAO bookmarkDAO = new BookmarkDAO();
 
             // 投稿一覧を取得
             List<Post> postList = postDAO.findAll();
 
-            // 投稿ごとにコメントとブックマーク状態を取得
             for (Post post : postList) {
 
-                // 投稿IDを取得
                 String postId = post.getPost_id();
 
-                // 投稿に紐づくコメント一覧を取得
-                post.setComments(
-                    commentDAO.findByPostId(postId)
-                );
+                // ========================================
+                // コメント一覧を取得
+                // ========================================
 
-                // ログイン者のブックマーク状態を取得
+                List<Comment> commentList =
+                    commentDAO.findByPostId(postId);
+
+                // ========================================
+                // コメントの編集・削除権限を確認
+                // ========================================
+
+                for (Comment comment : commentList) {
+
+                    boolean commentEditable = false;
+
+                    if (admin != null) {
+
+                        // 管理者は自分のコメントだけ操作できる
+                        commentEditable =
+                            "ADMIN".equals(comment.getAuthorType())
+                            && comment.getAdminId() != null
+                            && adminId.equals(
+                                comment.getAdminId().trim()
+                            );
+
+                    } else {
+
+                        // ユーザーは自分のコメントだけ操作できる
+                        commentEditable =
+                            "USER".equals(comment.getAuthorType())
+                            && comment.getUserId() != null
+                            && userId.equals(
+                                comment.getUserId().trim()
+                            );
+                    }
+
+                    comment.setEditable(commentEditable);
+                }
+
+                // コメント一覧を投稿に設定
+                post.setComments(commentList);
+
+                // ========================================
+                // ブックマーク状態を取得
+                // ========================================
+
                 boolean bookmarked = bookmarkDAO.isBookmarked(
                     postId,
                     userId,
@@ -94,22 +124,62 @@ public class PostServlet extends Action {
                     authorType
                 );
 
-                // ブックマーク状態を設定
                 post.setBookmarked(bookmarked);
+
+                // ========================================
+                // 投稿の編集・削除権限を確認
+                // ========================================
+
+                boolean editable = false;
+
+                if (admin != null) {
+
+                    // 管理者は自分の投稿だけ操作できる
+                    editable =
+                        "ADMIN".equals(post.getAuthor_type())
+                        && post.getAdmin_id() != null
+                        && adminId.equals(
+                            post.getAdmin_id().trim()
+                        );
+
+                } else {
+
+                    // ユーザーは自分の投稿だけ操作できる
+                    editable =
+                        "USER".equals(post.getAuthor_type())
+                        && post.getUser_id() != null
+                        && userId.equals(
+                            post.getUser_id().trim()
+                        );
+                }
+
+                post.setEditable(editable);
             }
 
             // 投稿一覧をJSPに渡す
             request.setAttribute("postList", postList);
 
-            // 投稿一覧画面を表示
+            // 処理結果メッセージ
+            String deleteMessage =
+                (String) session.getAttribute("deleteMessage");
+
+            if (deleteMessage != null) {
+
+                request.setAttribute("message", deleteMessage);
+
+                session.removeAttribute("deleteMessage");
+            }
+
             return "/post/post.jsp";
 
         } catch (Exception e) {
 
-            // エラー内容を表示
             e.printStackTrace();
 
-            throw new Exception("投稿一覧の取得に失敗しました。", e);
+            throw new Exception(
+                "投稿一覧の取得に失敗しました。",
+                e
+            );
         }
     }
 }

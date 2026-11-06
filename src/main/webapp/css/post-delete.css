@@ -1,0 +1,279 @@
+
+/* ========================================
+   全体設定
+======================================== */
+
+.action-menu,
+.action-menu * {
+    box-sizing: border-box;
+}
+
+/* ========================================
+   三点メニューの親要素
+======================================== */
+
+.action-menu {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    z-index: 100;
+}
+
+/* ========================================
+   三点ボタン
+======================================== */
+
+.action-menu-button {
+    width: 46px;
+    height: 38px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #fffdf9;
+    border: 1px solid #f1d8c8;
+    border-radius: 12px;
+
+    color: #936b54;
+
+    cursor: pointer;
+    appearance: none;
+}
+
+/* 三点を横並びにする */
+.action-menu-button span {
+    display: inline-block;
+
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    line-height: 1;
+
+    white-space: nowrap;
+}
+
+.action-menu-button:hover {
+    background-color: #fff4ec;
+}
+
+/* ========================================
+   編集・削除メニュー
+======================================== */
+
+.action-menu-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 125px;
+    padding: 8px 0;
+
+    display: none;
+    flex-direction: column;
+
+    /* 背景を完全に不透明にする */
+    background-color: #ffffff;
+    opacity: 1;
+
+    border: 1px solid #f0dfd3;
+    border-radius: 13px;
+
+    box-shadow: 0 5px 18px rgba(100, 70, 50, 0.15);
+
+    z-index: 1000;
+}
+
+/* メニューを開いた状態 */
+.action-menu-list.show {
+    display: flex;
+}
+
+/* ========================================
+   編集・削除ボタン共通
+======================================== */
+
+.action-menu-list button {
+    width: 100%;
+    height: 43px;
+    padding: 0 18px;
+
+    display: flex;
+    align-items: center;
+
+    background-color: #ffffff;
+    border: none;
+    border-radius: 0;
+
+    font-family: inherit;
+    font-size: 14px;
+    text-align: left;
+
+    cursor: pointer;
+    pointer-events: auto;
+    appearance: none;
+}
+
+/* 編集ボタン */
+.action-menu-list .edit-menu-item {
+    color: #a58c7c;
+}
+
+/* 削除ボタン */
+.action-menu-list .delete-menu-item {
+    color: #f08080;
+}
+
+/* ホバー */
+.action-menu-list button:hover {
+    background-color: #fff5ef;
+}
+
+/* ========================================
+   投稿・コメントの重なり順
+======================================== */
+
+.post-item,
+.comment-item {
+    position: relative;
+    overflow: visible;
+}
+
+/* コメント一覧 */
+.comment-list {
+    overflow: visible;
+}
+
+/* メニューが開いている要素を前面にする */
+.post-item:has(.action-menu-list.show),
+.comment-item:has(.action-menu-list.show) {
+    z-index: 200;
+}
+
+/* ========================================
+   削除確認モーダル
+======================================== */
+
+.delete-modal {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(50, 35, 25, 0.35);
+
+    z-index: 9999;
+}
+
+/* モーダル表示 */
+.delete-modal.active {
+    display: flex;
+}
+
+/* ========================================
+   確認画面本体
+======================================== */
+
+.delete-modal-content {
+    position: relative;
+
+    width: 90%;
+    max-width: 380px;
+
+    padding: 35px 28px 28px;
+
+    background-color: #fffdf9;
+    border: 1px solid #f0dfd3;
+    border-radius: 18px;
+
+    box-shadow: 0 8px 30px rgba(80, 55, 40, 0.18);
+
+    text-align: center;
+}
+
+/* 確認タイトル */
+.delete-modal-content h3 {
+    margin: 0 0 15px;
+
+    color: #765b49;
+    font-size: 18px;
+}
+
+/* 説明文 */
+.delete-modal-content p {
+    margin: 0 0 25px;
+
+    color: #9c8575;
+    font-size: 13px;
+}
+
+/* ========================================
+   閉じるボタン
+======================================== */
+
+.close-delete-modal {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+
+    width: 30px;
+    height: 30px;
+
+    background: transparent;
+    border: none;
+
+    color: #a58c7c;
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+/* ========================================
+   確認ボタン
+======================================== */
+
+.delete-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* ボタン共通 */
+.delete-modal-buttons button {
+    min-width: 115px;
+    padding: 11px 15px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* キャンセル */
+.cancel-delete-btn {
+    background-color: #ffffff;
+    border: 1px solid #e8d6c9;
+    color: #947c6d;
+}
+
+/* 削除する */
+.confirm-delete-btn {
+    background-color: #ef927e;
+    border: 1px solid #ef927e;
+    color: #ffffff;
+}
+
+/* ホバー */
+.cancel-delete-btn:hover {
+    background-color: #fff4ec;
+}
+
+.confirm-delete-btn:hover {
+    background-color: #e77e69;
+}
