@@ -11,14 +11,12 @@
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/post-delete.css">
 
-<%-- サイドバー --%>
 <%@ include file="../sidebar.jsp" %>
 
 <main class="home-header">
 
     <h1>投稿</h1>
 
-    <%-- 新規投稿 --%>
     <a href="${pageContext.request.contextPath}/post/postnew.jsp"
        class="reserve-btn">
         投稿する
@@ -88,15 +86,22 @@
                 </div>
             </c:if>
 
-            <%-- 投稿日時 --%>
-            <p>
-                <c:out value="${post.post_datetime}" />
-            </p>
-
-            <%-- 投稿本文 --%>
-            <p>
+            <%-- 投稿本文（日時より先に表示） --%>
+            <div class="post-text"
+                 style="font-size: 22px !important;
+                        font-weight: 500;
+                        line-height: 1.8;
+                        color: #59483d;">
                 <c:out value="${post.post_text}" />
-            </p>
+            </div>
+
+            <%-- 投稿日時（小さく表示） --%>
+            <div class="post-date"
+                 style="font-size: 11px !important;
+                        font-weight: normal;
+                        color: #a39a92;">
+                <c:out value="${fn:replace(fn:substring(post.post_datetime, 0, 19), 'T', ' ')}" />
+            </div>
 
             <%-- 投稿画像 --%>
             <c:if test="${not empty post.post_img}">
@@ -161,13 +166,13 @@
                                 </c:if>
 
                                 <%-- コメント本文 --%>
-                                <p>
+                                <p class="comment-text">
                                     <c:out value="${comment.commentText}" />
                                 </p>
 
                                 <%-- コメント日時 --%>
-                                <small>
-                                    <c:out value="${comment.commentDatetime}" />
+                                <small class="comment-date">
+                                    <c:out value="${fn:replace(fn:substring(comment.commentDatetime, 0, 19), 'T', ' ')}" />
                                 </small>
 
                             </div>
@@ -234,10 +239,7 @@
 </main>
 
 
-<%-- ========================================
-    削除確認モーダル
-======================================== --%>
-
+<%-- 削除確認モーダル --%>
 <div id="deleteModal" class="delete-modal">
 
     <div class="delete-modal-content">
@@ -267,10 +269,7 @@
 </div>
 
 
-<%-- ========================================
-    投稿編集モーダル
-======================================== --%>
-
+<%-- 投稿編集モーダル --%>
 <div id="postEditModal" class="edit-modal">
 
     <div class="edit-modal-content">
@@ -309,10 +308,7 @@
 </div>
 
 
-<%-- ========================================
-    コメント編集モーダル
-======================================== --%>
-
+<%-- コメント編集モーダル --%>
 <div id="commentEditModal" class="edit-modal">
 
     <div class="edit-modal-content">
@@ -396,10 +392,8 @@ document.addEventListener("click", function() {
 ======================================== */
 
 const deleteModal = document.getElementById("deleteModal");
-
 const deleteConfirmButton =
     document.getElementById("deleteConfirmButton");
-
 const deleteCancelButton =
     document.getElementById("deleteCancelButton");
 
@@ -407,8 +401,7 @@ let deleteType = "";
 let deleteId = "";
 
 
-/* 削除ボタンを押したとき */
-
+/* 削除ボタン */
 document.querySelectorAll(".delete-button").forEach(button => {
 
     button.addEventListener("click", function(event) {
@@ -434,8 +427,7 @@ document.querySelectorAll(".delete-button").forEach(button => {
 });
 
 
-/* 削除を確定 */
-
+/* 削除確定 */
 deleteConfirmButton.addEventListener("click", function() {
 
     if (!deleteType || !deleteId) {
@@ -443,13 +435,11 @@ deleteConfirmButton.addEventListener("click", function() {
     }
 
     const form = document.createElement("form");
-
     form.method = "post";
 
     const contextPath = "${pageContext.request.contextPath}";
 
     const idInput = document.createElement("input");
-
     idInput.type = "hidden";
 
     if (deleteType === "post") {
@@ -465,13 +455,11 @@ deleteConfirmButton.addEventListener("click", function() {
             contextPath + "/servlet.CommentDeleteServlet.action";
 
         idInput.name = "commentId";
-
     }
 
     idInput.value = deleteId;
 
     form.appendChild(idInput);
-
     document.body.appendChild(form);
 
     form.submit();
@@ -480,7 +468,6 @@ deleteConfirmButton.addEventListener("click", function() {
 
 
 /* 削除キャンセル */
-
 deleteCancelButton.addEventListener("click", function() {
 
     deleteModal.classList.remove("show");
@@ -501,39 +488,32 @@ document.querySelectorAll(".edit-button").forEach(button => {
 
         event.stopPropagation();
 
-        const editType = this.dataset.editType;
-
-        const editText = this.dataset.editText || "";
+        const type = this.dataset.editType;
+        const text = this.dataset.editText;
 
         document.querySelectorAll(".menu-dropdown").forEach(menu => {
             menu.classList.remove("show");
         });
 
-        // 投稿編集
-        if (editType === "post") {
+        if (type === "post") {
 
             document.getElementById("editPostId").value =
                 this.dataset.postId;
 
             document.getElementById("editPostText").value =
-                editText;
+                text;
 
-            document.getElementById("postEditModal")
-                .classList.add("show");
+            document.getElementById("postEditModal").classList.add("show");
 
-        }
-
-        // コメント編集
-        if (editType === "comment") {
+        } else {
 
             document.getElementById("editCommentId").value =
                 this.dataset.commentId;
 
             document.getElementById("editCommentText").value =
-                editText;
+                text;
 
-            document.getElementById("commentEditModal")
-                .classList.add("show");
+            document.getElementById("commentEditModal").classList.add("show");
 
         }
 
@@ -552,18 +532,14 @@ document.querySelectorAll("[data-close-modal]").forEach(button => {
 
         const modalId = this.dataset.closeModal;
 
-        document.getElementById(modalId)
-            .classList.remove("show");
+        document.getElementById(modalId).classList.remove("show");
 
     });
 
 });
 
 
-/* ========================================
-   モーダル背景をクリックして閉じる
-======================================== */
-
+/* モーダルの外側をクリックして閉じる */
 document.querySelectorAll(".edit-modal").forEach(modal => {
 
     modal.addEventListener("click", function(event) {
@@ -576,15 +552,4 @@ document.querySelectorAll(".edit-modal").forEach(modal => {
 
 });
 
-
-deleteModal.addEventListener("click", function(event) {
-
-    if (event.target === this) {
-        this.classList.remove("show");
-    }
-
-});
-
 </script>
-
-<%@ include file="../footer.jsp" %>
