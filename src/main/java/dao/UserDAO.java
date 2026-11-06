@@ -200,7 +200,8 @@ public class UserDAO extends DAO {
 
 
     // ユーザー情報変更用
-    // メール・電話番号・住所・誕生日を更新
+    // メール・電話番号・住所を更新
+    // 誕生日は変更しない
     public int updateUserInfo(User user) throws Exception {
 
         // DB接続を取得
@@ -238,78 +239,91 @@ public class UserDAO extends DAO {
     }
 
 
- // 新規チャット用：自分以外の全ユーザーを取得するメソッド
+    // 新規チャット用：自分以外の全ユーザーを取得するメソッド
     public List<ChatListBean> getAllUsers(String myUserId) throws Exception {
 
         List<ChatListBean> userList = new ArrayList<>();
 
+        // SQLを準備
         String sql =
             "SELECT user_id, user_name FROM \"user\" " +
             "WHERE user_id != ? ORDER BY user_name ASC";
 
-        try (Connection con = getConnection();
-             PreparedStatement st = con.prepareStatement(sql)) {
+        // DB接続を取得
+        Connection con = getConnection();
 
-            // 自分のユーザーIDを設定
-            st.setString(1, myUserId);
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(sql);
 
-            // SQLを実行
-            try (ResultSet rs = st.executeQuery()) {
+        // 自分のユーザーIDを設定
+        st.setString(1, myUserId);
 
-                while (rs.next()) {
+        // SQLを実行
+        ResultSet rs = st.executeQuery();
 
-                    ChatListBean user = new ChatListBean();
+        // 検索結果をリストに格納
+        while (rs.next()) {
 
-                    // ユーザーID
-                    user.setUserId(rs.getInt("user_id"));
+            ChatListBean user = new ChatListBean();
 
-                    // ユーザー名
-                    user.setUserName(rs.getString("user_name"));
+            // ユーザーID
+            user.setUserId(rs.getInt("user_id"));
 
-                    userList.add(user);
-                }
-            }
+            // ユーザー名
+            user.setUserName(rs.getString("user_name"));
 
-        } catch (Exception e) {
-            throw new Exception("自分以外のユーザー取得に失敗しました。", e);
+            userList.add(user);
         }
 
-        return userList;
+        // リソースを解放
+        rs.close();
+        st.close();
+        con.close();
 
+        return userList;
     }
-    
-     // ユーザーIDから登録情報を取得する
-	 public User findByUserId(String userId) throws Exception {
-	
-	     User user = null;
-	
-	     String sql =
-	         "SELECT user_id, user_address, user_number, user_mail, " +
-	         "user_birthday, user_name, user_img " +
-	         "FROM \"user\" WHERE user_id = ?";
-	
-	     try (Connection con = getConnection();
-	          PreparedStatement st = con.prepareStatement(sql)) {
-	
-	         st.setString(1, userId);
-	
-	         try (ResultSet rs = st.executeQuery()) {
-	
-	             if (rs.next()) {
-	
-	                 user = new User();
-	
-	                 user.setUserId(rs.getString("user_id"));
-	                 user.setUserAddress(rs.getString("user_address"));
-	                 user.setUserNumber(rs.getString("user_number"));
-	                 user.setUserMail(rs.getString("user_mail"));
-	                 user.setUserBirthday(rs.getDate("user_birthday"));
-	                 user.setUserName(rs.getString("user_name"));
-	                 user.setUserImg(rs.getString("user_img"));
-	             }
-	         }
-	     }
-	
-	     return user;
-	 }
+
+
+    // ユーザーIDから登録情報を取得する
+    public User findByUserId(String userId) throws Exception {
+
+        User user = null;
+
+        // DB接続を取得
+        Connection con = getConnection();
+
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "SELECT user_id, user_address, user_number, user_mail, " +
+            "user_birthday, user_name, user_img " +
+            "FROM \"user\" WHERE user_id = ?"
+        );
+
+        // ユーザーIDを設定
+        st.setString(1, userId);
+
+        // SQLを実行
+        ResultSet rs = st.executeQuery();
+
+        // 検索結果があればBeanに格納
+        if (rs.next()) {
+
+            user = new User();
+
+            user.setUserId(rs.getString("user_id"));
+            user.setUserAddress(rs.getString("user_address"));
+            user.setUserNumber(rs.getString("user_number"));
+            user.setUserMail(rs.getString("user_mail"));
+            user.setUserBirthday(rs.getDate("user_birthday"));
+            user.setUserName(rs.getString("user_name"));
+            user.setUserImg(rs.getString("user_img"));
+        }
+
+        // リソースを解放
+        rs.close();
+        st.close();
+        con.close();
+
+        return user;
+    }
 }
