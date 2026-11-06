@@ -124,6 +124,7 @@
         const headerGear = document.getElementById('header-gear');
 
         checkboxes.forEach(cb => {
+
             cb.classList.toggle('show', isEditMode);
 
             if (!isEditMode) {

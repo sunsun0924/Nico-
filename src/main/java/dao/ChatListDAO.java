@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -10,7 +11,38 @@ import bean.ChatListBean;
 
 public class ChatListDAO extends DAO {
 
-    // 自分以外のユーザー一覧を取得
+    // 全ユーザーを取得（ログインなしのテスト用）
+    public List<ChatListBean> getAllUsers() throws Exception {
+
+        List<ChatListBean> userList = new ArrayList<>();
+
+        String sql =
+            "SELECT user_id, user_name " +
+            "FROM \"user\" " +
+            "ORDER BY user_name ASC";
+
+        try (Connection con = getConnection();
+             PreparedStatement st = con.prepareStatement(sql);
+             ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+
+                ChatListBean user = new ChatListBean();
+
+                user.setUserId(rs.getString("user_id").trim());
+                user.setUserName(rs.getString("user_name"));
+
+                userList.add(user);
+            }
+
+        } catch (Exception e) {
+            throw new Exception("全ユーザーの取得に失敗しました。", e);
+        }
+
+        return userList;
+    }
+
+    // 自分以外のユーザー一覧を取得（ログイン時）
     public List<ChatListBean> getAllUsers(String myUserId)
             throws Exception {
 
@@ -33,7 +65,7 @@ public class ChatListDAO extends DAO {
 
                     ChatListBean user = new ChatListBean();
 
-                    user.setUserId(rs.getString("user_id"));
+                    user.setUserId(rs.getString("user_id").trim());
                     user.setUserName(rs.getString("user_name"));
 
                     userList.add(user);
@@ -89,7 +121,7 @@ public class ChatListDAO extends DAO {
 
                     ChatListBean chat = new ChatListBean();
 
-                    chat.setUserId(rs.getString("user_id"));
+                    chat.setUserId(rs.getString("user_id").trim());
                     chat.setUserName(rs.getString("user_name"));
                     chat.setLastMessage(rs.getString("last_message"));
 

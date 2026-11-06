@@ -1,3 +1,4 @@
+
 package servlet;
 
 import java.io.IOException;
@@ -27,49 +28,42 @@ public class ChatListServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
         String action = request.getParameter("action");
         boolean jsonRequest = "json".equals(action);
 
-        response.setCharacterEncoding("UTF-8");
-
         HttpSession session = request.getSession(false);
 
-        // ログイン確認
-        if (session == null || session.getAttribute("user") == null) {
+        User loginUser = null;
 
-            if (jsonRequest) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType("application/json; charset=UTF-8");
-                response.getWriter().write(
-                    "{\"error\":\"ログインしてください。\"}"
-                );
-            } else {
-                response.sendRedirect(
-                    request.getContextPath() + "/login/userLogin.jsp"
-                );
-            }
-
-            return;
-        }
-
-        User loginUser = (User) session.getAttribute("user");
-        String myUserId = loginUser.getUserId();
-
-        if (myUserId == null || myUserId.trim().isEmpty()) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+        if (session != null) {
+            loginUser = (User) session.getAttribute("user");
         }
 
         ChatListDAO dao = new ChatListDAO();
 
         try {
 
-            // 新規チャット用：自分以外のユーザー一覧をJSONで返す
+            // 新規チャット用ユーザー一覧
             if (jsonRequest) {
 
-                List<ChatListBean> userList =
-                    dao.getAllUsers(myUserId);
+                List<ChatListBean> userList;
+
+                // ログインしている場合は自分以外を取得
+                if (loginUser != null
+                        && loginUser.getUserId() != null
+                        && !loginUser.getUserId().trim().isEmpty()) {
+
+                    userList = dao.getAllUsers(
+                        loginUser.getUserId().trim()
+                    );
+
+                } else {
+
+                    // ログインしていない場合は全ユーザーを取得
+                    userList = dao.getAllUsers();
+                }
 
                 response.setContentType(
                     "application/json; charset=UTF-8"
@@ -107,6 +101,20 @@ public class ChatListServlet extends HttpServlet {
                 return;
             }
 
+            // 通常のチャット一覧はログイン必須
+            if (loginUser == null
+                    || loginUser.getUserId() == null
+                    || loginUser.getUserId().trim().isEmpty()) {
+
+                response.sendRedirect(
+                    request.getContextPath() + "/login/userLogin.jsp"
+                );
+
+                return;
+            }
+
+            String myUserId = loginUser.getUserId().trim();
+
             // 通常のチャット一覧取得
             List<ChatListBean> chatList =
                 dao.getChatList(myUserId);
@@ -134,6 +142,7 @@ public class ChatListServlet extends HttpServlet {
                 );
 
             } else {
+
                 throw new ServletException(
                     "チャット一覧の取得に失敗しました。", e
                 );
@@ -185,6 +194,7 @@ public class ChatListServlet extends HttpServlet {
                     break;
 
                 default:
+
                     if (c < 0x20) {
                         result.append(
                             String.format("\\u%04x", (int) c)
@@ -192,10 +202,11 @@ public class ChatListServlet extends HttpServlet {
                     } else {
                         result.append(c);
                     }
+
                     break;
             }
         }
 
         return result.toString();
     }
-}}
+}
