@@ -1,39 +1,66 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>チャットルーム - Nico</title>
-</head>
-<body>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ include file="../header.jsp" %>
 
-    <!-- チャット一覧に戻るリンク（絶対パス） -->
-    <p>
-        <a href="${pageContext.request.contextPath}/chat-list">＜ チャット一覧に戻る</a>
-    </p>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chat.css">
 
-    <h1>チャットルーム</h1>
+<div class="page-layout">
 
-    <!-- メッセージのやり取り一覧表示エリア -->
-    <div style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; margin-bottom: 10px;">
-        <c:forEach var="msg" items="${messageList}">
-            <div style="margin-bottom: 8px;">
-                <small style="color: gray;">[<c:out value="${msg.sentAt}" />]</small>
-                <strong>ID: <c:out value="${msg.senderId}" />:</strong>
-                <span><c:out value="${msg.message}" /></span>
+    <%@ include file="../sidebar.jsp" %>
+
+    <main class="main-content">
+
+        <div class="chat-room-container">
+
+            <!-- ヘッダー（戻るボタン付き） -->
+            <header class="chat-room-header">
+                <div class="header-left">
+                    <a href="${pageContext.request.contextPath}/chat-list" class="back-link">＜</a>
+                    <div class="user-icon">
+                        <div class="no-image"></div>
+                    </div>
+                    <div class="header-user-info">
+                        <span class="header-user-name"><c:out value="${partnerUserId}" /> さん</span>
+                        <span class="header-status"><span class="status-dot"></span>オンライン</span>
+                    </div>
+                </div>
+                <div class="header-menu-icon">···</div>
+            </header>
+
+            <!-- メッセージ表示エリア -->
+            <div class="chat-messages-area">
+                <c:forEach var="msg" items="${messageList}">
+                    <div class="message-row <c:choose><c:when test='${msg.senderId == "userA"}'>mine</c:when><c:otherwise>partner</c:otherwise></c:choose>">
+                        <c:if test="${msg.senderId != 'userA'}">
+                            <div class="message-user-icon">
+                                <div class="no-image-small"></div>
+                            </div>
+                        </c:if>
+                        <div class="message-content-wrap">
+                            <div class="message-bubble">
+                                <c:out value="${msg.message}" />
+                            </div>
+                            <span class="message-time"><c:out value="${msg.sentAt}" /></span>
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
-        </c:forEach>
-    </div>
 
-    <!-- メッセージ送信フォーム（actionを絶対パスに指定） -->
-    <form action="${pageContext.request.contextPath}/chat-room" method="post">
-        <!-- 誰宛てのメッセージか保持するための隠しパラメータ -->
-        <input type="hidden" name="partnerId" value="${partnerUserId}">
-        
-        <input type="text" name="message" placeholder="メッセージを入力..." required style="width: 300px;">
-        <button type="submit">送信</button>
-    </form>
+            <!-- メッセージ送信フォーム -->
+            <form action="${pageContext.request.contextPath}/chat-room" method="post" class="chat-input-form">
+                <input type="hidden" name="partnerId" value="${partnerUserId}">
+                <button type="button" class="btn-plus">＋</button>
+                <input type="text" name="message" placeholder="メッセージを入力..." required autocomplete="off">
+                <button type="submit" class="btn-send-round">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                </button>
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
 
 </body>
 </html>

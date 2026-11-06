@@ -1,18 +1,16 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import bean.ChatRoomBean;
+import dao.ChatRoomDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-import bean.User;
-import bean.ChatRoomBean;
-import dao.ChatRoomDAO;
 
 @WebServlet("/chat-room")
 public class ChatRoomServlet extends HttpServlet {
@@ -26,17 +24,10 @@ public class ChatRoomServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(
-                request.getContextPath() + "/login/userLogin.jsp"
-            );
-            return;
-        }
-
-        User loginUser = (User) session.getAttribute("user");
-        String myUserId = loginUser.getUserId();
+        // ==========================================
+        // ★ テスト用ダミーユーザーの設定
+        // ==========================================
+        String myUserId = "userA";
 
         String partnerUserId = request.getParameter("partnerId");
 
@@ -57,10 +48,16 @@ public class ChatRoomServlet extends HttpServlet {
                 return;
             }
 
+            // ==========================================
+            // ★ テーブル未作成時の画面表示テスト用（DB接続時は dao.getMessageList に切り替えてください）
+            // ==========================================
+            List<ChatRoomBean> messageList = new ArrayList<>();
+            
+            /* -- DB接続を有効にする場合はこちらのコメントアウトを解除 --
             ChatRoomDAO dao = new ChatRoomDAO();
-
             List<ChatRoomBean> messageList =
                 dao.getMessageList(myUserId, partnerUserId);
+            ----------------------------------------------------- */
 
             request.setAttribute("messageList", messageList);
             request.setAttribute("partnerUserId", partnerUserId);
@@ -83,17 +80,10 @@ public class ChatRoomServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        HttpSession session = request.getSession(false);
-
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(
-                request.getContextPath() + "/login/userLogin.jsp"
-            );
-            return;
-        }
-
-        User loginUser = (User) session.getAttribute("user");
-        String myUserId = loginUser.getUserId();
+        // ==========================================
+        // ★ テスト用ダミーユーザーの設定
+        // ==========================================
+        String myUserId = "userA";
 
         String partnerUserId = request.getParameter("partnerId");
         String messageText = request.getParameter("message");
