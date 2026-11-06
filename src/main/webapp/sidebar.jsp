@@ -71,13 +71,18 @@
 
     <!-- 一番下のマイページ -->
     <div class="menu-bottom">
+      <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
+         class="mypage-item">
 
-        <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
-           class="mypage-item">
-            <span class="profile-icon">👤</span>
-            <span>マイページ</span>
-        </a>
+        <img
+            src="${pageContext.request.contextPath}/images/${empty sessionScope.user.userImg ? 'default-profile.png' : sessionScope.user.userImg}"
+            alt="ユーザーアイコン"
+            class="profile-icon"
+            style="object-position: ${sessionScope.user.userImgPositionX}% ${sessionScope.user.userImgPositionY}%;"
+        >
 
+        <span>マイページ</span>
+      </a>
     </div>
 
 </div>

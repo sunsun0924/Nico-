@@ -121,21 +121,17 @@
 }
 
 /* =========================
-   プロフィールアイコン
+   マイページのユーザーアイコン
 ========================= */
 
 .profile-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 36px;
-    height: 36px;
-
-    background-color: #edaa8d;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-
-    font-size: 22px;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+    display: block;
 }
 
 /* =========================
