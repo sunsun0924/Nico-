@@ -56,7 +56,7 @@
 
                             <img id="profile-preview"
                                  src="${empty user.userImg
-                                    ? pageContext.request.contextPath.concat('/images/default-profile.jpg')
+                                    ? pageContext.request.contextPath.concat('/images/default-profile.png')
                                     : pageContext.request.contextPath.concat('/images/').concat(user.userImg)}"
                                  alt="プロフィール画像">
 

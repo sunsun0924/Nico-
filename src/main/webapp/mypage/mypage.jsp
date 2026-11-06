@@ -40,7 +40,7 @@
             <div class="user-avatar">
                 <img
                     src="${empty user.userImg
-                        ? pageContext.request.contextPath.concat('/images/default-profile.jpg')
+                        ? pageContext.request.contextPath.concat('/images/default-profile.png')
                         : pageContext.request.contextPath.concat('/images/').concat(user.userImg)}"
                     alt="プロフィール画像"
                     style="object-position: ${user.userImgPositionX}% ${user.userImgPositionY}%;"

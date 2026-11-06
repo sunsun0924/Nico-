@@ -47,7 +47,16 @@ public class UserDAO extends DAO {
             u.setUserMail(rs.getString("user_mail"));
             u.setUserBirthday(rs.getDate("user_birthday"));
             u.setUserName(rs.getString("user_name"));
-            u.setUserImg(rs.getString("user_img"));
+
+            // プロフィール画像
+            String userImg = rs.getString("user_img");
+
+            // 画像が未設定の場合はデフォルト画像を設定
+            if (userImg == null || userImg.trim().isEmpty()) {
+                userImg = "default-profile.png";
+            }
+
+            u.setUserImg(userImg);
 
             // プロフィール画像の表示位置
             u.setUserImgPositionX(
@@ -333,7 +342,16 @@ public class UserDAO extends DAO {
             user.setUserMail(rs.getString("user_mail"));
             user.setUserBirthday(rs.getDate("user_birthday"));
             user.setUserName(rs.getString("user_name"));
-            user.setUserImg(rs.getString("user_img"));
+
+            // プロフィール画像
+            String userImg = rs.getString("user_img");
+
+            // 画像が未設定の場合はデフォルト画像を設定
+            if (userImg == null || userImg.trim().isEmpty()) {
+                userImg = "default-profile.png";
+            }
+
+            user.setUserImg(userImg);
 
             // プロフィール画像の表示位置
             user.setUserImgPositionX(
@@ -352,4 +370,5 @@ public class UserDAO extends DAO {
 
         return user;
     }
+
 }
