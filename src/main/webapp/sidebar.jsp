@@ -7,7 +7,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
-<!-- 通知件数を取得 -->
+<%-- 通知件数を取得 --%>
 <%
     int notificationCount = 0;
 
@@ -19,6 +19,7 @@
         (Admin) session.getAttribute("admin");
 
     try {
+
         NotificationDAO notificationDAO =
             new NotificationDAO();
 
@@ -40,20 +41,46 @@
         }
 
     } catch (Exception e) {
+
         e.printStackTrace();
+    }
+
+    // 丸付き数字を設定
+    String badgeText = "";
+
+    if (notificationCount > 0) {
+
+        String[] circledNumbers = {
+            "",
+            "①", "②", "③", "④", "⑤",
+            "⑥", "⑦", "⑧", "⑨", "⑩",
+            "⑪", "⑫", "⑬", "⑭", "⑮",
+            "⑯", "⑰", "⑱", "⑲", "⑳"
+        };
+
+        // 20件以下の場合
+        if (notificationCount <= 20) {
+
+            badgeText = circledNumbers[notificationCount];
+
+        // 21件以上の場合
+        } else {
+
+            badgeText = "⑳+";
+        }
     }
 %>
 
-<!-- メニュー用CSS -->
+<%-- メニュー用CSS --%>
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/sidebar.css">
 
 <div class="side-menu">
 
-    <!-- メニュー一覧 -->
+    <%-- メニュー一覧 --%>
     <nav class="menu-list">
 
-        <!-- 通知 -->
+        <%-- 通知 --%>
         <a href="${pageContext.request.contextPath}/servlet.NotificationServlet.action"
            class="menu-item">
 
@@ -61,18 +88,18 @@
 
             <span>通知</span>
 
-            <!-- 通知件数が1件以上の場合に表示 -->
+            <%-- 通知件数が1件以上の場合に表示 --%>
             <% if (notificationCount > 0) { %>
 
                 <span class="notification-badge">
-                    <%= notificationCount %>
+                    <%= badgeText %>
                 </span>
 
             <% } %>
 
         </a>
 
-        <!-- 投稿 -->
+        <%-- 投稿 --%>
         <a href="${pageContext.request.contextPath}/servlet.PostServlet.action"
            class="menu-item">
 
@@ -81,7 +108,7 @@
 
         </a>
 
-        <!-- チャット -->
+        <%-- チャット --%>
         <a href="${pageContext.request.contextPath}/chat/chat_list.jsp"
            class="menu-item">
 
@@ -90,7 +117,7 @@
 
         </a>
 
-        <!-- 検索 -->
+        <%-- 検索 --%>
         <a href="${pageContext.request.contextPath}/search/search.jsp"
            class="menu-item">
 
@@ -99,7 +126,7 @@
 
         </a>
 
-        <!-- ギフト -->
+        <%-- ギフト --%>
         <a href="${pageContext.request.contextPath}/gift/gift.jsp"
            class="menu-item">
 
@@ -108,7 +135,6 @@
 
         </a>
 
-        
         <%-- 管理者の種類によって表示を切り替える --%>
         <c:choose>
 
@@ -141,10 +167,9 @@
 
         </c:choose>
 
-
     </nav>
 
-    <!-- 一番下のマイページ -->
+    <%-- 一番下のマイページ --%>
     <div class="menu-bottom">
 
         <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"

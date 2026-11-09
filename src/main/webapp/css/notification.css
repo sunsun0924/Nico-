@@ -1,7 +1,7 @@
-
 /* =========================
    画面全体の基本設定
 ========================= */
+
 * {
     box-sizing: border-box;
 }
@@ -22,6 +22,7 @@ body {
 /* =========================
    通知画面全体
 ========================= */
+
 .notification-container {
     width: calc(100% - 266px);
     max-width: 900px;
@@ -37,6 +38,7 @@ body {
 /* =========================
    タイトル部分
 ========================= */
+
 .notification-header {
     margin-bottom: 25px;
     text-align: center;
@@ -49,7 +51,10 @@ body {
     color: #654b39;
 }
 
-/* 通知タブ全体 */
+/* =========================
+   通知タブ
+========================= */
+
 .notification-tabs {
     display: flex;
     gap: 6px;
@@ -60,7 +65,6 @@ body {
     border-radius: 35px;
 }
 
-/* 各タブ */
 .notification-tabs .tab {
     flex: 1;
     min-width: 0;
@@ -80,6 +84,7 @@ body {
 }
 
 /* 選択中のタブ */
+
 .notification-tabs .tab.active {
     color: #ffffff;
     background-color: #ed947c;
@@ -88,6 +93,7 @@ body {
 /* =========================
    通知一覧
 ========================= */
+
 .notification-list {
     display: flex;
     flex-direction: column;
@@ -95,52 +101,85 @@ body {
 }
 
 /* 通知1件ごとの枠 */
+
 .notification-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     padding: 25px 22px;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 20px;
     min-height: 150px;
+    text-align: left;
 }
 
 /* 通知の文章を表示する領域 */
+
 .notification-content {
     flex: 1;
     min-width: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    text-align: left !important;
 }
 
-/* 通知のメイン文章 */
+/* =========================
+   通知タイトル
+========================= */
+
 .notification-message {
-    margin: 0 0 10px;
+    display: block;
+    width: 100%;
+    margin: 0 0 10px 0;
+    padding: 0;
     font-size: 19px;
     font-weight: bold;
     line-height: 1.7;
     color: #59483d;
+    text-align: left !important;
     overflow-wrap: anywhere;
 }
 
-/* コメント・ギフトの詳細 */
+/* =========================
+   コメント・ギフトの詳細本文
+========================= */
+
 .notification-detail {
-    margin: 0 0 8px;
-    padding-left: 10px;
+    display: block;
+    width: 100%;
+    margin: 0 0 15px 0 !important;
+    padding: 0 0 0 10px;
     font-size: 17px;
-    line-height: 1.7;
+    font-weight: normal;
+    line-height: 1.8;
     color: #75665c;
+    text-align: left !important;
+    white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
 
-/* 通知日時 */
+/* =========================
+   通知日時
+========================= */
+
 .notification-date {
+    display: block;
+    width: 100%;
     margin: 0;
+    padding: 0;
     font-size: 15px;
     color: #a39a92;
+    text-align: left !important;
 }
 
 /* =========================
    通知がない場合
 ========================= */
+
 .no-notification {
     padding: 40px 10px;
     text-align: center;
@@ -151,9 +190,9 @@ body {
 /* =========================
    スマートフォン対応
 ========================= */
+
 @media screen and (max-width: 600px) {
 
-    /* 通知画面全体 */
     .notification-container {
         width: calc(100% - 100px);
         max-width: none;
@@ -163,7 +202,6 @@ body {
         border-radius: 16px;
     }
 
-    /* タイトル */
     .notification-header {
         margin-bottom: 20px;
     }
@@ -172,7 +210,6 @@ body {
         font-size: 24px;
     }
 
-    /* タブ */
     .notification-tabs {
         gap: 4px;
         padding: 4px;
@@ -185,26 +222,36 @@ body {
         overflow-wrap: anywhere;
     }
 
-    /* 通知枠 */
     .notification-item {
         padding: 18px 14px;
         min-height: 120px;
         border-radius: 15px;
     }
 
-    /* 通知本文 */
+    .notification-content {
+        width: 100%;
+        align-items: stretch;
+        text-align: left !important;
+    }
+
     .notification-message {
         font-size: 16px;
+        line-height: 1.7;
+        margin-bottom: 8px;
+        text-align: left !important;
     }
 
     .notification-detail {
         padding-left: 5px;
         font-size: 14px;
+        line-height: 1.8;
+        margin-bottom: 12px !important;
+        text-align: left !important;
     }
 
-    /* 日時 */
     .notification-date {
         font-size: 13px;
+        text-align: left !important;
     }
 
     .no-notification {
@@ -216,7 +263,9 @@ body {
 /* =========================
    小さなスマートフォン
 ========================= */
+
 @media screen and (max-width: 380px) {
+
     .notification-container {
         padding: 14px 8px;
     }

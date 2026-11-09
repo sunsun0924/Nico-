@@ -42,7 +42,6 @@ public class NotificationServlet extends Action {
         }
 
         try {
-
             // タブの種類を取得
             String filter = request.getParameter("filter");
 
@@ -53,7 +52,6 @@ public class NotificationServlet extends Action {
             if (!filter.equals("all")
                     && !filter.equals("comment")
                     && !filter.equals("gift")) {
-
                 filter = "all";
             }
 
@@ -64,16 +62,24 @@ public class NotificationServlet extends Action {
             // ユーザーの場合
             if (user != null) {
 
+                // 先に通知一覧を取得
                 notificationList =
                     dao.findByUserId(user.getUserId());
+
+                // 取得後に未読通知を既読にする
+                dao.markAllReadByUserId(user.getUserId());
 
                 request.setAttribute("accountType", "user");
 
             // 管理者の場合
             } else {
 
+                // 先に通知一覧を取得
                 notificationList =
                     dao.findByAdminId(admin.getCpUserid());
+
+                // 取得後に未読通知を既読にする
+                dao.markAllReadByAdminId(admin.getCpUserid());
 
                 request.setAttribute("accountType", "admin");
             }
@@ -87,8 +93,7 @@ public class NotificationServlet extends Action {
 
             for (Notification notification : notificationList) {
 
-                String type =
-                    notification.getNotificationType();
+                String type = notification.getNotificationType();
 
                 // タブによる絞り込み
                 if (!filter.equals("all")
@@ -98,20 +103,37 @@ public class NotificationServlet extends Action {
 
                 Map<String, String> map = new HashMap<>();
 
-                map.put("type", type != null ? type : "");
-
                 map.put(
-                    "message",
-                    notification.getMessage() != null
-                        ? notification.getMessage() : ""
+                    "type",
+                    type != null ? type : ""
                 );
 
+                // コメント本文を含む通知メッセージ
+	             // 通知メッセージを取得
+	                String message = notification.getMessage() != null
+	                    ? notification.getMessage()
+	                    : "";
+	
+	                // 改行位置で通知タイトルとコメント本文に分ける
+	                String[] messageParts = message.split("\\r?\\n", 2);
+	
+	                // 通知タイトル
+	                map.put("title", messageParts[0]);
+	
+	                // コメント本文
+	                map.put(
+	                    "detail",
+	                    messageParts.length > 1 ? messageParts[1] : ""
+	                );
+
+                // 投稿ID
                 map.put(
                     "postId",
                     notification.getPostId() != null
                         ? notification.getPostId() : ""
                 );
 
+                // ギフトID
                 map.put(
                     "giftId",
                     notification.getGiftId() != null
@@ -134,8 +156,12 @@ public class NotificationServlet extends Action {
                 notifications.add(map);
             }
 
+            // JSPに情報を渡す
             request.setAttribute("notifications", notifications);
             request.setAttribute("filter", filter);
+
+            // 既読更新後なので未読件数は0件
+            request.setAttribute("notificationCount", 0);
 
             return "/tuuti/notification.jsp";
 
