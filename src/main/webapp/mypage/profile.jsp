@@ -1,9 +1,57 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+<%@ page import="bean.User" %>
+<%@ page import="bean.Admin" %>
+
 <%@ include file="../header.jsp" %>
 
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/profile.css">
+
+<%
+    // セッションからログイン情報を取得
+    Admin admin = (Admin) session.getAttribute("admin");
+    User user = (User) session.getAttribute("user");
+
+    // 管理者かどうかを判定
+    boolean isAdmin = admin != null;
+
+    // プロフィール情報
+    String profileName;
+    String profileImage;
+
+    int positionX;
+    int positionY;
+
+    // 管理者の場合
+    if (isAdmin) {
+
+        profileName = admin.getCpUsername();
+        profileImage = admin.getCpUserimg();
+
+        positionX = admin.getCpUserimgPositionX();
+        positionY = admin.getCpUserimgPositionY();
+
+    } else {
+
+        // 一般ユーザーの場合
+        profileName = user.getUserName();
+        profileImage = user.getUserImg();
+
+        positionX = user.getUserImgPositionX();
+        positionY = user.getUserImgPositionY();
+    }
+
+    // 名前が未登録の場合
+    if (profileName == null) {
+        profileName = "";
+    }
+
+    // 画像が未登録の場合
+    if (profileImage == null || profileImage.isEmpty()) {
+        profileImage = "default-profile.png";
+    }
+%>
 
 <div class="page-layout">
 
@@ -55,10 +103,9 @@
                         <div class="profile-image-wrapper">
 
                             <img id="profile-preview"
-                                 src="${empty user.userImg
-                                    ? pageContext.request.contextPath.concat('/images/default-profile.png')
-                                    : pageContext.request.contextPath.concat('/images/').concat(user.userImg)}"
-                                 alt="プロフィール画像">
+                                 src="${pageContext.request.contextPath}/images/<%= profileImage %>"
+                                 alt="プロフィール画像"
+                                 style="object-position: <%= positionX %>% <%= positionY %>%">
 
                         </div>
 
@@ -121,7 +168,7 @@
                                    name="userImgPositionX"
                                    min="0"
                                    max="100"
-                                   value="${user.userImgPositionX}">
+                                   value="<%= positionX %>">
 
                         </div>
 
@@ -137,7 +184,7 @@
                                    name="userImgPositionY"
                                    min="0"
                                    max="100"
-                                   value="${user.userImgPositionY}">
+                                   value="<%= positionY %>">
 
                         </div>
 
@@ -160,7 +207,7 @@
                                id="user-name"
                                name="userName"
                                class="name-input"
-                               value="${user.userName}"
+                               value="<%= profileName %>"
                                placeholder="名前を入力してください"
                                minlength="2"
                                maxlength="20"
@@ -224,9 +271,9 @@
     const positionX = document.getElementById("position-x");
     const positionY = document.getElementById("position-y");
 
-    // 初期画像
+    // 初期画像（PNG）
     const defaultImage =
-        "${pageContext.request.contextPath}/images/default-profile.jpg";
+        "${pageContext.request.contextPath}/images/default-profile.png";
 
     // 画像表示位置をプレビューに反映
     function updateImagePosition() {
@@ -267,8 +314,8 @@
 
             alert("画像ファイルを選択してください。");
             this.value = "";
-            return;
 
+            return;
         }
 
         // 1MB以内か確認
@@ -276,8 +323,8 @@
 
             alert("画像は1MB以内にしてください。");
             this.value = "";
-            return;
 
+            return;
         }
 
         const reader = new FileReader();
@@ -340,7 +387,6 @@
             nameInput.focus();
 
             return;
-
         }
 
         nameInput.value = name;
