@@ -97,6 +97,8 @@ body {
 
 .post-item {
     position: relative;
+    display: block;
+    width: 100%;
     margin-bottom: 20px;
     padding: 25px 22px;
     background-color: #fffdf8;
@@ -104,53 +106,84 @@ body {
     border-radius: 20px;
     overflow-wrap: anywhere;
     box-shadow: 0 2px 8px rgba(100, 75, 50, 0.04);
+    text-align: left;
 }
 
 /* ========================================
-   投稿者プロフィール
+   投稿者情報
 ======================================== */
 
 .post-author {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 13px;
-    border-bottom: 1px solid #f0e8de;
+    gap: 10px;
+    min-height: 40px;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee4d8;
 }
-
-/* 投稿者アイコン */
 
 .post-author-icon {
     display: block;
-    flex-shrink: 0;
-    width: 46px;
-    height: 46px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: #f8d9ca;
-    border: 1px solid #f0e8de;
 }
-
-/* 投稿者名と管理者ラベル */
 
 .post-author-info {
     display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
+    align-items: center;
+    gap: 8px;
 }
 
 .post-author-name {
     color: #59483d;
-    font-size: 16px;
-    font-weight: bold;
-    overflow-wrap: anywhere;
+    font-size: 14px;
 }
 
 .post-author-label {
-    color: #a39a92;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background-color: #f5e3d8;
+    color: #a17b65;
     font-size: 11px;
+}
+
+/* ========================================
+   投稿本文
+======================================== */
+
+.post-item .post-text {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 15px 0 !important;
+    padding: 0 !important;
+
+    text-align: left !important;
+    text-indent: 0 !important;
+
+    align-self: stretch !important;
+    justify-self: stretch !important;
+
+    float: none !important;
+
+    color: #75665c;
+    font-size: 16px;
+    line-height: 1.8;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* 投稿本文内の文字も左寄せ */
+
+.post-item .post-text * {
+    text-align: left !important;
 }
 
 /* ========================================
@@ -158,56 +191,40 @@ body {
 ======================================== */
 
 .post-date {
-    margin: 0 0 12px;
-    color: #a39a92;
-    font-size: 11px;
-    font-weight: normal;
-}
-
-/* ========================================
-   投稿本文
-======================================== */
-
-.post-text {
     display: block;
     width: 100%;
-    margin: 8px 0 14px;
-    padding: 0;
-    color: #59483d;
-    font-size: 21px;
-    font-weight: 500;
-    line-height: 1.8;
+    margin: 8px 0 12px;
+    color: #a39a92;
+    font-size: 11px;
     text-align: left;
-    text-indent: 0;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-}
-
-/* 投稿カード直下の本文を左寄せに固定 */
-
-.post-item > .post-text {
-    display: block !important;
-    position: relative;
-    left: 0;
-    width: 100%;
-    margin: 8px 0 14px;
-    padding: 0;
-    text-align: left !important;
-    text-indent: 0 !important;
 }
 
 /* ========================================
    投稿画像
 ======================================== */
 
+.post-image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 100%;
+    margin: 15px 0;
+}
+
+.post-image-wrapper {
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
 .post-image {
     display: block;
     max-width: 100%;
-    max-height: 500px;
+    width: auto;
+    max-height: 400px;
     height: auto;
-    margin: 15px 0;
-    border-radius: 15px;
     object-fit: contain;
+    border-radius: 12px;
 }
 
 /* ========================================
@@ -231,6 +248,48 @@ body {
     border-bottom: 1px solid #f0dfd0;
 }
 
+/* ========================================
+   コメント投稿者情報
+======================================== */
+
+.comment-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.comment-author-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-author-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comment-author-name {
+    color: #59483d;
+    font-size: 14px;
+}
+
+.comment-author-label {
+    padding: 3px 7px;
+    border-radius: 5px;
+    background-color: #f5e3d8;
+    color: #a17b65;
+    font-size: 11px;
+}
+
+/* ========================================
+   コメントカード
+======================================== */
+
 .comment-item {
     position: relative;
     margin-bottom: 12px;
@@ -244,14 +303,24 @@ body {
     margin-bottom: 0;
 }
 
-/* コメント本文 */
+.comment-item strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #59483d;
+    font-size: 14px;
+}
 
 .comment-item p {
     margin: 5px 0;
     color: #75665c;
     font-size: 14px;
     line-height: 1.7;
+    text-align: left;
     overflow-wrap: anywhere;
+}
+
+.comment-text {
+    text-align: left !important;
 }
 
 .comment-item small {
@@ -265,62 +334,6 @@ body {
     margin: 0;
     color: #a39a92;
     font-size: 13px;
-}
-
-/* ========================================
-   コメント投稿者のプロフィール画像
-======================================== */
-
-.comment-author {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-/* コメント投稿者のアイコン */
-
-.comment-author-icon {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    object-fit: cover;
-    border-radius: 50%;
-    display: block;
-    flex-shrink: 0;
-}
-
-/* コメント投稿者の名前と管理者ラベル */
-
-.comment-author-info {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    min-width: 0;
-}
-
-/* コメント投稿者の名前 */
-
-.comment-author-name {
-    display: inline-block !important;
-    margin: 0 !important;
-    color: #59483d;
-    font-size: 14px;
-    font-weight: bold;
-    overflow-wrap: anywhere;
-}
-
-/* 管理者ラベル */
-
-.comment-author-label {
-    display: inline-block;
-    flex-shrink: 0;
-    padding: 2px 7px;
-    border-radius: 5px;
-    background-color: #f5e4d8;
-    color: #a17b64;
-    font-size: 11px;
-    font-weight: bold;
 }
 
 /* ========================================
@@ -632,6 +645,27 @@ body {
 }
 
 /* ========================================
+   投稿本文の左寄せ・最終調整
+======================================== */
+
+.home-header .post-item .post-text {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 15px 0 !important;
+    padding: 0 !important;
+
+    text-align: left !important;
+    text-indent: 0 !important;
+
+    align-self: stretch !important;
+    justify-self: stretch !important;
+
+    float: none !important;
+    position: static !important;
+}
+
+/* ========================================
    スマートフォン対応
 ======================================== */
 
@@ -640,28 +674,23 @@ body {
     .home-header {
         width: calc(100% - 30px);
         margin: 15px;
-        padding: 20px;
-    }
-
-    .home-header h1 {
-        font-size: 26px;
+        padding: 18px;
     }
 
     .post-item {
-        padding: 20px 15px;
-    }
-
-    .post-text {
-        font-size: 18px;
+        padding: 18px 14px;
     }
 
     .comment-form {
-        flex-direction: column;
-        align-items: stretch;
+        gap: 7px;
     }
 
     .comment-form button {
-        align-self: flex-end;
+        padding: 11px 13px;
     }
 
+    .post-image {
+        max-width: 100%;
+        max-height: 300px;
+    }
 }
