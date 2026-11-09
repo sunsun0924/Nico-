@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <<<<<<< HEAD
-<%-- 通知件数を取得 a--%>
+<%-- 通知件数を取得 --%>
 <%
     int notificationCount = 0;
 
