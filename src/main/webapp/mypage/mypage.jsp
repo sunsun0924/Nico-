@@ -20,19 +20,9 @@
         adminId = admin.getCpUserid();
     }
 
-    // 管理者専用マイページの対象か判定
-    boolean adminMyPage = false;
-
-    if (admin != null) {
-
-        // admin000 または IDの3・4文字目がadの場合
-        if ("admin000".equals(adminId)
-                || (adminId.length() >= 4
-                && "ad".equals(adminId.substring(2, 4)))) {
-
-            adminMyPage = true;
-        }
-    }
+    // 管理者専用マイページか判定
+    // IDの文字ではなく、adminセッションの有無で判断
+    boolean adminMyPage = (admin != null);
 
     // 管理者プロフィール画像
     String adminImage = admin != null
@@ -71,11 +61,8 @@
 
         <%-- ページタイトル --%>
         <div class="card-header">
-
             <i class="fa-regular fa-user"></i>
-
             <h2>マイページ</h2>
-
         </div>
 
         <%-- プロフィール変更完了メッセージ --%>
@@ -84,7 +71,6 @@
                 (String) session.getAttribute("mypageMessage");
 
             if (mypageMessage != null) {
-
                 session.removeAttribute("mypageMessage");
         %>
 
@@ -104,12 +90,10 @@
 
                 <%-- 管理者アイコン --%>
                 <div class="user-avatar">
-
                     <img
                         src="${pageContext.request.contextPath}/images/<%= adminImage %>"
                         alt="プロフィール画像"
                         style="object-position: <%= adminPositionX %>% <%= adminPositionY %>%">
-
                 </div>
 
                 <%-- 管理者名・編集ボタン --%>
@@ -123,7 +107,6 @@
                        class="btn-edit-profile">
 
                         <i class="fa-solid fa-pen"></i>
-
                         プロフィールを編集
 
                     </a>
@@ -140,9 +123,7 @@
                 <div class="menu-item-left">
 
                     <div class="menu-icon-wrapper orange-logout">
-
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
-
                     </div>
 
                     <span class="menu-item-title">
@@ -185,7 +166,6 @@
                        class="btn-edit-profile">
 
                         <i class="fa-solid fa-pen"></i>
-
                         プロフィールを編集
 
                     </a>
@@ -201,9 +181,7 @@
                 <div class="menu-item-left">
 
                     <div class="menu-icon-wrapper red-heart">
-
                         <i class="fa-solid fa-bookmark"></i>
-
                     </div>
 
                     <span class="menu-item-title">
@@ -223,9 +201,7 @@
                 <div class="menu-item-left">
 
                     <div class="menu-icon-wrapper red-heart">
-
                         <i class="fa-solid fa-gift"></i>
-
                     </div>
 
                     <span class="menu-item-title">
@@ -245,9 +221,7 @@
                 <div class="menu-item-left">
 
                     <div class="menu-icon-wrapper purple-gear">
-
                         <i class="fa-solid fa-gear"></i>
-
                     </div>
 
                     <span class="menu-item-title">
@@ -268,9 +242,7 @@
                 <div class="menu-item-left">
 
                     <div class="menu-icon-wrapper orange-logout">
-
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
-
                     </div>
 
                     <span class="menu-item-title">
@@ -327,25 +299,19 @@
 
     // ログアウト確認ポップアップを表示
     function openLogoutModal() {
-
         document.getElementById("logout-modal").style.display = "flex";
-
     }
 
     // ログアウト確認ポップアップを閉じる
     function closeLogoutModal() {
-
         document.getElementById("logout-modal").style.display = "none";
-
     }
 
     // ポップアップの背景をクリックした場合も閉じる
     document.getElementById("logout-modal").addEventListener("click", function(event) {
 
         if (event.target === this) {
-
             closeLogoutModal();
-
         }
 
     });
