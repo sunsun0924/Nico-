@@ -15,47 +15,81 @@ public class Admin {
     // 企業ID
     private String cpId;
 
+    // 管理者名
+    private String cpUsername;
+
+    // プロフィール画像
+    private String cpUserimg;
+
+    // 画像表示位置
+    private int cpUserimgPositionX = 50;
+    private int cpUserimgPositionY = 50;
+
     // コンストラクタ
     public Admin() {
     }
 
-    // 管理者IDを取得
     public String getCpUserid() {
         return cpUserid;
     }
 
-    // 管理者IDを設定
     public void setCpUserid(String cpUserid) {
         this.cpUserid = cpUserid;
     }
 
-    // パスワードを取得
     public String getCpUserpass() {
         return cpUserpass;
     }
 
-    // パスワードを設定
     public void setCpUserpass(String cpUserpass) {
         this.cpUserpass = cpUserpass;
     }
 
-    // メールアドレスを取得
     public String getCpUsermail() {
         return cpUsermail;
     }
 
-    // メールアドレスを設定
     public void setCpUsermail(String cpUsermail) {
         this.cpUsermail = cpUsermail;
     }
 
-    // 企業IDを取得
     public String getCpId() {
         return cpId;
     }
 
-    // 企業IDを設定
     public void setCpId(String cpId) {
         this.cpId = cpId;
+    }
+
+    public String getCpUsername() {
+        return cpUsername;
+    }
+
+    public void setCpUsername(String cpUsername) {
+        this.cpUsername = cpUsername;
+    }
+
+    public String getCpUserimg() {
+        return cpUserimg;
+    }
+
+    public void setCpUserimg(String cpUserimg) {
+        this.cpUserimg = cpUserimg;
+    }
+
+    public int getCpUserimgPositionX() {
+        return cpUserimgPositionX;
+    }
+
+    public void setCpUserimgPositionX(int cpUserimgPositionX) {
+        this.cpUserimgPositionX = cpUserimgPositionX;
+    }
+
+    public int getCpUserimgPositionY() {
+        return cpUserimgPositionY;
+    }
+
+    public void setCpUserimgPositionY(int cpUserimgPositionY) {
+        this.cpUserimgPositionY = cpUserimgPositionY;
     }
 }
