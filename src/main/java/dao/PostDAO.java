@@ -17,16 +17,21 @@ public class PostDAO extends DAO {
     public List<Post> findAll() throws Exception {
 
         List<Post> list = new ArrayList<>();
+
+        // DB接続を取得
         Connection con = getConnection();
 
+        // SQLを準備
         PreparedStatement st = con.prepareStatement(
             "SELECT user_id, admin_id, author_type, post_id, "
             + "post_datetime, post_text, post_img, comment "
             + "FROM post ORDER BY post_datetime DESC"
         );
 
+        // SQLを実行
         ResultSet rs = st.executeQuery();
 
+        // 検索結果をBeanに格納
         while (rs.next()) {
 
             Post post = new Post();
@@ -49,6 +54,7 @@ public class PostDAO extends DAO {
             list.add(post);
         }
 
+        // リソースを解放
         rs.close();
         st.close();
         con.close();
@@ -56,22 +62,29 @@ public class PostDAO extends DAO {
         return list;
     }
 
+
     // 投稿IDを指定して投稿を1件取得する
     public Post findByPostId(String postId) throws Exception {
 
         Post post = null;
+
+        // DB接続を取得
         Connection con = getConnection();
 
+        // SQLを準備
         PreparedStatement st = con.prepareStatement(
             "SELECT user_id, admin_id, author_type, post_id, "
             + "post_datetime, post_text, post_img, comment "
             + "FROM post WHERE post_id = ?"
         );
 
+        // 投稿IDを設定
         st.setString(1, postId);
 
+        // SQLを実行
         ResultSet rs = st.executeQuery();
 
+        // 検索結果があればBeanに格納
         if (rs.next()) {
 
             post = new Post();
@@ -92,6 +105,7 @@ public class PostDAO extends DAO {
             post.setComment(rs.getString("comment"));
         }
 
+        // リソースを解放
         rs.close();
         st.close();
         con.close();
@@ -99,11 +113,14 @@ public class PostDAO extends DAO {
         return post;
     }
 
+
     // 新しい投稿をDBに登録する
     public boolean insert(Post post) throws Exception {
 
+        // DB接続を取得
         Connection con = getConnection();
 
+        // SQLを準備
         PreparedStatement st = con.prepareStatement(
             "INSERT INTO post "
             + "(user_id, admin_id, author_type, post_datetime, "
@@ -111,6 +128,7 @@ public class PostDAO extends DAO {
             + "VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)"
         );
 
+        // 投稿情報を設定
         st.setString(1, post.getUser_id());
         st.setString(2, post.getAdmin_id());
         st.setString(3, post.getAuthor_type());
@@ -118,18 +136,22 @@ public class PostDAO extends DAO {
         st.setString(5, post.getPost_img());
         st.setString(6, post.getComment());
 
+        // SQLを実行
         int line = st.executeUpdate();
 
+        // リソースを解放
         st.close();
         con.close();
 
         return line > 0;
     }
 
+
     // ========================================
     // 投稿編集
     // 自分が投稿したものだけ編集可能
     // ========================================
+
     public int updatePost(
             String postId,
             String postText,
@@ -137,7 +159,9 @@ public class PostDAO extends DAO {
             String adminId,
             boolean isAdmin) throws Exception {
 
+        // DB接続を取得
         Connection con = getConnection();
+
         PreparedStatement st = null;
 
         try {
@@ -171,10 +195,12 @@ public class PostDAO extends DAO {
                 st.setString(3, userId);
             }
 
+            // SQLを実行
             return st.executeUpdate();
 
         } finally {
 
+            // リソースを解放
             if (st != null) {
                 st.close();
             }
@@ -183,10 +209,12 @@ public class PostDAO extends DAO {
         }
     }
 
+
     // ========================================
     // 投稿削除
     // 自分が投稿したものだけ削除可能
     // ========================================
+
     public boolean deletePost(
             String postId,
             String userId,
@@ -199,12 +227,13 @@ public class PostDAO extends DAO {
 
         try {
 
+            // DB接続を取得
             con = getConnection();
 
             // トランザクション開始
             con.setAutoCommit(false);
 
-            // 投稿情報を取得してロック
+            // 投稿情報を取得
             st = con.prepareStatement(
                 "SELECT user_id, admin_id, author_type "
                 + "FROM post WHERE post_id = ? FOR UPDATE"
@@ -212,36 +241,47 @@ public class PostDAO extends DAO {
 
             st.setString(1, postId);
 
+            // SQLを実行
             rs = st.executeQuery();
 
             String postUserId = null;
             String postAdminId = null;
             String authorType = null;
 
+            // 検索結果を取得
             if (rs.next()) {
+
                 postUserId = rs.getString("user_id");
                 postAdminId = rs.getString("admin_id");
                 authorType = rs.getString("author_type");
+
             } else {
+
                 rs.close();
                 rs = null;
+
                 st.close();
                 st = null;
 
                 con.rollback();
+
                 return false;
             }
 
+            // リソースを解放
             rs.close();
             rs = null;
+
             st.close();
             st = null;
+
 
             // 投稿者本人か確認
             boolean canDelete;
 
             if (isAdmin) {
 
+                // 管理者の場合
                 canDelete =
                     "ADMIN".equals(authorType)
                     && adminId != null
@@ -249,6 +289,7 @@ public class PostDAO extends DAO {
 
             } else {
 
+                // ユーザーの場合
                 canDelete =
                     "USER".equals(authorType)
                     && userId != null
@@ -257,40 +298,66 @@ public class PostDAO extends DAO {
 
             // 本人以外は削除できない
             if (!canDelete) {
+
                 con.rollback();
+
                 return false;
             }
 
-            // 投稿に紐づくコメントを削除
+
+            // ① 投稿に紐づく通知を削除
+            st = con.prepareStatement(
+                "DELETE FROM notification WHERE post_id = ?"
+            );
+
+            st.setString(1, postId);
+
+            // SQLを実行
+            st.executeUpdate();
+
+            // リソースを解放
+            st.close();
+            st = null;
+
+
+            // ② 投稿に紐づくコメントを削除
             st = con.prepareStatement(
                 "DELETE FROM \"comment\" WHERE post_id = ?"
             );
 
             st.setString(1, postId);
+
+            // SQLを実行
             st.executeUpdate();
 
+            // リソースを解放
             st.close();
             st = null;
 
-            // 投稿を削除
+
+            // ③ 投稿を削除
             st = con.prepareStatement(
                 "DELETE FROM post WHERE post_id = ?"
             );
 
             st.setString(1, postId);
 
+            // SQLを実行
             int line = st.executeUpdate();
 
+            // リソースを解放
             st.close();
             st = null;
 
-            // 処理を確定
+
+            // トランザクションを確定
             con.commit();
 
             return line > 0;
 
         } catch (Exception e) {
 
+            // エラー時はロールバック
             if (con != null) {
                 con.rollback();
             }
@@ -299,6 +366,7 @@ public class PostDAO extends DAO {
 
         } finally {
 
+            // リソースを解放
             if (rs != null) {
                 rs.close();
             }
@@ -308,6 +376,7 @@ public class PostDAO extends DAO {
             }
 
             if (con != null) {
+
                 con.setAutoCommit(true);
                 con.close();
             }
