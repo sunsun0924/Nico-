@@ -4,7 +4,9 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+import bean.Admin;
 import bean.User;
+import dao.AdminDAO;
 import dao.UserDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,24 +24,34 @@ public class UserProfileServlet extends Action {
 
         req.setCharacterEncoding("UTF-8");
 
-        // セッションからログインユーザーを取得
+        // セッションからログイン情報を取得
         HttpSession session = req.getSession(false);
 
         // ログイン確認
-        if (session == null || session.getAttribute("user") == null) {
+        if (session == null) {
             return "/login/userLogin.jsp";
         }
 
+        // 管理者情報とユーザー情報を取得
+        Admin admin = (Admin) session.getAttribute("admin");
         User user = (User) session.getAttribute("user");
 
-        // JSPからユーザー名を取得
+        // 管理者かどうかを判定
+        boolean isAdmin = admin != null;
+
+        // どちらもログインしていない場合
+        if (!isAdmin && user == null) {
+            return "/login/userLogin.jsp";
+        }
+
+        // JSPから名前を取得
         String userName = req.getParameter("userName");
 
         // 画像削除フラグを取得
         String deleteImage =
                 req.getParameter("deleteProfileImage");
 
-        // ユーザー名の入力チェック
+        // 名前の入力チェック
         if (userName == null
                 || userName.trim().length() < 2
                 || userName.trim().length() > 20) {
@@ -54,12 +66,23 @@ public class UserProfileServlet extends Action {
 
         userName = userName.trim();
 
-        // 現在登録されている画像名
-        String userImg = user.getUserImg();
+        // 現在の画像名と表示位置
+        String userImg;
+        int positionX;
+        int positionY;
 
-        // 現在の画像表示位置
-        int positionX = user.getUserImgPositionX();
-        int positionY = user.getUserImgPositionY();
+        if (isAdmin) {
+
+            userImg = admin.getCpUserimg();
+            positionX = admin.getCpUserimgPositionX();
+            positionY = admin.getCpUserimgPositionY();
+
+        } else {
+
+            userImg = user.getUserImg();
+            positionX = user.getUserImgPositionX();
+            positionY = user.getUserImgPositionY();
+        }
 
         // 画像削除ボタンが押された場合
         if ("true".equals(deleteImage)) {
@@ -72,8 +95,9 @@ public class UserProfileServlet extends Action {
 
         } else {
 
-            // 表示位置を取得
+            // 画像表示位置を取得
             try {
+
                 positionX = Integer.parseInt(
                     req.getParameter("userImgPositionX")
                 );
@@ -122,7 +146,8 @@ public class UserProfileServlet extends Action {
                 }
 
                 // ファイル名を取得
-                String fileName = imagePart.getSubmittedFileName();
+                String fileName =
+                        imagePart.getSubmittedFileName();
 
                 if (fileName == null || fileName.trim().isEmpty()) {
 
@@ -134,11 +159,12 @@ public class UserProfileServlet extends Action {
                     return "/mypage/profile.jsp";
                 }
 
-                // ファイル名から拡張子を取得
+                // ファイル名を整理
                 fileName = Paths.get(
                     fileName.replace("\\", "/")
                 ).getFileName().toString();
 
+                // 拡張子を取得
                 String extension = "";
 
                 int dot = fileName.lastIndexOf(".");
@@ -148,7 +174,7 @@ public class UserProfileServlet extends Action {
                             fileName.substring(dot).toLowerCase();
                 }
 
-                // 画像形式を確認
+                // 画像形式チェック
                 if (!extension.matches(
                         "\\.(jpg|jpeg|png|gif|webp)")) {
 
@@ -197,40 +223,82 @@ public class UserProfileServlet extends Action {
             }
         }
 
-        // Userに更新内容をセット
-        user.setUserName(userName);
-        user.setUserImg(userImg);
-        user.setUserImgPositionX(positionX);
-        user.setUserImgPositionY(positionY);
+        // 管理者の場合
+        if (isAdmin) {
 
-        // DBを更新
-        UserDAO dao = new UserDAO();
+            // Adminに更新内容をセット
+            admin.setCpUsername(userName);
+            admin.setCpUserimg(userImg);
+            admin.setCpUserimgPositionX(positionX);
+            admin.setCpUserimgPositionY(positionY);
 
-        int result = dao.update(user);
+            // 管理者テーブルを更新
+            AdminDAO dao = new AdminDAO();
 
-        // 更新成功
-        if (result > 0) {
+            int result = dao.updateProfile(admin);
 
-            // セッション内のユーザー情報を更新
-            session.setAttribute("user", user);
+            // 更新成功
+            if (result > 0) {
 
-            // マイページに表示する完了メッセージ
-            session.setAttribute(
-                "mypageMessage",
-                "＊プロフィールを変更しました"
-            );
+                // セッション内の管理者情報を更新
+                session.setAttribute("admin", admin);
 
-            // マイページに戻る
-            return "/mypage/mypage.jsp";
+                // 完了メッセージ
+                session.setAttribute(
+                    "mypageMessage",
+                    "＊プロフィールを変更しました"
+                );
 
-        } else {
+                return "/mypage/mypage.jsp";
 
-            req.setAttribute(
-                "error",
-                "プロフィールの変更に失敗しました。"
-            );
+            } else {
 
-            return "/mypage/profile.jsp";
+                req.setAttribute(
+                    "error",
+                    "プロフィールの変更に失敗しました。"
+                );
+
+                return "/mypage/profile.jsp";
+            }
+        }
+
+        // 一般ユーザーの場合
+        else {
+
+            // Userに更新内容をセット
+            user.setUserName(userName);
+            user.setUserImg(userImg);
+            user.setUserImgPositionX(positionX);
+            user.setUserImgPositionY(positionY);
+
+            // ユーザーテーブルを更新
+            UserDAO dao = new UserDAO();
+
+            int result = dao.update(user);
+
+            // 更新成功
+            if (result > 0) {
+
+                // セッション内のユーザー情報を更新
+                session.setAttribute("user", user);
+
+                // 完了メッセージ
+                session.setAttribute(
+                    "mypageMessage",
+                    "＊プロフィールを変更しました"
+                );
+
+                return "/mypage/mypage.jsp";
+
+            } else {
+
+                req.setAttribute(
+                    "error",
+                    "プロフィールの変更に失敗しました。"
+                );
+
+                return "/mypage/profile.jsp";
+            }
         }
     }
 }
