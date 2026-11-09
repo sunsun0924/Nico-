@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="../header.jsp" %>
@@ -213,7 +214,6 @@
                     item.style.cssText =
                         'cursor: pointer; padding: 8px 0; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center;';
 
-                    // ユーザーをクリックしたときに個人チャットルームへ遷移する処理
                     item.onclick = function() {
 
                         location.href = contextPath
