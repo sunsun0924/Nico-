@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -9,7 +10,10 @@ import tool.PasswordUtil;
 
 public class AdminDAO extends DAO {
 
+    // ========================================
     // ログイン用
+    // ========================================
+
     public Admin search(String cpUserid, String cpUserpass) throws Exception {
 
         Admin a = null;
@@ -63,7 +67,70 @@ public class AdminDAO extends DAO {
     }
 
 
+    // ========================================
+    // 投稿者の管理者プロフィール取得用
+    // ========================================
+
+    public Admin findByCpUserid(String cpUserid) throws Exception {
+
+        Admin a = null;
+
+        Connection con = getConnection();
+
+        PreparedStatement st = con.prepareStatement(
+            "SELECT cp_userid, cp_username, cp_userimg, " +
+            "cp_userimg_position_x, cp_userimg_position_y " +
+            "FROM \"cp_admin\" WHERE cp_userid = ?"
+        );
+
+        st.setString(1, cpUserid);
+
+        ResultSet rs = st.executeQuery();
+
+        if (rs.next()) {
+
+            a = new Admin();
+
+            // 管理者ID
+            a.setCpUserid(rs.getString("cp_userid"));
+
+            // 管理者名
+            a.setCpUsername(rs.getString("cp_username"));
+
+            // プロフィール画像
+            a.setCpUserimg(rs.getString("cp_userimg"));
+
+            // 画像の横位置
+            int positionX = rs.getInt("cp_userimg_position_x");
+
+            if (rs.wasNull()) {
+                positionX = 50;
+            }
+
+            a.setCpUserimgPositionX(positionX);
+
+            // 画像の縦位置
+            int positionY = rs.getInt("cp_userimg_position_y");
+
+            if (rs.wasNull()) {
+                positionY = 50;
+            }
+
+            a.setCpUserimgPositionY(positionY);
+        }
+
+        rs.close();
+        st.close();
+        con.close();
+
+        return a;
+    }
+
+
+    // ========================================
     // 新規登録用
+    // ========================================
+
     public int insert(Admin admin) throws Exception {
 
         // パスワードをハッシュ化
@@ -91,7 +158,10 @@ public class AdminDAO extends DAO {
     }
 
 
-    // ユーザーIDの重複確認用
+    // ========================================
+    // 管理者IDの重複確認用
+    // ========================================
+
     public boolean isExist(String cpUserid) throws Exception {
 
         Connection con = getConnection();
@@ -114,7 +184,10 @@ public class AdminDAO extends DAO {
     }
 
 
+    // ========================================
     // 管理者プロフィール更新用
+    // ========================================
+
     public int updateProfile(Admin admin) throws Exception {
 
         Connection con = getConnection();

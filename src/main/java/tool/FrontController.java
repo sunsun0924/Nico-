@@ -1,4 +1,3 @@
-
 package tool;
 
 import java.io.IOException;
@@ -11,8 +10,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+// *.action へのリクエストを受け取る
 @WebServlet(urlPatterns = {"*.action"})
-@MultipartConfig
+
+// ファイルアップロードの設定
+@MultipartConfig(
+    // アップロードするファイル1枚の最大サイズ：5MB
+    maxFileSize = 5 * 1024 * 1024,
+
+    // リクエスト全体の最大サイズ：21MB
+    maxRequestSize = 21 * 1024 * 1024,
+
+    // メモリ上に保持するファイルサイズのしきい値：1MB
+    fileSizeThreshold = 1024 * 1024
+)
 public class FrontController extends HttpServlet {
 
     // POSTリクエスト
@@ -35,12 +46,13 @@ public class FrontController extends HttpServlet {
         process(req, resp);
     }
 
-    // 共通処理
+    // POST・GET共通処理
     private void process(
             HttpServletRequest req,
             HttpServletResponse resp)
             throws ServletException, IOException {
 
+        // 文字コードの設定
         resp.setContentType("text/html; charset=UTF-8");
         req.setCharacterEncoding("UTF-8");
 
@@ -72,6 +84,7 @@ public class FrontController extends HttpServlet {
 
         } catch (Exception e) {
 
+            // エラー内容を出力
             e.printStackTrace(out);
         }
     }

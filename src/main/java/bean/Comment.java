@@ -28,6 +28,12 @@ public class Comment implements Serializable {
     // コメント日時
     private LocalDateTime commentDatetime;
 
+    // コメントした人の名前
+    private String authorName;
+
+    // コメントした人のプロフィール画像
+    private String authorImage;
+
     // 自分のコメントかどうか
     private boolean editable;
 
@@ -35,82 +41,92 @@ public class Comment implements Serializable {
     public Comment() {
     }
 
-    // コメントIDを取得
+    // コメントID
     public String getCommentId() {
         return commentId;
     }
 
-    // コメントIDを設定
     public void setCommentId(String commentId) {
         this.commentId = commentId;
     }
 
-    // 投稿IDを取得
+    // 投稿ID
     public String getPostId() {
         return postId;
     }
 
-    // 投稿IDを設定
     public void setPostId(String postId) {
         this.postId = postId;
     }
 
-    // ユーザーIDを取得
+    // ユーザーID
     public String getUserId() {
         return userId;
     }
 
-    // ユーザーIDを設定
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    // 管理者IDを取得
+    // 管理者ID
     public String getAdminId() {
         return adminId;
     }
 
-    // 管理者IDを設定
     public void setAdminId(String adminId) {
         this.adminId = adminId;
     }
 
-    // 投稿者の種類を取得
+    // 投稿者の種類
     public String getAuthorType() {
         return authorType;
     }
 
-    // 投稿者の種類を設定
     public void setAuthorType(String authorType) {
         this.authorType = authorType;
     }
 
-    // コメント本文を取得
+    // コメント本文
     public String getCommentText() {
         return commentText;
     }
 
-    // コメント本文を設定
     public void setCommentText(String commentText) {
         this.commentText = commentText;
     }
 
-    // コメント日時を取得
+    // コメント日時
     public LocalDateTime getCommentDatetime() {
         return commentDatetime;
     }
 
-    // コメント日時を設定
     public void setCommentDatetime(LocalDateTime commentDatetime) {
         this.commentDatetime = commentDatetime;
     }
 
-    // 編集・削除可能かどうかを取得
+    // コメントした人の名前
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    // コメントした人のプロフィール画像
+    public String getAuthorImage() {
+        return authorImage;
+    }
+
+    public void setAuthorImage(String authorImage) {
+        this.authorImage = authorImage;
+    }
+
+    // 編集・削除可能かどうか
     public boolean isEditable() {
         return editable;
     }
 
-    // 編集・削除可能かどうかを設定
     public void setEditable(boolean editable) {
         this.editable = editable;
     }

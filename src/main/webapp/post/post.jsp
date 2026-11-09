@@ -43,20 +43,36 @@
 
         <div class="post-item">
 
-            <%-- 投稿者 --%>
-            <c:choose>
-                <c:when test="${post.author_type eq 'ADMIN'}">
-                    <strong>管理者</strong>
-                </c:when>
-                <c:otherwise>
-                    <strong>
-                        <c:out value="${post.user_id}" />
+            <%-- 投稿者情報 --%>
+            <div class="post-author">
+
+                <img
+                    class="post-author-icon"
+                    src="${pageContext.request.contextPath}/images/${empty post.authorImage ? 'default-profile.png' : post.authorImage}"
+                    alt="プロフィール画像"
+                    style="object-position: ${post.authorImagePositionX}% ${post.authorImagePositionY}%"
+                    onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
+                >
+
+                <div class="post-author-info">
+
+                    <strong class="post-author-name">
+                        <c:out value="${post.authorName}" />
                     </strong>
-                </c:otherwise>
-            </c:choose>
+
+                    <c:if test="${post.author_type eq 'ADMIN'}">
+                        <span class="post-author-label">
+                            管理者
+                        </span>
+                    </c:if>
+
+                </div>
+
+            </div>
 
             <%-- 投稿の三点ボタン --%>
             <c:if test="${post.editable}">
+
                 <div class="post-menu">
 
                     <button type="button"
@@ -83,30 +99,49 @@
                         </button>
 
                     </div>
+
                 </div>
+
             </c:if>
 
-            <%-- 投稿本文（日時より先に表示） --%>
-            <div class="post-text"
-                 style="font-size: 22px !important;
-                        font-weight: 500;
-                        line-height: 1.8;
-                        color: #59483d;">
+            <%-- 投稿本文 --%>
+            <div class="post-text">
                 <c:out value="${post.post_text}" />
             </div>
 
-            <%-- 投稿日時（小さく表示） --%>
-            <div class="post-date"
-                 style="font-size: 11px !important;
-                        font-weight: normal;
-                        color: #a39a92;">
-                <c:out value="${fn:replace(fn:substring(post.post_datetime, 0, 19), 'T', ' ')}" />
+            <%-- 投稿日時 --%>
+            <div class="post-date">
+
+                <c:if test="${not empty post.post_datetime}">
+
+                    <c:out value="${fn:replace(fn:substring(post.post_datetime, 0, 19), 'T', ' ')}" />
+
+                </c:if>
+
             </div>
 
-            <%-- 投稿画像 --%>
-            <c:if test="${not empty post.post_img}">
-                <img src="${pageContext.request.contextPath}/images/${post.post_img}"
-                     alt="投稿画像">
+            <%-- 投稿画像（複数対応） --%>
+            <c:if test="${not empty post.postImages}">
+
+                <div class="post-image-list">
+
+                    <c:forEach var="image" items="${post.postImages}">
+
+                        <div class="post-image-wrapper">
+
+                            <img
+                                class="post-image"
+                                src="${pageContext.request.contextPath}/images/${image}"
+                                alt="投稿画像"
+                                loading="lazy"
+                            >
+
+                        </div>
+
+                    </c:forEach>
+
+                </div>
+
             </c:if>
 
             <%-- コメント一覧 --%>
@@ -122,20 +157,38 @@
 
                             <div class="comment-item">
 
-                                <%-- コメント投稿者 --%>
-                                <c:choose>
-                                    <c:when test="${comment.authorType eq 'ADMIN'}">
-                                        <strong>管理者</strong>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <strong>
-                                            <c:out value="${comment.userId}" />
+                                <%-- コメント投稿者（プロフィール画像と名前） --%>
+                                <div class="comment-author">
+
+                                    <%-- コメント投稿者のプロフィール画像 --%>
+                                    <img
+                                        class="comment-author-icon"
+                                        src="${pageContext.request.contextPath}/images/${empty comment.authorImage ? 'default-profile.png' : comment.authorImage}"
+                                        alt="プロフィール画像"
+                                        onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
+                                    >
+
+                                    <%-- コメント投稿者の名前 --%>
+                                    <div class="comment-author-info">
+
+                                        <strong class="comment-author-name">
+                                            <c:out value="${comment.authorName}" />
                                         </strong>
-                                    </c:otherwise>
-                                </c:choose>
+
+                                        <%-- 管理者の場合のみラベルを表示 --%>
+                                        <c:if test="${comment.authorType eq 'ADMIN'}">
+                                            <span class="comment-author-label">
+                                                管理者
+                                            </span>
+                                        </c:if>
+
+                                    </div>
+
+                                </div>
 
                                 <%-- コメントの三点ボタン --%>
                                 <c:if test="${comment.editable}">
+
                                     <div class="comment-menu">
 
                                         <button type="button"
@@ -162,7 +215,9 @@
                                             </button>
 
                                         </div>
+
                                     </div>
+
                                 </c:if>
 
                                 <%-- コメント本文 --%>
@@ -172,7 +227,13 @@
 
                                 <%-- コメント日時 --%>
                                 <small class="comment-date">
-                                    <c:out value="${fn:replace(fn:substring(comment.commentDatetime, 0, 19), 'T', ' ')}" />
+
+                                    <c:if test="${not empty comment.commentDatetime}">
+
+                                        <c:out value="${fn:replace(fn:substring(comment.commentDatetime, 0, 19), 'T', ' ')}" />
+
+                                    </c:if>
+
                                 </small>
 
                             </div>
@@ -182,7 +243,9 @@
                     </c:when>
 
                     <c:otherwise>
+
                         <p>コメントはありません。</p>
+
                     </c:otherwise>
 
                 </c:choose>
@@ -239,7 +302,10 @@
 </main>
 
 
-<%-- 削除確認モーダル --%>
+<%-- ========================================
+    削除確認モーダル
+======================================== --%>
+
 <div id="deleteModal" class="delete-modal">
 
     <div class="delete-modal-content">
@@ -269,7 +335,10 @@
 </div>
 
 
-<%-- 投稿編集モーダル --%>
+<%-- ========================================
+    投稿編集モーダル
+======================================== --%>
+
 <div id="postEditModal" class="edit-modal">
 
     <div class="edit-modal-content">
@@ -308,7 +377,10 @@
 </div>
 
 
-<%-- コメント編集モーダル --%>
+<%-- ========================================
+    コメント編集モーダル
+======================================== --%>
+
 <div id="commentEditModal" class="edit-modal">
 
     <div class="edit-modal-content">
@@ -362,9 +434,11 @@ document.querySelectorAll(".menu-button").forEach(button => {
         const dropdown = this.nextElementSibling;
 
         document.querySelectorAll(".menu-dropdown").forEach(menu => {
+
             if (menu !== dropdown) {
                 menu.classList.remove("show");
             }
+
         });
 
         dropdown.classList.toggle("show");
@@ -392,8 +466,10 @@ document.addEventListener("click", function() {
 ======================================== */
 
 const deleteModal = document.getElementById("deleteModal");
+
 const deleteConfirmButton =
     document.getElementById("deleteConfirmButton");
+
 const deleteCancelButton =
     document.getElementById("deleteCancelButton");
 
@@ -411,9 +487,13 @@ document.querySelectorAll(".delete-button").forEach(button => {
         deleteType = this.dataset.deleteType;
 
         if (deleteType === "post") {
+
             deleteId = this.dataset.postId;
+
         } else {
+
             deleteId = this.dataset.commentId;
+
         }
 
         document.querySelectorAll(".menu-dropdown").forEach(menu => {
@@ -435,11 +515,13 @@ deleteConfirmButton.addEventListener("click", function() {
     }
 
     const form = document.createElement("form");
+
     form.method = "post";
 
     const contextPath = "${pageContext.request.contextPath}";
 
     const idInput = document.createElement("input");
+
     idInput.type = "hidden";
 
     if (deleteType === "post") {
@@ -455,11 +537,13 @@ deleteConfirmButton.addEventListener("click", function() {
             contextPath + "/servlet.CommentDeleteServlet.action";
 
         idInput.name = "commentId";
+
     }
 
     idInput.value = deleteId;
 
     form.appendChild(idInput);
+
     document.body.appendChild(form);
 
     form.submit();
@@ -489,6 +573,7 @@ document.querySelectorAll(".edit-button").forEach(button => {
         event.stopPropagation();
 
         const type = this.dataset.editType;
+
         const text = this.dataset.editText;
 
         document.querySelectorAll(".menu-dropdown").forEach(menu => {
@@ -545,11 +630,12 @@ document.querySelectorAll(".edit-modal").forEach(modal => {
     modal.addEventListener("click", function(event) {
 
         if (event.target === this) {
+
             this.classList.remove("show");
+
         }
 
     });
-    
 
 });
 

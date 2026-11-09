@@ -2,6 +2,7 @@
 /* =========================
    画面全体の基本設定
 ========================= */
+
 * {
     box-sizing: border-box;
 }
@@ -17,6 +18,7 @@ body {
 /* =========================
    新規投稿画面全体
 ========================= */
+
 .home-header {
     width: calc(100% - 266px);
     max-width: 480px;
@@ -27,11 +29,15 @@ body {
     border: 1px solid #eee4d8;
     border-radius: 22px;
     box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
+
+    /* 子要素のはみ出しを防止 */
+    min-width: 0;
 }
 
 /* =========================
    タイトル
 ========================= */
+
 .home-header h1 {
     margin: 0 0 25px;
     font-size: 32px;
@@ -42,6 +48,7 @@ body {
 /* =========================
    ユーザー表示欄
 ========================= */
+
 .post-toolbar {
     display: flex;
     align-items: center;
@@ -54,6 +61,7 @@ body {
 }
 
 /* ユーザーアイコン */
+
 .post-toolbar .user-icon {
     display: flex;
     align-items: center;
@@ -66,6 +74,7 @@ body {
 }
 
 /* 表示テキスト */
+
 .post-toolbar input[type="text"] {
     flex: 1;
     width: 0;
@@ -79,6 +88,7 @@ body {
 }
 
 /* 画像マーク */
+
 .image-button {
     flex-shrink: 0;
     cursor: pointer;
@@ -90,6 +100,7 @@ body {
 }
 
 /* ファイル選択ボタンを非表示 */
+
 .image-input {
     display: none;
 }
@@ -97,6 +108,7 @@ body {
 /* =========================
    投稿本文入力欄
 ========================= */
+
 .home-header textarea {
     display: block;
     width: 100%;
@@ -124,6 +136,7 @@ body {
 /* =========================
    文字数カウンター
 ========================= */
+
 .home-header form p {
     margin: 8px 2px 0;
     text-align: right;
@@ -132,8 +145,164 @@ body {
 }
 
 /* =========================
+   画像選択エリア
+========================= */
+
+.image-select-area {
+    width: 100%;
+    min-width: 0;
+    margin-top: 18px;
+}
+
+/* 画像選択ボタン */
+
+.image-select-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background-color: #f7eee5;
+    border: 1px solid #eee4d8;
+    border-radius: 25px;
+    color: #806b5d;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.image-select-label:hover {
+    background-color: #f3dfd0;
+}
+
+.image-select-label span {
+    font-size: 19px;
+}
+
+/* 選択画像のファイル名 */
+
+.image-select-area .image-status {
+    margin: 8px 2px 0;
+    text-align: left;
+    color: #a39a92;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+/* =========================
+   画像プレビューエリア
+========================= */
+
+.image-preview-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    margin-top: 15px;
+    padding: 12px;
+
+    background-color: #fffaf4;
+    border: 1px solid #eee4d8;
+    border-radius: 15px;
+
+    /* 画像が大きくても外にはみ出さない */
+    overflow: hidden;
+}
+
+/* プレビュー画像の外枠 */
+
+.preview-image-wrapper {
+    position: relative;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #f7eee5;
+}
+
+/* プレビュー画像 */
+
+.preview-image-wrapper img {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+
+    max-height: 300px;
+
+    object-fit: contain;
+    object-position: center;
+
+    border-radius: 10px;
+}
+
+/* 画像削除ボタン */
+
+.remove-image-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: rgba(70, 55, 45, 0.8);
+    color: #ffffff;
+
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.remove-image-btn:hover {
+    background-color: #df8068;
+}
+
+/* プレビュー説明 */
+
+.preview-text {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    flex-wrap: wrap;
+
+    color: #806b5d;
+    font-size: 12px;
+}
+
+.preview-text strong {
+    font-size: 13px;
+}
+
+/* =========================
    投稿ボタン
 ========================= */
+
 .home-header input[type="submit"] {
     display: block;
     width: 95%;
@@ -157,6 +326,7 @@ body {
 /* =========================
    投稿一覧に戻るリンク
 ========================= */
+
 .home-header a {
     display: inline-block;
     margin-top: 20px;
@@ -173,7 +343,9 @@ body {
 /* =========================
    スマートフォン向け
 ========================= */
+
 @media screen and (max-width: 600px) {
+
     .home-header {
         width: calc(100% - 100px);
         max-width: none;
@@ -216,6 +388,15 @@ body {
         font-size: 12px;
     }
 
+    .image-select-label {
+        padding: 9px 14px;
+        font-size: 12px;
+    }
+
+    .preview-image-wrapper img {
+        max-height: 220px;
+    }
+
     .home-header input[type="submit"] {
         width: 100%;
         padding: 13px;
@@ -226,7 +407,9 @@ body {
 /* =========================
    小さなスマートフォン
 ========================= */
+
 @media screen and (max-width: 380px) {
+
     .home-header {
         padding: 16px 9px;
     }
@@ -243,5 +426,9 @@ body {
     .post-toolbar {
         gap: 5px;
         padding: 7px;
+    }
+
+    .preview-image-wrapper img {
+        max-height: 180px;
     }
 }

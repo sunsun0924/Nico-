@@ -1,4 +1,3 @@
-
 package servlet;
 
 import java.util.List;
@@ -7,9 +6,11 @@ import bean.Admin;
 import bean.Comment;
 import bean.Post;
 import bean.User;
+import dao.AdminDAO;
 import dao.BookmarkDAO;
 import dao.CommentDAO;
 import dao.PostDAO;
+import dao.UserDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -56,6 +57,7 @@ public class PostServlet extends Action {
 
             userId = user.getUserId().trim();
             authorType = "USER";
+
         }
 
         try {
@@ -63,6 +65,8 @@ public class PostServlet extends Action {
             PostDAO postDAO = new PostDAO();
             CommentDAO commentDAO = new CommentDAO();
             BookmarkDAO bookmarkDAO = new BookmarkDAO();
+            UserDAO userDAO = new UserDAO();
+            AdminDAO adminDAO = new AdminDAO();
 
             // 投稿一覧を取得
             List<Post> postList = postDAO.findAll();
@@ -72,6 +76,106 @@ public class PostServlet extends Action {
                 String postId = post.getPost_id();
 
                 // ========================================
+                // 投稿者のプロフィール情報を取得
+                // ========================================
+
+                if ("ADMIN".equals(post.getAuthor_type())) {
+
+                    // 管理者のプロフィール情報
+                    if (post.getAdmin_id() != null) {
+
+                        Admin postAdmin = adminDAO.findByCpUserid(
+                            post.getAdmin_id().trim()
+                        );
+
+                        if (postAdmin != null) {
+
+                            post.setAuthorName(
+                                postAdmin.getCpUsername()
+                            );
+
+                            post.setAuthorImage(
+                                postAdmin.getCpUserimg()
+                            );
+
+                            post.setAuthorImagePositionX(
+                                postAdmin.getCpUserimgPositionX()
+                            );
+
+                            post.setAuthorImagePositionY(
+                                postAdmin.getCpUserimgPositionY()
+                            );
+
+                        }
+
+                    }
+
+                    // 管理者名が取得できない場合
+                    if (post.getAuthorName() == null
+                            || post.getAuthorName().trim().isEmpty()) {
+
+                        post.setAuthorName(
+                            post.getAdmin_id() != null
+                                ? post.getAdmin_id().trim()
+                                : "管理者"
+                        );
+
+                    }
+
+                } else {
+
+                    // 一般ユーザーのプロフィール情報
+                    if (post.getUser_id() != null) {
+
+                        User postUser = userDAO.findByUserId(
+                            post.getUser_id().trim()
+                        );
+
+                        if (postUser != null) {
+
+                            post.setAuthorName(
+                                postUser.getUserName()
+                            );
+
+                            post.setAuthorImage(
+                                postUser.getUserImg()
+                            );
+
+                            post.setAuthorImagePositionX(
+                                postUser.getUserImgPositionX()
+                            );
+
+                            post.setAuthorImagePositionY(
+                                postUser.getUserImgPositionY()
+                            );
+
+                        }
+
+                    }
+
+                    // ユーザー名が取得できない場合
+                    if (post.getAuthorName() == null
+                            || post.getAuthorName().trim().isEmpty()) {
+
+                        post.setAuthorName(
+                            post.getUser_id() != null
+                                ? post.getUser_id().trim()
+                                : "ユーザー"
+                        );
+
+                    }
+
+                }
+
+                // プロフィール画像が未設定の場合
+                if (post.getAuthorImage() == null
+                        || post.getAuthorImage().trim().isEmpty()) {
+
+                    post.setAuthorImage("default-profile.png");
+
+                }
+
+                // ========================================
                 // コメント一覧を取得
                 // ========================================
 
@@ -79,16 +183,105 @@ public class PostServlet extends Action {
                     commentDAO.findByPostId(postId);
 
                 // ========================================
-                // コメントの編集・削除権限を確認
+                // コメント投稿者のプロフィール情報を取得
                 // ========================================
 
                 for (Comment comment : commentList) {
+
+                    if ("ADMIN".equals(comment.getAuthorType())) {
+
+                        // 管理者ごとのプロフィール情報を取得
+                        if (comment.getAdminId() != null) {
+
+                            Admin commentAdmin =
+                                adminDAO.findByCpUserid(
+                                    comment.getAdminId().trim()
+                                );
+
+                            if (commentAdmin != null) {
+
+                                // 管理者の名前
+                                comment.setAuthorName(
+                                    commentAdmin.getCpUsername()
+                                );
+
+                                // 管理者のプロフィール画像
+                                comment.setAuthorImage(
+                                    commentAdmin.getCpUserimg()
+                                );
+
+                            }
+
+                        }
+
+                        // 管理者名が取得できない場合は管理者IDを表示
+                        if (comment.getAuthorName() == null
+                                || comment.getAuthorName().trim().isEmpty()) {
+
+                            comment.setAuthorName(
+                                comment.getAdminId() != null
+                                    ? comment.getAdminId().trim()
+                                    : "管理者"
+                            );
+
+                        }
+
+                    } else {
+
+                        // 一般ユーザーごとのプロフィール情報を取得
+                        if (comment.getUserId() != null) {
+
+                            User commentUser =
+                                userDAO.findByUserId(
+                                    comment.getUserId().trim()
+                                );
+
+                            if (commentUser != null) {
+
+                                // ユーザーの名前
+                                comment.setAuthorName(
+                                    commentUser.getUserName()
+                                );
+
+                                // ユーザーのプロフィール画像
+                                comment.setAuthorImage(
+                                    commentUser.getUserImg()
+                                );
+
+                            }
+
+                        }
+
+                        // ユーザー名が取得できない場合はユーザーIDを表示
+                        if (comment.getAuthorName() == null
+                                || comment.getAuthorName().trim().isEmpty()) {
+
+                            comment.setAuthorName(
+                                comment.getUserId() != null
+                                    ? comment.getUserId().trim()
+                                    : "ユーザー"
+                            );
+
+                        }
+
+                    }
+
+                    // プロフィール画像が未設定の場合
+                    if (comment.getAuthorImage() == null
+                            || comment.getAuthorImage().trim().isEmpty()) {
+
+                        comment.setAuthorImage("default-profile.png");
+
+                    }
+
+                    // ========================================
+                    // コメントの編集・削除権限を確認
+                    // ========================================
 
                     boolean commentEditable = false;
 
                     if (admin != null) {
 
-                        // 管理者は自分のコメントだけ操作できる
                         commentEditable =
                             "ADMIN".equals(comment.getAuthorType())
                             && comment.getAdminId() != null
@@ -98,16 +291,17 @@ public class PostServlet extends Action {
 
                     } else {
 
-                        // ユーザーは自分のコメントだけ操作できる
                         commentEditable =
                             "USER".equals(comment.getAuthorType())
                             && comment.getUserId() != null
                             && userId.equals(
                                 comment.getUserId().trim()
                             );
+
                     }
 
                     comment.setEditable(commentEditable);
+
                 }
 
                 // コメント一覧を投稿に設定
@@ -134,7 +328,6 @@ public class PostServlet extends Action {
 
                 if (admin != null) {
 
-                    // 管理者は自分の投稿だけ操作できる
                     editable =
                         "ADMIN".equals(post.getAuthor_type())
                         && post.getAdmin_id() != null
@@ -144,19 +337,23 @@ public class PostServlet extends Action {
 
                 } else {
 
-                    // ユーザーは自分の投稿だけ操作できる
                     editable =
                         "USER".equals(post.getAuthor_type())
                         && post.getUser_id() != null
                         && userId.equals(
                             post.getUser_id().trim()
                         );
+
                 }
 
                 post.setEditable(editable);
+
             }
 
+            // ========================================
             // 投稿一覧をJSPに渡す
+            // ========================================
+
             request.setAttribute("postList", postList);
 
             // 処理結果メッセージ
@@ -168,6 +365,7 @@ public class PostServlet extends Action {
                 request.setAttribute("message", deleteMessage);
 
                 session.removeAttribute("deleteMessage");
+
             }
 
             return "/post/post.jsp";
@@ -180,6 +378,9 @@ public class PostServlet extends Action {
                 "投稿一覧の取得に失敗しました。",
                 e
             );
+
         }
+
     }
+
 }
