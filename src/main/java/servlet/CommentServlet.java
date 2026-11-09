@@ -229,35 +229,8 @@ public class CommentServlet extends Action {
                 NotificationDAO notificationDao =
                     new NotificationDAO();
 
-                // =================================
-                // 通知登録前の確認（コンソールに表示）
-                // =================================
-                System.out.println("===== 通知登録確認 =====");
-
-                System.out.println(
-                    "コメント本文：" + commentText
-                );
-
-                System.out.println(
-                    "通知メッセージ：" + notification.getMessage()
-                );
-
-                System.out.println(
-                    "通知先ユーザーID：" + notification.getUserId()
-                );
-
-                System.out.println(
-                    "通知先管理者ID：" + notification.getAdminId()
-                );
-
                 // DBに通知を登録
                 int result = notificationDao.insert(notification);
-
-                System.out.println(
-                    "通知登録結果：" + result
-                );
-
-                System.out.println("========================");
 
                 if (result > 0) {
 
