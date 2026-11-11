@@ -1,6 +1,8 @@
 package servlet;
 
+import bean.Admin;
 import bean.User;
+import dao.AdminDAO;
 import dao.UserDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,10 +59,25 @@ public class UserLoginServlet extends Action {
 
         } else {
 
-            // ログイン失敗
-            request.setAttribute(
-                "error",
-                "＊ログインに失敗しました\n＊ログインIDまたはパスワードが違います");
+            // 管理者情報を検索
+            AdminDAO adminDao = new AdminDAO();
+
+            Admin admin = adminDao.search(userId, userPass);
+
+            // 管理者アカウントでログインしようとした場合
+            if (admin != null) {
+
+                request.setAttribute(
+                    "error",
+                    "＊管理者アカウントではユーザーログインできません\n＊管理者ログイン画面からログインしてください");
+
+            } else {
+
+                // ログイン失敗
+                request.setAttribute(
+                    "error",
+                    "＊ログインに失敗しました\n＊ログインIDまたはパスワードが違います");
+            }
 
             return "/login/userLogin.jsp";
         }
