@@ -158,7 +158,7 @@
 
     </nav>
 
-    <%-- 一番下のマイページa --%>
+    <%-- 一番下のマイページ --%>
     <div class="menu-bottom">
 
         <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
