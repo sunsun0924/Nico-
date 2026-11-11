@@ -272,11 +272,11 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 
 .error-message {
     margin: -10px 0 0;
-
     color: #c75f59;
     font-size: 13px;
     line-height: 1.6;
     overflow-wrap: anywhere;
+    white-space: pre-line
 }
 
 /* ========================================

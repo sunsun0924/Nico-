@@ -144,7 +144,7 @@
             <% if (request.getAttribute("errorMessage") != null) { %>
 
                 <p class="error-message">
-                    <%= request.getAttribute("errorMessage") %>
+                    <%= ((String) request.getAttribute("errorMessage")).replace("\n", "<br>") %>
                 </p>
 
             <% } %>

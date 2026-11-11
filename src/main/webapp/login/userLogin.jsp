@@ -139,9 +139,9 @@
 			</div>
 
             <!-- エラーメッセージ -->
-            <% if (request.getAttribute("errorMessage") != null) { %>
+            <% if (request.getAttribute("error") != null) { %>
                 <p class="error-message">
-                    <%= request.getAttribute("errorMessage") %>
+                    <%= ((String) request.getAttribute("error")).replace("\n", "<br>") %>
                 </p>
             <% } %>
 
