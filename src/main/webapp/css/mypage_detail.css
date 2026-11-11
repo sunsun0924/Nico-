@@ -28,11 +28,10 @@ body {
     min-height: 100vh;
     display: flex;
     position: relative;
-    background-color: #fcf4ec;
+    background-color: #ffe8d1;
 }
 
 /* メイン画面 */
-
 .main-content {
     width: calc(100% - 266px);
     min-height: calc(100vh - 40px);
@@ -71,7 +70,7 @@ body {
 }
 
 .page-desc {
-    color: #9b8171;
+    color: #a39a92;
     font-size: 14px;
     margin-bottom: 28px;
     line-height: 1.6;
@@ -99,7 +98,7 @@ body {
     font-size: 15px;
     color: #59483d;
     background-color: #fffdf8;
-    border: 1px solid #ebd9cc;
+    border: 1px solid #eee4d8;
     border-radius: 12px;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -126,7 +125,6 @@ body {
 }
 
 /* 保存ボタン */
-
 .btn-save {
     min-width: 140px;
     padding: 12px 28px;
@@ -141,11 +139,10 @@ body {
 }
 
 .btn-save:hover {
-    background-color: #e0826a;
+    background-color: #df8068;
 }
 
 /* 戻るボタン */
-
 .btn-back {
     display: inline-flex;
     align-items: center;
@@ -153,8 +150,8 @@ body {
     min-width: 140px;
     padding: 12px 28px;
     background-color: #fffdf8;
-    color: #8b6f5d;
-    border: 1px solid #edc5b2;
+    color: #8d7666;
+    border: 1px solid #ed947c;
     border-radius: 12px;
     font-size: 15px;
     font-weight: 700;
@@ -164,7 +161,7 @@ body {
 }
 
 .btn-back:hover {
-    background-color: #fdf5ed;
+    background-color: #fff7f0;
 }
 
 /* =========================
@@ -184,7 +181,7 @@ body {
     justify-content: center;
     width: 36px;
     height: 36px;
-    color: #9b8171;
+    color: #a39a92;
     font-size: 18px;
     text-decoration: none;
     border-radius: 50%;
@@ -192,7 +189,7 @@ body {
 }
 
 .back-btn:hover {
-    background-color: #f7eee5;
+    background-color: #fff7f0;
     color: #ed947c;
 }
 
@@ -217,7 +214,6 @@ body {
 }
 
 /* 各項目のリンク */
-
 .setting-item {
     display: flex;
     align-items: center;
@@ -230,7 +226,7 @@ body {
 }
 
 .setting-item:hover {
-    background-color: #fdf5ed;
+    background-color: #fff7f0;
 }
 
 .setting-item:not(:last-child)::after {
@@ -259,13 +255,13 @@ body {
 }
 
 .icon-pink {
-    background-color: #fcebe8;
-    color: #c97870;
+    background-color: #fff0e6;
+    color: #ed947c;
 }
 
 .icon-purple {
-    background-color: #f0ebf8;
-    color: #8b75b8;
+    background-color: #f5e3d8;
+    color: #a17b65;
 }
 
 .icon-wrapper i {
@@ -291,7 +287,7 @@ body {
 }
 
 .item-desc {
-    color: #9b8171;
+    color: #a39a92;
     font-size: 13px;
     line-height: 1.6;
     overflow-wrap: anywhere;
@@ -299,7 +295,7 @@ body {
 
 .arrow-icon {
     flex-shrink: 0;
-    color: #c9b5a6;
+    color: #a39a92;
     font-size: 14px;
 }
 
@@ -343,8 +339,8 @@ body {
     flex-shrink: 0;
     padding: 8px 18px;
     background-color: #fffdf8;
-    color: #c97870;
-    border: 1px solid #edc5b2;
+    color: #ed947c;
+    border: 1px solid #ed947c;
     border-radius: 20px;
     font-size: 13px;
     font-weight: 700;
@@ -353,7 +349,7 @@ body {
 }
 
 .btn-unblock:hover {
-    background-color: #fcebe8;
+    background-color: #fff7f0;
     border-color: #ed947c;
 }
 
@@ -362,8 +358,8 @@ body {
     margin-top: 24px;
     padding: 14px;
     background-color: #fffdf8;
-    color: #8b6f5d;
-    border: 1px solid #edc5b2;
+    color: #8d7666;
+    border: 1px solid #ed947c;
     border-radius: 24px;
     font-size: 15px;
     font-weight: 700;
@@ -373,7 +369,7 @@ body {
 }
 
 .btn-back-bottom:hover {
-    background-color: #fdf5ed;
+    background-color: #fff7f0;
 }
 
 /* =========================
@@ -398,10 +394,10 @@ body {
 .success-message {
     margin-bottom: 20px;
     padding: 13px 16px;
-    border: 1px solid #c8ddc3;
+    border: 1px solid #eee4d8;
     border-radius: 10px;
-    background-color: #f0f8ed;
-    color: #547c4d;
+    background-color: #fff7f0;
+    color: #654b39;
     font-size: 14px;
     line-height: 1.7;
 }
@@ -409,16 +405,13 @@ body {
 /* =========================
    スマートフォン対応
 ========================= */
-
 @media screen and (max-width: 600px) {
-
     .main-content {
         width: calc(100% - 100px);
         min-height: calc(100vh - 20px);
         margin: 10px 10px 10px 90px;
         padding: 0;
     }
-
     .settings-container,
     .container {
         width: 100%;
@@ -428,23 +421,18 @@ body {
         padding: 18px 12px;
         border-radius: 16px;
     }
-
     .header {
         gap: 8px;
         margin-bottom: 20px;
     }
-
     .page-title {
         font-size: 20px;
     }
-
     .form-input {
         padding: 10px 12px;
         font-size: 14px;
     }
-
     /* ボタンはスマートフォンでも横並び */
-
     .btn-container {
         display: flex;
         flex-direction: row;
@@ -453,7 +441,6 @@ body {
         gap: 10px;
         width: 100%;
     }
-
     .btn-save,
     .btn-back {
         flex: 1;
@@ -463,35 +450,28 @@ body {
         text-align: center;
         font-size: 14px;
     }
-    
     /* アイコンの丸い背景 */
-	.icon-wrapper {
-	    width: 70px;
-	    height: 70px;
-	    border-radius: 50%;
-	 
-	    display: flex;
-	    align-items: center;
-	    justify-content: center;
-	 
-	    flex-shrink: 0;
-	}
-	 
-	/* アイコン本体 */
-	.icon-wrapper i {
-	    display: block;
-	    font-size: 26px;
-	    color: #8b6555;
-	}
-	 
-	/* ピンクの丸 */
-	.icon-pink i {
-	    color: #bd827c;
-	}
-	 
-	/* 紫の丸 */
-	.icon-purple i {
-	    color: #9278b5;
-	}
-
+    .icon-wrapper {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    /* アイコン本体 */
+    .icon-wrapper i {
+        display: block;
+        font-size: 26px;
+        color: #8d7666;
+    }
+    /* ピンクの丸 */
+    .icon-pink i {
+        color: #ed947c;
+    }
+    /* 紫の丸 */
+    .icon-purple i {
+        color: #a17b65;
+    }
 }

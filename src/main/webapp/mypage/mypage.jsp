@@ -175,7 +175,7 @@
             </div>
 
             <%-- ブックマーク --%>
-            <a href="${pageContext.request.contextPath}/user/likes"
+            <a href="${pageContext.request.contextPath}//servlet/BookmarkListServlet.action"
                class="menu-item-card">
 
                 <div class="menu-item-left">

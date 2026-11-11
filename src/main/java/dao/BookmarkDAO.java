@@ -3,189 +3,155 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * ブックマークテーブルに対するDB操作を行うDAOクラス
- *
- * ユーザーと管理者の両方に対応する。
- */
+import bean.Post;
+
+// ブックマーク情報のDB操作を行うクラス
 public class BookmarkDAO extends DAO {
 
-    /**
-     * ブックマーク済みか確認する
-     *
-     * @param postId 投稿ID
-     * @param userId ユーザーID
-     * @param adminId 管理者ID
-     * @param authorType 投稿者の種類
-     * @return 登録済みならtrue
-     */
+    // ========================================
+    // ブックマーク状態確認用
+    // ========================================
+
     public boolean isBookmarked(
             String postId,
             String userId,
             String adminId,
             String authorType) throws Exception {
 
-        // ブックマークの存在確認SQL
-        String sql =
-            "SELECT COUNT(*) "
-            + "FROM bookmark "
-            + "WHERE post_id = ? "
-            + "AND author_type = ? "
-            + "AND ("
-            + "(? = 'USER' AND user_id = ?) "
-            + "OR "
-            + "(? = 'ADMIN' AND admin_id = ?)"
-            + ")";
+        // DB接続
+        Connection con = getConnection();
 
-        // DB接続とSQL実行
-        try (
-            Connection con = getConnection();
-            PreparedStatement st = con.prepareStatement(sql)
-        ) {
+        PreparedStatement st = con.prepareStatement(
+            "SELECT COUNT(*) FROM bookmark " +
+            "WHERE post_id = ? " +
+            "AND author_type = ? " +
+            "AND ( " +
+            "    (? = 'USER' AND user_id = ?) " +
+            "    OR " +
+            "    (? = 'ADMIN' AND admin_id = ?) " +
+            ")"
+        );
 
-            // 投稿IDを設定する
-            st.setString(1, postId);
+        st.setString(1, postId);
+        st.setString(2, authorType);
+        st.setString(3, authorType);
+        st.setString(4, userId);
+        st.setString(5, authorType);
+        st.setString(6, adminId);
 
-            // 投稿者の種類を設定する
-            st.setString(2, authorType);
+        ResultSet rs = st.executeQuery();
 
-            // USERの場合の条件を設定する
-            st.setString(3, authorType);
-            st.setString(4, userId);
+        boolean bookmarked = false;
 
-            // ADMINの場合の条件を設定する
-            st.setString(5, authorType);
-            st.setString(6, adminId);
-
-            // SQLを実行する
-            try (ResultSet rs = st.executeQuery()) {
-
-                // 件数を確認する
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
-            }
+        if (rs.next()) {
+            bookmarked = rs.getInt(1) > 0;
         }
 
-        return false;
+        rs.close();
+        st.close();
+        con.close();
+
+        return bookmarked;
     }
 
-    /**
-     * ブックマークを登録する
-     *
-     * @param postId 投稿ID
-     * @param userId ユーザーID
-     * @param adminId 管理者ID
-     * @param authorType 投稿者の種類
-     * @return 登録成功ならtrue
-     */
-    public boolean insert(
+
+    // ========================================
+    // ブックマーク登録用
+    // ========================================
+
+    public int insert(
             String postId,
             String userId,
             String adminId,
             String authorType) throws Exception {
 
-        // ブックマーク登録SQL
-        // bookmark_idはDB側のデフォルト値で自動採番する
-        String sql =
-            "INSERT INTO bookmark "
-            + "(user_id, admin_id, post_id, author_type) "
-            + "VALUES (?, ?, ?, ?)";
+        Connection con = getConnection();
 
-        // DB接続とSQL実行
-        try (
-            Connection con = getConnection();
-            PreparedStatement st = con.prepareStatement(sql)
-        ) {
+        PreparedStatement st = con.prepareStatement(
+            "INSERT INTO bookmark " +
+            "(user_id, admin_id, post_id, author_type) " +
+            "VALUES (?, ?, ?, ?)"
+        );
 
-            // ユーザーIDを設定する
-            st.setString(1, userId);
+        st.setString(1, userId);
+        st.setString(2, adminId);
+        st.setString(3, postId);
+        st.setString(4, authorType);
 
-            // 管理者IDを設定する
-            st.setString(2, adminId);
+        int line = st.executeUpdate();
 
-            // 投稿IDを設定する
-            st.setString(3, postId);
+        st.close();
+        con.close();
 
-            // 投稿者の種類を設定する
-            st.setString(4, authorType);
-
-            // INSERTを実行する
-            return st.executeUpdate() > 0;
-        }
+        return line;
     }
 
-    /**
-     * ブックマークを解除する
-     *
-     * @param postId 投稿ID
-     * @param userId ユーザーID
-     * @param adminId 管理者ID
-     * @param authorType 投稿者の種類
-     * @return 解除成功ならtrue
-     */
-    public boolean delete(
+
+    // ========================================
+    // ブックマーク解除用
+    // ========================================
+
+    public int delete(
             String postId,
             String userId,
             String adminId,
             String authorType) throws Exception {
 
-        // SQLを格納する変数
-        String sql;
+        Connection con = getConnection();
 
-        // 管理者の場合
+        PreparedStatement st;
+
         if ("ADMIN".equals(authorType)) {
 
-            sql =
-                "DELETE FROM bookmark "
-                + "WHERE post_id = ? "
-                + "AND admin_id = ? "
-                + "AND author_type = 'ADMIN'";
+            // 管理者のブックマークを解除
+            st = con.prepareStatement(
+                "DELETE FROM bookmark " +
+                "WHERE post_id = ? " +
+                "AND admin_id = ? " +
+                "AND author_type = 'ADMIN'"
+            );
+
+            st.setString(1, postId);
+            st.setString(2, adminId);
 
         } else {
 
-            // ユーザーの場合
-            sql =
-                "DELETE FROM bookmark "
-                + "WHERE post_id = ? "
-                + "AND user_id = ? "
-                + "AND author_type = 'USER'";
-        }
+            // 一般ユーザーのブックマークを解除
+            st = con.prepareStatement(
+                "DELETE FROM bookmark " +
+                "WHERE post_id = ? " +
+                "AND user_id = ? " +
+                "AND author_type = 'USER'"
+            );
 
-        // DB接続とSQL実行
-        try (
-            Connection con = getConnection();
-            PreparedStatement st = con.prepareStatement(sql)
-        ) {
-
-            // 投稿IDを設定する
             st.setString(1, postId);
-
-            // ログイン者のIDを設定する
-            if ("ADMIN".equals(authorType)) {
-                st.setString(2, adminId);
-            } else {
-                st.setString(2, userId);
-            }
-
-            // DELETEを実行する
-            return st.executeUpdate() > 0;
+            st.setString(2, userId);
         }
+
+        int line = st.executeUpdate();
+
+        st.close();
+        con.close();
+
+        return line;
     }
 
-    /**
-     * ブックマーク登録・解除を切り替える
-     *
-     * 登録済みなら解除し、未登録なら登録する。
-     */
+
+    // ========================================
+    // ブックマーク登録・解除切り替え用
+    // ========================================
+
     public void toggle(
             String postId,
             String userId,
             String adminId,
             String authorType) throws Exception {
 
-        // 現在のブックマーク状態を確認する
+        // ブックマーク状態を確認
         boolean bookmarked = isBookmarked(
             postId,
             userId,
@@ -193,15 +159,97 @@ public class BookmarkDAO extends DAO {
             authorType
         );
 
-        // 登録済みなら解除する
         if (bookmarked) {
 
-            delete(postId, userId, adminId, authorType);
+            // 登録済みの場合は解除
+            delete(
+                postId,
+                userId,
+                adminId,
+                authorType
+            );
 
         } else {
 
-            // 未登録なら登録する
-            insert(postId, userId, adminId, authorType);
+            // 未登録の場合は登録
+            insert(
+                postId,
+                userId,
+                adminId,
+                authorType
+            );
         }
+    }
+
+
+    // ========================================
+    // ブックマークした投稿を新しい順に取得する
+    // ========================================
+
+    public List<Post> findBookmarkedPosts(
+            String userId,
+            String adminId,
+            String authorType) throws Exception {
+
+        List<Post> list = new ArrayList<>();
+
+        Connection con = getConnection();
+
+        PreparedStatement st = con.prepareStatement(
+            "SELECT p.user_id, p.admin_id, p.author_type, p.post_id, " +
+            "p.post_datetime, p.post_text, p.post_img, p.comment " +
+            "FROM bookmark b " +
+            "INNER JOIN post p ON b.post_id = p.post_id " +
+            "WHERE b.author_type = ? " +
+            "AND ( " +
+            "    (? = 'USER' AND b.user_id = ?) " +
+            "    OR " +
+            "    (? = 'ADMIN' AND b.admin_id = ?) " +
+            ") " +
+            "ORDER BY p.post_datetime DESC"
+        );
+
+        st.setString(1, authorType);
+        st.setString(2, authorType);
+        st.setString(3, userId);
+        st.setString(4, authorType);
+        st.setString(5, adminId);
+
+        ResultSet rs = st.executeQuery();
+
+        // 検索結果をBeanに格納
+        while (rs.next()) {
+
+            Post post = new Post();
+
+            post.setUser_id(rs.getString("user_id"));
+            post.setAdmin_id(rs.getString("admin_id"));
+            post.setAuthor_type(rs.getString("author_type"));
+            post.setPost_id(rs.getString("post_id"));
+
+            Timestamp datetime =
+                rs.getTimestamp("post_datetime");
+
+            if (datetime != null) {
+                post.setPost_datetime(
+                    datetime.toLocalDateTime()
+                );
+            }
+
+            post.setPost_text(rs.getString("post_text"));
+
+            // カンマ区切りの画像名はPostBean側でリスト化される
+            post.setPost_img(rs.getString("post_img"));
+
+            post.setComment(rs.getString("comment"));
+
+            list.add(post);
+        }
+
+        rs.close();
+        st.close();
+        con.close();
+
+        return list;
     }
 }

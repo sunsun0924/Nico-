@@ -595,3 +595,5 @@ document.querySelectorAll(".edit-modal").forEach(modal => {
 });
 
 </script>
+
+<%@ include file="../footer.jsp" %>

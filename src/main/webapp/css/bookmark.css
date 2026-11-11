@@ -1,0 +1,382 @@
+/* ========================================
+   画面全体の基本設定
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    background-color: #ffe8d1;
+    color: #59483d;
+}
+
+/* ========================================
+   投稿画面全体
+======================================== */
+
+.home-header {
+    width: calc(100% - 266px);
+    max-width: 900px;
+    min-height: 90vh;
+    margin: 20px 20px 20px 246px;
+    padding: 30px;
+    background-color: #fffdf8;
+    border: 1px solid #eee4d8;
+    border-radius: 22px;
+    box-shadow: 0 3px 12px rgba(100, 75, 50, 0.08);
+}
+
+/* ========================================
+   タイトル
+======================================== */
+
+.home-header h1 {
+    margin: 0 0 25px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #654b39;
+}
+
+.home-header h3 {
+    margin: 25px 0;
+    font-size: 22px;
+    color: #654b39;
+}
+
+.home-header hr {
+    margin: 25px 0;
+    border: none;
+    border-top: 1px solid #eee4d8;
+}
+
+/* ========================================
+   登録完了メッセージ
+======================================== */
+
+.success-message {
+    margin: 15px 0;
+    padding: 12px 15px;
+    color: #654b39;
+    background-color: #fff7f0;
+    border: 1px solid #eee4d8;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* ========================================
+   投稿カード
+======================================== */
+
+.post-item {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 25px 22px;
+    background-color: #fffdf8;
+    border: 1px solid #f0e8de;
+    border-radius: 20px;
+    overflow-wrap: anywhere;
+    box-shadow: 0 2px 8px rgba(100, 75, 50, 0.04);
+    text-align: left;
+}
+
+/* ========================================
+   投稿者情報
+======================================== */
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 40px;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee4d8;
+}
+
+.post-author-icon {
+    display: block;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-author-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.post-author-name {
+    color: #59483d;
+    font-size: 14px;
+}
+
+.post-author-label {
+    padding: 3px 8px;
+    border-radius: 5px;
+    background-color: #f5e3d8;
+    color: #a17b65;
+    font-size: 11px;
+}
+
+/* ========================================
+   投稿本文
+======================================== */
+
+.post-item .post-text {
+    display: block;
+    width: 100%;
+    margin: 15px 0;
+    padding: 0;
+    color: #75665c;
+    font-size: 16px;
+    line-height: 1.8;
+    text-align: left;
+    text-indent: 0;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+/* ========================================
+   投稿日時
+======================================== */
+
+.post-date {
+    display: block;
+    width: 100%;
+    margin: 8px 0 12px;
+    color: #a39a92;
+    font-size: 11px;
+    text-align: left;
+}
+
+/* ========================================
+   投稿画像
+======================================== */
+
+.post-image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 100%;
+    margin: 15px 0;
+}
+
+.post-image-wrapper {
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.post-image {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    max-height: 400px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+/* ========================================
+   コメント一覧
+======================================== */
+
+.comment-list {
+    margin-top: 24px;
+    margin-bottom: 18px;
+    padding: 17px 18px;
+    background-color: #fff7f0;
+    border: 1px solid #f3e5d9;
+    border-radius: 14px;
+}
+
+.comment-list h4 {
+    margin: 0 0 15px;
+    padding-bottom: 10px;
+    color: #654b39;
+    font-size: 16px;
+    border-bottom: 1px solid #f0dfd0;
+}
+
+/* ========================================
+   コメント投稿者情報
+======================================== */
+
+.comment-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.comment-author-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-author-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comment-author-name {
+    color: #59483d;
+    font-size: 14px;
+}
+
+.comment-author-label {
+    padding: 3px 7px;
+    border-radius: 5px;
+    background-color: #f5e3d8;
+    color: #a17b65;
+    font-size: 11px;
+}
+
+/* ========================================
+   コメントカード
+======================================== */
+
+.comment-item {
+    position: relative;
+    margin-bottom: 12px;
+    padding: 13px 15px;
+    background-color: #fffdf8;
+    border: 1px solid #f0e8de;
+    border-radius: 11px;
+}
+
+.comment-item:last-child {
+    margin-bottom: 0;
+}
+
+.comment-item strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #59483d;
+    font-size: 14px;
+}
+
+.comment-item p {
+    margin: 5px 0;
+    color: #75665c;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.comment-text {
+    text-align: left;
+}
+
+.comment-item small {
+    display: block;
+    margin-top: 8px;
+    color: #a39a92;
+    font-size: 11px;
+}
+
+.comment-list > p {
+    margin: 0;
+    color: #a39a92;
+    font-size: 13px;
+}
+
+/* ========================================
+   ブックマーク
+======================================== */
+
+.bookmark-form {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.bookmark-form button {
+    font-family: inherit;
+}
+
+.bookmark-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 46px;
+    height: 46px;
+    padding: 8px;
+    border: 1px solid #e8d5c5;
+    border-radius: 10px;
+    background-color: #fffdf8;
+    color: #8d7666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bookmark-btn svg {
+    display: block;
+    width: 23px;
+    height: 27px;
+}
+
+.bookmark-btn svg path {
+    fill: transparent;
+    stroke: #8d7666;
+    stroke-width: 2;
+    transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+.bookmark-btn:hover {
+    border-color: #ed947c;
+}
+
+.bookmark-btn.active {
+    background-color: #fffdf8;
+    border-color: #e8d5c5;
+    color: #ed947c;
+}
+
+.bookmark-btn.active svg path {
+    fill: #ed947c;
+    stroke: #ed947c;
+}
+
+.bookmark-btn.active:hover {
+    background-color: #fffdf8;
+    border-color: #ed947c;
+}
+
+/* ========================================
+   スマートフォン対応
+======================================== */
+
+@media screen and (max-width: 768px) {
+
+    .home-header {
+        width: calc(100% - 30px);
+        margin: 15px;
+        padding: 18px;
+    }
+
+    .post-item {
+        padding: 18px 14px;
+    }
+
+    .post-image {
+        max-width: 100%;
+        max-height: 300px;
+    }
+
+}
