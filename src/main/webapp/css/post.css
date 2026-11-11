@@ -156,34 +156,17 @@ body {
 ======================================== */
 
 .post-item .post-text {
-    display: block !important;
-
-    width: 100% !important;
-    max-width: none !important;
-
-    margin: 15px 0 !important;
-    padding: 0 !important;
-
-    text-align: left !important;
-    text-indent: 0 !important;
-
-    align-self: stretch !important;
-    justify-self: stretch !important;
-
-    float: none !important;
-
+    display: block;
+    width: 100%;
+    margin: 15px 0;
+    padding: 0;
     color: #75665c;
     font-size: 16px;
     line-height: 1.8;
-
-    white-space: pre-wrap;
+    text-align: left;
+    text-indent: 0;
+    white-space: pre-line;
     overflow-wrap: anywhere;
-}
-
-/* 投稿本文内の文字も左寄せ */
-
-.post-item .post-text * {
-    text-align: left !important;
 }
 
 /* ========================================
@@ -320,7 +303,7 @@ body {
 }
 
 .comment-text {
-    text-align: left !important;
+    text-align: left;
 }
 
 .comment-item small {
@@ -482,7 +465,6 @@ body {
 }
 
 /* メニュー本体 */
-
 .menu-dropdown {
     display: none;
     position: absolute;
@@ -499,13 +481,11 @@ body {
 }
 
 /* メニュー表示 */
-
 .menu-dropdown.show {
     display: block;
 }
 
 /* 編集・削除 */
-
 .menu-dropdown button {
     display: block;
     width: 100%;
@@ -645,27 +625,6 @@ body {
 }
 
 /* ========================================
-   投稿本文の左寄せ・最終調整
-======================================== */
-
-.home-header .post-item .post-text {
-    display: block !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin: 15px 0 !important;
-    padding: 0 !important;
-
-    text-align: left !important;
-    text-indent: 0 !important;
-
-    align-self: stretch !important;
-    justify-self: stretch !important;
-
-    float: none !important;
-    position: static !important;
-}
-
-/* ========================================
    スマートフォン対応
 ======================================== */
 
@@ -693,4 +652,5 @@ body {
         max-width: 100%;
         max-height: 300px;
     }
+
 }

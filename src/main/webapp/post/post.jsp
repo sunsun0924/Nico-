@@ -67,7 +67,6 @@
                     </c:if>
 
                 </div>
-
             </div>
 
             <%-- 投稿の三点ボタン --%>
@@ -99,25 +98,20 @@
                         </button>
 
                     </div>
-
                 </div>
 
             </c:if>
 
             <%-- 投稿本文 --%>
             <div class="post-text">
-                <c:out value="${post.post_text}" />
+                <c:out value="${fn:trim(post.post_text)}" />
             </div>
 
             <%-- 投稿日時 --%>
             <div class="post-date">
-
                 <c:if test="${not empty post.post_datetime}">
-
                     <c:out value="${fn:replace(fn:substring(post.post_datetime, 0, 19), 'T', ' ')}" />
-
                 </c:if>
-
             </div>
 
             <%-- 投稿画像（複数対応） --%>
@@ -157,10 +151,9 @@
 
                             <div class="comment-item">
 
-                                <%-- コメント投稿者（プロフィール画像と名前） --%>
+                                <%-- コメント投稿者情報 --%>
                                 <div class="comment-author">
 
-                                    <%-- コメント投稿者のプロフィール画像 --%>
                                     <img
                                         class="comment-author-icon"
                                         src="${pageContext.request.contextPath}/images/${empty comment.authorImage ? 'default-profile.png' : comment.authorImage}"
@@ -168,14 +161,12 @@
                                         onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
                                     >
 
-                                    <%-- コメント投稿者の名前 --%>
                                     <div class="comment-author-info">
 
                                         <strong class="comment-author-name">
                                             <c:out value="${comment.authorName}" />
                                         </strong>
 
-                                        <%-- 管理者の場合のみラベルを表示 --%>
                                         <c:if test="${comment.authorType eq 'ADMIN'}">
                                             <span class="comment-author-label">
                                                 管理者
@@ -183,7 +174,6 @@
                                         </c:if>
 
                                     </div>
-
                                 </div>
 
                                 <%-- コメントの三点ボタン --%>
@@ -215,7 +205,6 @@
                                             </button>
 
                                         </div>
-
                                     </div>
 
                                 </c:if>
@@ -227,13 +216,9 @@
 
                                 <%-- コメント日時 --%>
                                 <small class="comment-date">
-
                                     <c:if test="${not empty comment.commentDatetime}">
-
                                         <c:out value="${fn:replace(fn:substring(comment.commentDatetime, 0, 19), 'T', ' ')}" />
-
                                     </c:if>
-
                                 </small>
 
                             </div>
@@ -243,9 +228,7 @@
                     </c:when>
 
                     <c:otherwise>
-
                         <p>コメントはありません。</p>
-
                     </c:otherwise>
 
                 </c:choose>
@@ -301,11 +284,7 @@
 
 </main>
 
-
-<%-- ========================================
-    削除確認モーダル
-======================================== --%>
-
+<%-- 削除確認モーダル --%>
 <div id="deleteModal" class="delete-modal">
 
     <div class="delete-modal-content">
@@ -334,11 +313,7 @@
 
 </div>
 
-
-<%-- ========================================
-    投稿編集モーダル
-======================================== --%>
-
+<%-- 投稿編集モーダル --%>
 <div id="postEditModal" class="edit-modal">
 
     <div class="edit-modal-content">
@@ -376,11 +351,7 @@
 
 </div>
 
-
-<%-- ========================================
-    コメント編集モーダル
-======================================== --%>
-
+<%-- コメント編集モーダル --%>
 <div id="commentEditModal" class="edit-modal">
 
     <div class="edit-modal-content">
@@ -418,7 +389,6 @@
 
 </div>
 
-
 <script>
 
 /* ========================================
@@ -447,7 +417,6 @@ document.querySelectorAll(".menu-button").forEach(button => {
 
 });
 
-
 /* ========================================
    メニュー外をクリックしたとき
 ======================================== */
@@ -459,7 +428,6 @@ document.addEventListener("click", function() {
     });
 
 });
-
 
 /* ========================================
    削除処理
@@ -476,7 +444,6 @@ const deleteCancelButton =
 let deleteType = "";
 let deleteId = "";
 
-
 /* 削除ボタン */
 document.querySelectorAll(".delete-button").forEach(button => {
 
@@ -487,13 +454,9 @@ document.querySelectorAll(".delete-button").forEach(button => {
         deleteType = this.dataset.deleteType;
 
         if (deleteType === "post") {
-
             deleteId = this.dataset.postId;
-
         } else {
-
             deleteId = this.dataset.commentId;
-
         }
 
         document.querySelectorAll(".menu-dropdown").forEach(menu => {
@@ -505,7 +468,6 @@ document.querySelectorAll(".delete-button").forEach(button => {
     });
 
 });
-
 
 /* 削除確定 */
 deleteConfirmButton.addEventListener("click", function() {
@@ -550,7 +512,6 @@ deleteConfirmButton.addEventListener("click", function() {
 
 });
 
-
 /* 削除キャンセル */
 deleteCancelButton.addEventListener("click", function() {
 
@@ -560,7 +521,6 @@ deleteCancelButton.addEventListener("click", function() {
     deleteId = "";
 
 });
-
 
 /* ========================================
    編集処理
@@ -573,7 +533,6 @@ document.querySelectorAll(".edit-button").forEach(button => {
         event.stopPropagation();
 
         const type = this.dataset.editType;
-
         const text = this.dataset.editText;
 
         document.querySelectorAll(".menu-dropdown").forEach(menu => {
@@ -606,7 +565,6 @@ document.querySelectorAll(".edit-button").forEach(button => {
 
 });
 
-
 /* ========================================
    編集モーダルを閉じる
 ======================================== */
@@ -623,16 +581,13 @@ document.querySelectorAll("[data-close-modal]").forEach(button => {
 
 });
 
-
 /* モーダルの外側をクリックして閉じる */
 document.querySelectorAll(".edit-modal").forEach(modal => {
 
     modal.addEventListener("click", function(event) {
 
         if (event.target === this) {
-
             this.classList.remove("show");
-
         }
 
     });
