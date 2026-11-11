@@ -24,7 +24,6 @@
 
         // 一般ユーザーの場合
         if (loginUser != null) {
-
             notificationCount =
                 notificationDAO.countByUserId(
                     loginUser.getUserId()
@@ -32,7 +31,6 @@
 
         // 管理者の場合
         } else if (loginAdmin != null) {
-
             notificationCount =
                 notificationDAO.countByAdminId(
                     loginAdmin.getCpUserid()
@@ -43,11 +41,10 @@
         e.printStackTrace();
     }
 
-    // 丸付き数字を設定
+    // 通知件数の表示文字を設定
     String badgeText = "";
 
     if (notificationCount > 0) {
-
         String[] circledNumbers = {
             "",
             "①", "②", "③", "④", "⑤",
@@ -56,22 +53,29 @@
             "⑯", "⑰", "⑱", "⑲", "⑳"
         };
 
-        // 20件以下の場合
         if (notificationCount <= 20) {
             badgeText = circledNumbers[notificationCount];
-
-        // 21件以上の場合
         } else {
             badgeText = "⑳+";
         }
     }
 %>
 
-<%-- メニュー用CSS --%>
+<%-- サイドバーCSS --%>
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/sidebar.css">
 
 <div class="side-menu">
+
+    <%-- ロゴエリア --%>
+    <div class="sidebar-logo">
+        <a href="${pageContext.request.contextPath}/servlet.PostServlet.action">
+            <img
+			    src="${pageContext.request.contextPath}/images/nico-logo.png"
+			    alt="Nico+"
+			    class="sidebar-logo-img">
+        </a>
+    </div>
 
     <%-- メニュー一覧 --%>
     <nav class="menu-list">
@@ -83,7 +87,6 @@
             <span class="menu-icon">🔔︎</span>
             <span>通知</span>
 
-            <%-- 通知件数が1件以上の場合に表示 --%>
             <% if (notificationCount > 0) { %>
                 <span class="notification-badge">
                     <%= badgeText %>
@@ -129,72 +132,57 @@
         </a>
 
         <%-- 管理者の種類によって表示を切り替える --%>
-        <c:choose>
+        <c:choose><c:when test="${sessionScope.admin.cpUserid == 'admin000'}">
 
-            <%-- 管理者番号がadmin000の場合 --%>
-            <c:when test="${sessionScope.admin.cpUserid == 'admin000'}">
+            <%-- 企業新規登録 --%>
+            <a href="${pageContext.request.contextPath}/company/company.jsp"
+               class="menu-item">
 
-                <a href="${pageContext.request.contextPath}/company/company.jsp"
-                   class="menu-item">
+                <span class="menu-icon">🏢</span>
+                <span>企業新規登録</span>
 
-                    <span class="menu-icon">🏢</span>
-                    <span>企業新規登録</span>
+            </a>
 
-                </a>
+        </c:when><c:when test="${not empty sessionScope.admin.cpUserid and fn:substring(sessionScope.admin.cpUserid, 2, 4) == 'ad'}">
 
-            </c:when>
+            <%-- ユーザー新規登録 --%>
+            <a href="${pageContext.request.contextPath}/register/register.jsp"
+               class="menu-item">
 
-            <%-- IDの3・4文字目がadの場合 --%>
-            <c:when test="${not empty sessionScope.admin.cpUserid
-                            and fn:substring(sessionScope.admin.cpUserid, 2, 4) == 'ad'}">
+                <span class="menu-icon">👤</span>
+                <span>ユーザー新規登録</span>
 
-                <a href="${pageContext.request.contextPath}/register/register.jsp"
-                   class="menu-item">
+            </a>
 
-                    <span class="menu-icon">👤</span>
-                    <span>ユーザー新規登録</span>
-
-                </a>
-
-            </c:when>
-
-        </c:choose>
+        </c:when></c:choose>
 
     </nav>
 
-    <%-- 一番下のマイページ --%>
+    <%-- 一番下のマイページa --%>
     <div class="menu-bottom">
 
         <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
            class="mypage-item">
 
-            <c:choose>
+            <c:choose><c:when test="${not empty sessionScope.admin}">
 
-                <%-- 管理者の場合 --%>
-                <c:when test="${not empty sessionScope.admin}">
+                <%-- 管理者のプロフィール画像 --%>
+                <img
+                    src="${pageContext.request.contextPath}/images/${empty sessionScope.admin.cpUserimg ? 'default-profile.png' : sessionScope.admin.cpUserimg}"
+                    alt="管理者アイコン"
+                    class="profile-icon"
+                    style="object-position: ${empty sessionScope.admin.cpUserimgPositionX ? 50 : sessionScope.admin.cpUserimgPositionX}% ${empty sessionScope.admin.cpUserimgPositionY ? 50 : sessionScope.admin.cpUserimgPositionY}%;">
 
-                    <img
-                        src="${pageContext.request.contextPath}/images/${empty sessionScope.admin.cpUserimg ? 'default-profile.png' : sessionScope.admin.cpUserimg}"
-                        alt="管理者アイコン"
-                        class="profile-icon"
-                        style="object-position: ${empty sessionScope.admin.cpUserimgPositionX ? 50 : sessionScope.admin.cpUserimgPositionX}% ${empty sessionScope.admin.cpUserimgPositionY ? 50 : sessionScope.admin.cpUserimgPositionY}%;"
-                    >
+            </c:when><c:otherwise>
 
-                </c:when>
+                <%-- 一般ユーザーのプロフィール画像 --%>
+                <img
+                    src="${pageContext.request.contextPath}/images/${empty sessionScope.user.userImg ? 'default-profile.png' : sessionScope.user.userImg}"
+                    alt="ユーザーアイコン"
+                    class="profile-icon"
+                    style="object-position: ${empty sessionScope.user.userImgPositionX ? 50 : sessionScope.user.userImgPositionX}% ${empty sessionScope.user.userImgPositionY ? 50 : sessionScope.user.userImgPositionY}%;">
 
-                <%-- 一般ユーザーの場合 --%>
-                <c:otherwise>
-
-                    <img
-                        src="${pageContext.request.contextPath}/images/${empty sessionScope.user.userImg ? 'default-profile.png' : sessionScope.user.userImg}"
-                        alt="ユーザーアイコン"
-                        class="profile-icon"
-                        style="object-position: ${empty sessionScope.user.userImgPositionX ? 50 : sessionScope.user.userImgPositionX}% ${empty sessionScope.user.userImgPositionY ? 50 : sessionScope.user.userImgPositionY}%;"
-                    >
-
-                </c:otherwise>
-
-            </c:choose>
+            </c:otherwise></c:choose>
 
             <span>マイページ</span>
 
