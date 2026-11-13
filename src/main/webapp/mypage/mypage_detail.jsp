@@ -2,61 +2,46 @@
 
 <%@ include file="../header.jsp" %>
 
-<!-- 設定画面のCSSを読み込む -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/mypage_detail.css">
 
-<!-- サイドバーと設定画面を横並びにする -->
 <div class="page-layout">
 
-    <!-- 左側：サイドバー -->
+    <%-- サイドバー --%>
     <%@ include file="../sidebar.jsp" %>
 
-    <!-- 右側：設定画面 -->
+    <%-- メイン画面 --%>
     <main class="main-content">
 
         <div class="settings-container">
 
-            <!-- ヘッダー（戻るボタン＆タイトル） -->
+            <%-- ページタイトル --%>
             <div class="header">
-
-                <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
-                   id="back-button"
-                   class="back-btn"
-                   aria-label="戻る">
-
-                    <i class="fa-solid fa-chevron-left"></i>
-
-                </a>
-
                 <div class="header-title" id="header-title">
-                    設定
+                    <i class="fa-solid fa-gear"></i>
+                    <span id="header-title-text">設定</span>
                 </div>
-
             </div>
 
-            <!-- 保存完了メッセージ -->
+            <%-- 完了メッセージ --%>
             <%
                 String mypageMessage =
                     (String) session.getAttribute("mypageMessage");
 
                 if (mypageMessage != null) {
             %>
-
                 <p class="success-message">
                     <%= mypageMessage %>
                 </p>
-
             <%
-                    // 一度表示したらメッセージを削除する
                     session.removeAttribute("mypageMessage");
                 }
             %>
 
-            <!-- ① 設定メニュー一覧（初期は表示） -->
+            <%-- ① 設定メニュー --%>
             <div id="settings-menu-section" class="settings-card">
 
-                <!-- パスワードリンク -->
+                <%-- パスワード変更 --%>
                 <a href="${pageContext.request.contextPath}/mypage/password_change.jsp"
                    class="setting-item">
 
@@ -65,22 +50,16 @@
                     </div>
 
                     <div class="text-content">
-
-                        <div class="item-title">
-                            パスワード
-                        </div>
-
+                        <div class="item-title">パスワード</div>
                         <div class="item-desc">
                             アカウントのパスワードを変更できます。
                         </div>
-
                     </div>
 
                     <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
                 </a>
 
-                <!-- 住所・連絡先登録・誕生日リンク -->
+                <%-- 住所・連絡先・誕生日 --%>
                 <a href="${pageContext.request.contextPath}/servlet.FamilyBDPageServlet.action"
                    class="setting-item">
 
@@ -89,22 +68,18 @@
                     </div>
 
                     <div class="text-content">
-
                         <div class="item-title">
                             住所・連絡先・誕生日
                         </div>
-
                         <div class="item-desc">
                             住所、電話番号、メールアドレス、誕生日を確認・変更できます。
                         </div>
-
                     </div>
 
                     <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
                 </a>
 
-                <!-- ブロックリストリンク -->
+                <%-- ブロックリスト --%>
                 <a href="#"
                    class="setting-item"
                    onclick="showBlockList(event)">
@@ -114,38 +89,29 @@
                     </div>
 
                     <div class="text-content">
-
-                        <div class="item-title">
-                            ブロックリスト
-                        </div>
-
+                        <div class="item-title">ブロックリスト</div>
                         <div class="item-desc">
                             ブロックしたユーザーの一覧を確認・管理できます。
                         </div>
-
                     </div>
 
                     <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
                 </a>
 
             </div>
 
-            <!-- ② ブロックリスト画面（初期は非表示） -->
+            <%-- ② ブロックリスト --%>
             <div id="block-list-section" style="display: none;">
 
-                <!-- ユーザー一覧カード -->
                 <div class="settings-card">
 
-                    <!-- ユーザーA -->
+                    <%-- ユーザーA --%>
                     <div class="block-item">
 
                         <div class="icon-wrapper icon-purple"
                              style="width: 36px; height: 36px;">
-
                             <i class="fa-solid fa-user"
                                style="font-size: 14px;"></i>
-
                         </div>
 
                         <div class="block-user-name">
@@ -160,15 +126,13 @@
 
                     </div>
 
-                    <!-- ユーザーB -->
+                    <%-- ユーザーB --%>
                     <div class="block-item">
 
                         <div class="icon-wrapper icon-purple"
                              style="width: 36px; height: 36px;">
-
                             <i class="fa-solid fa-user"
                                style="font-size: 14px;"></i>
-
                         </div>
 
                         <div class="block-user-name">
@@ -183,15 +147,13 @@
 
                     </div>
 
-                    <!-- ユーザーC -->
+                    <%-- ユーザーC --%>
                     <div class="block-item">
 
                         <div class="icon-wrapper icon-purple"
                              style="width: 36px; height: 36px;">
-
                             <i class="fa-solid fa-user"
                                style="font-size: 14px;"></i>
-
                         </div>
 
                         <div class="block-user-name">
@@ -208,7 +170,7 @@
 
                 </div>
 
-                <!-- 下部の戻るボタン -->
+                <%-- 設定メニューに戻る --%>
                 <button type="button"
                         class="btn-back-bottom"
                         onclick="hideBlockList()">
@@ -217,13 +179,20 @@
 
             </div>
 
+            <%-- マイページに戻る --%>
+            <div class="back-area">
+                <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
+                   class="back-button">
+                    戻る
+                </a>
+            </div>
+
         </div>
 
     </main>
 
 </div>
 
-<!-- JavaScriptによる画面切り替えと解除処理 -->
 <script>
 
     // ブロックリストを表示する
@@ -235,8 +204,13 @@
 
         document.getElementById('block-list-section').style.display = 'block';
 
-        document.getElementById('header-title').innerText = 'ブロックリスト';
+        document.getElementById('header-title-text').innerText = 'ブロックリスト';
 
+        document.querySelector('.header-title i').className =
+            'fa-solid fa-user-slash';
+
+        // マイページに戻るボタンを非表示にする
+        document.querySelector('.back-area').style.display = 'none';
     }
 
     // 設定メニューに戻る
@@ -246,8 +220,13 @@
 
         document.getElementById('settings-menu-section').style.display = 'block';
 
-        document.getElementById('header-title').innerText = '設定';
+        document.getElementById('header-title-text').innerText = '設定';
 
+        document.querySelector('.header-title i').className =
+            'fa-solid fa-gear';
+
+        // マイページに戻るボタンを再表示する
+        document.querySelector('.back-area').style.display = 'flex';
     }
 
     // ブロック解除

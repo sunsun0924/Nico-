@@ -32,6 +32,7 @@ body {
 }
 
 /* メイン画面 */
+
 .main-content {
     width: calc(100% - 266px);
     min-height: calc(100vh - 40px);
@@ -125,6 +126,7 @@ body {
 }
 
 /* 保存ボタン */
+
 .btn-save {
     min-width: 140px;
     padding: 12px 28px;
@@ -143,6 +145,7 @@ body {
 }
 
 /* 戻るボタン */
+
 .btn-back {
     display: inline-flex;
     align-items: center;
@@ -194,10 +197,20 @@ body {
 }
 
 .header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-size: 26px;
     font-weight: 700;
     color: #654b39;
     letter-spacing: 1px;
+}
+
+/* 設定・ブロックリストのタイトルアイコン */
+
+.header-title i {
+    color: #bd8178;
+    font-size: 27px;
 }
 
 /* =========================
@@ -214,6 +227,7 @@ body {
 }
 
 /* 各項目のリンク */
+
 .setting-item {
     display: flex;
     align-items: center;
@@ -403,8 +417,48 @@ body {
 }
 
 /* =========================
+   戻るボタン
+========================= */
+
+.back-area {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    min-height: 50px;
+    padding: 12px 28px;
+    background-color: #fffdf8;
+    color: #8b6f5d;
+    border: 1px solid #edc5b2;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: #fdf5ed;
+}
+
+.back-button:focus-visible {
+    outline: 2px solid #ed947c;
+    outline-offset: 3px;
+}
+
+/* =========================
    スマートフォン対応
 ========================= */
+
 @media screen and (max-width: 600px) {
     .main-content {
         width: calc(100% - 100px);
@@ -412,6 +466,7 @@ body {
         margin: 10px 10px 10px 90px;
         padding: 0;
     }
+
     .settings-container,
     .container {
         width: 100%;
@@ -421,18 +476,32 @@ body {
         padding: 18px 12px;
         border-radius: 16px;
     }
+
     .header {
         gap: 8px;
         margin-bottom: 20px;
     }
+    
+    .header-title {
+        gap: 10px;
+        font-size: 20px;
+    }
+    
+    .header-title i {
+        font-size: 21px;
+    }
+
     .page-title {
         font-size: 20px;
     }
+
     .form-input {
         padding: 10px 12px;
         font-size: 14px;
     }
+
     /* ボタンはスマートフォンでも横並び */
+
     .btn-container {
         display: flex;
         flex-direction: row;
@@ -441,6 +510,7 @@ body {
         gap: 10px;
         width: 100%;
     }
+
     .btn-save,
     .btn-back {
         flex: 1;
@@ -450,7 +520,9 @@ body {
         text-align: center;
         font-size: 14px;
     }
+
     /* アイコンの丸い背景 */
+
     .icon-wrapper {
         width: 70px;
         height: 70px;
@@ -460,18 +532,36 @@ body {
         justify-content: center;
         flex-shrink: 0;
     }
+
     /* アイコン本体 */
+
     .icon-wrapper i {
         display: block;
         font-size: 26px;
         color: #8d7666;
     }
+
     /* ピンクの丸 */
+
     .icon-pink i {
         color: #ed947c;
     }
+
     /* 紫の丸 */
+
     .icon-purple i {
         color: #a17b65;
     }
+
+    .back-area {
+        margin-top: 25px;
+    }
+
+    .back-button {
+        min-width: 130px;
+        min-height: 46px;
+        padding: 10px 22px;
+        font-size: 14px;
+    }
+
 }

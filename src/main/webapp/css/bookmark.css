@@ -3,27 +3,43 @@
 ======================================== */
 
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
+html,
 body {
-    margin: 0;
-    padding: 0;
-    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
     background-color: #ffe8d1;
     color: #59483d;
 }
 
 /* ========================================
-   投稿画面全体
+   メイン画面
 ======================================== */
 
-.home-header {
+.main-container {
     width: calc(100% - 266px);
-    max-width: 900px;
-    min-height: 90vh;
+    min-height: calc(100vh - 40px);
     margin: 20px 20px 20px 246px;
-    padding: 30px;
+    padding: 0;
+}
+
+/* ========================================
+   メインカード
+======================================== */
+
+.content-card {
+    width: 100%;
+    max-width: 1000px;
+    min-height: calc(100vh - 40px);
+    margin: 0 auto;
+    padding: 30px 36px;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 22px;
@@ -31,41 +47,46 @@ body {
 }
 
 /* ========================================
-   タイトル
+   ページタイトル
 ======================================== */
 
-.home-header h1 {
-    margin: 0 0 25px;
-    font-size: 32px;
-    font-weight: bold;
-    color: #654b39;
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
-.home-header h3 {
-    margin: 25px 0;
-    font-size: 22px;
-    color: #654b39;
+.card-header i {
+    color: #bd8178;
+    font-size: 27px;
 }
 
-.home-header hr {
-    margin: 25px 0;
+.card-header h2 {
+    color: #654b39;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.content-card hr {
+    margin: 20px 0 28px;
     border: none;
     border-top: 1px solid #eee4d8;
 }
 
 /* ========================================
-   登録完了メッセージ
+   成功メッセージ
 ======================================== */
 
 .success-message {
     margin: 15px 0;
-    padding: 12px 15px;
-    color: #654b39;
-    background-color: #fff7f0;
-    border: 1px solid #eee4d8;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
+    padding: 13px 18px;
+    background-color: #f0f8ed;
+    border: 1px solid #c8ddc3;
+    border-radius: 12px;
+    color: #547c4d;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 /* ========================================
@@ -74,16 +95,12 @@ body {
 
 .post-item {
     position: relative;
-    display: block;
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 25px 22px;
+    margin-bottom: 25px;
+    padding: 24px;
     background-color: #fffdf8;
-    border: 1px solid #f0e8de;
-    border-radius: 20px;
-    overflow-wrap: anywhere;
-    box-shadow: 0 2px 8px rgba(100, 75, 50, 0.04);
-    text-align: left;
+    border: 1px solid #eee4d8;
+    border-radius: 18px;
+    box-shadow: 0 2px 8px rgba(89, 72, 61, 0.04);
 }
 
 /* ========================================
@@ -93,57 +110,38 @@ body {
 .post-author {
     display: flex;
     align-items: center;
-    gap: 10px;
-    min-height: 40px;
-    padding-bottom: 12px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee4d8;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .post-author-icon {
-    display: block;
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
     border-radius: 50%;
     object-fit: cover;
 }
 
 .post-author-info {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .post-author-name {
     color: #59483d;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 700;
 }
 
 .post-author-label {
-    padding: 3px 8px;
-    border-radius: 5px;
-    background-color: #f5e3d8;
-    color: #a17b65;
+    width: fit-content;
+    padding: 3px 9px;
+    background-color: #f7eee5;
+    border-radius: 10px;
+    color: #8b6f5d;
     font-size: 11px;
-}
-
-/* ========================================
-   投稿本文
-======================================== */
-
-.post-item .post-text {
-    display: block;
-    width: 100%;
-    margin: 15px 0;
-    padding: 0;
-    color: #75665c;
-    font-size: 16px;
-    line-height: 1.8;
-    text-align: left;
-    text-indent: 0;
-    white-space: pre-line;
-    overflow-wrap: anywhere;
+    font-weight: 600;
 }
 
 /* ========================================
@@ -151,12 +149,23 @@ body {
 ======================================== */
 
 .post-date {
-    display: block;
-    width: 100%;
-    margin: 8px 0 12px;
+    margin: 0 0 15px;
     color: #a39a92;
-    font-size: 11px;
-    text-align: left;
+    font-size: 12px;
+    text-align: right;
+}
+
+/* ========================================
+   投稿本文
+======================================== */
+
+.post-text {
+    margin: 0 0 18px;
+    color: #59483d;
+    font-size: 15px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 /* ========================================
@@ -166,25 +175,24 @@ body {
 .post-image-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    max-width: 100%;
-    margin: 15px 0;
+    gap: 12px;
+    margin: 15px 0 20px;
 }
 
 .post-image-wrapper {
-    max-width: 100%;
+    width: calc(33.333% - 8px);
+    max-width: 220px;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: 12px;
+    background-color: #f7eee5;
 }
 
 .post-image {
     display: block;
-    max-width: 100%;
-    width: auto;
-    max-height: 400px;
-    height: auto;
-    object-fit: contain;
-    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* ========================================
@@ -192,191 +200,293 @@ body {
 ======================================== */
 
 .comment-list {
-    margin-top: 24px;
-    margin-bottom: 18px;
-    padding: 17px 18px;
+    margin-top: 22px;
+    padding: 18px;
     background-color: #fff7f0;
-    border: 1px solid #f3e5d9;
+    border: 1px solid #eee4d8;
     border-radius: 14px;
 }
 
 .comment-list h4 {
     margin: 0 0 15px;
-    padding-bottom: 10px;
     color: #654b39;
-    font-size: 16px;
-    border-bottom: 1px solid #f0dfd0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.comment-item {
+    padding: 14px 0;
+    border-bottom: 1px solid #eee4d8;
+}
+
+.comment-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 /* ========================================
-   コメント投稿者情報
+   コメント投稿者
 ======================================== */
 
 .comment-author {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 8px;
 }
 
 .comment-author-icon {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
     border-radius: 50%;
     object-fit: cover;
 }
 
 .comment-author-info {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    gap: 3px;
 }
 
 .comment-author-name {
     color: #59483d;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .comment-author-label {
-    padding: 3px 7px;
-    border-radius: 5px;
-    background-color: #f5e3d8;
-    color: #a17b65;
-    font-size: 11px;
+    width: fit-content;
+    padding: 2px 7px;
+    background-color: #f0dfd2;
+    border-radius: 8px;
+    color: #8b6f5d;
+    font-size: 10px;
 }
 
 /* ========================================
-   コメントカード
+   コメント本文
 ======================================== */
 
-.comment-item {
-    position: relative;
-    margin-bottom: 12px;
-    padding: 13px 15px;
-    background-color: #fffdf8;
-    border: 1px solid #f0e8de;
-    border-radius: 11px;
-}
-
-.comment-item:last-child {
-    margin-bottom: 0;
-}
-
-.comment-item strong {
-    display: block;
-    margin-bottom: 7px;
-    color: #59483d;
-    font-size: 14px;
-}
-
-.comment-item p {
-    margin: 5px 0;
-    color: #75665c;
-    font-size: 14px;
-    line-height: 1.7;
-    text-align: left;
-    overflow-wrap: anywhere;
-}
-
 .comment-text {
-    text-align: left;
+    margin: 8px 0;
+    color: #59483d;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 .comment-item small {
     display: block;
-    margin-top: 8px;
     color: #a39a92;
     font-size: 11px;
-}
-
-.comment-list > p {
-    margin: 0;
-    color: #a39a92;
-    font-size: 13px;
+    text-align: right;
 }
 
 /* ========================================
-   ブックマーク
+   ブックマーク解除ボタン
 ======================================== */
 
 .bookmark-form {
     display: flex;
     justify-content: flex-end;
-    margin-top: 12px;
+    margin-top: 15px;
 }
 
-.bookmark-form button {
-    font-family: inherit;
+.bookmark-form form {
+    margin: 0;
 }
 
 .bookmark-btn {
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 46px;
-    height: 46px;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
     padding: 8px;
-    border: 1px solid #e8d5c5;
-    border-radius: 10px;
+    border: 1px solid #edc5b2;
+    border-radius: 12px;
     background-color: #fffdf8;
-    color: #8d7666;
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.bookmark-btn svg {
-    display: block;
-    width: 23px;
-    height: 27px;
-}
-
-.bookmark-btn svg path {
-    fill: transparent;
-    stroke: #8d7666;
-    stroke-width: 2;
-    transition: fill 0.2s ease, stroke 0.2s ease;
+    transition: background-color 0.2s;
 }
 
 .bookmark-btn:hover {
-    border-color: #ed947c;
+    background-color: #fdf0e8;
 }
 
-.bookmark-btn.active {
-    background-color: #fffdf8;
-    border-color: #e8d5c5;
-    color: #ed947c;
-}
-
-.bookmark-btn.active svg path {
+.bookmark-btn svg {
+    width: 22px;
+    height: 26px;
     fill: #ed947c;
     stroke: #ed947c;
+    stroke-width: 1;
 }
 
-.bookmark-btn.active:hover {
+/* ========================================
+   投稿がない場合
+======================================== */
+
+.empty-bookmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    padding: 25px;
+    background-color: #fff7f0;
+    border: 1px solid #eee4d8;
+    border-radius: 14px;
+    color: #a39a92;
+    font-size: 15px;
+    text-align: center;
+}
+
+/* ========================================
+   戻るボタン
+======================================== */
+
+.back-area {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    min-height: 50px;
+    padding: 12px 28px;
+    border: 1px solid #edc5b2;
+    border-radius: 20px;
     background-color: #fffdf8;
-    border-color: #ed947c;
+    color: #8b6f5d;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.back-button:hover {
+    background-color: #fdf5ed;
+}
+
+.back-button:focus-visible {
+    outline: 2px solid #ed947c;
+    outline-offset: 3px;
 }
 
 /* ========================================
    スマートフォン対応
 ======================================== */
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 600px) {
+    .main-container {
+        width: calc(100% - 100px);
+        min-height: calc(100vh - 20px);
+        margin: 10px 10px 10px 90px;
+        padding: 0;
+    }
 
-    .home-header {
-        width: calc(100% - 30px);
-        margin: 15px;
-        padding: 18px;
+    .content-card {
+        width: 100%;
+        min-height: calc(100vh - 40px);
+        padding: 18px 12px;
+        border-radius: 16px;
+    }
+
+    .card-header {
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .card-header i {
+        font-size: 21px;
+    }
+
+    .card-header h2 {
+        font-size: 20px;
+    }
+
+    .content-card hr {
+        margin: 16px 0 20px;
     }
 
     .post-item {
-        padding: 18px 14px;
+        margin-bottom: 18px;
+        padding: 15px 12px;
+        border-radius: 14px;
     }
 
-    .post-image {
-        max-width: 100%;
-        max-height: 300px;
+    .post-author-icon {
+        width: 42px;
+        height: 42px;
     }
 
+    .post-author-name {
+        font-size: 13px;
+    }
+
+    .post-date {
+        font-size: 11px;
+    }
+
+    .post-text {
+        font-size: 13px;
+    }
+
+    .post-image-wrapper {
+        width: calc(50% - 6px);
+    }
+
+    .comment-list {
+        padding: 13px 10px;
+    }
+
+    .comment-text {
+        font-size: 12px;
+    }
+
+    .back-area {
+        margin-top: 25px;
+    }
+
+    .back-button {
+        min-width: 130px;
+        min-height: 46px;
+        padding: 10px 22px;
+        font-size: 14px;
+    }
+}
+
+/* ========================================
+   小さいスマートフォン対応
+======================================== */
+
+@media screen and (max-width: 380px) {
+    .main-container {
+        padding: 0;
+    }
+
+    .content-card {
+        padding: 15px 9px;
+    }
+
+    .post-item {
+        padding: 12px 9px;
+    }
+
+    .post-image-wrapper {
+        width: 100%;
+        max-width: none;
+    }
+
+    .comment-list {
+        padding: 10px 8px;
+    }
 }
