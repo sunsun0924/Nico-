@@ -3,13 +3,13 @@
 ========================= */
 
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
     min-height: 100%;
 }
 
@@ -20,15 +20,16 @@ body {
 }
 
 /* =========================
-   通知画面全体
+   通知画面コンテナ
 ========================= */
 
 .notification-container {
-    width: calc(100% - 266px);
+    width: 100%;
     max-width: 900px;
     min-height: 90vh;
-    margin: 20px 20px 20px 246px;
-    padding: 30px;
+    margin: 0 auto;
+    padding: 30px 36px;
+
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 22px;
@@ -40,14 +41,14 @@ body {
 ========================= */
 
 .notification-header {
-    margin-bottom: 25px;
-    text-align: center;
+    margin-bottom: 28px;
+    text-align: left;
 }
 
 .notification-header h1 {
-    margin: 0;
-    font-size: 32px;
-    font-weight: bold;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
     color: #654b39;
 }
 
@@ -60,6 +61,7 @@ body {
     gap: 6px;
     margin-bottom: 20px;
     padding: 4px;
+
     background-color: #f7eee5;
     border: 1px solid #eee4d8;
     border-radius: 35px;
@@ -69,11 +71,13 @@ body {
     flex: 1;
     min-width: 0;
     padding: 9px 8px;
+
     text-align: center;
     text-decoration: none;
     font-size: 15px;
     font-weight: bold;
     color: #806b5d;
+
     background-color: #fffaf4;
     border-radius: 30px;
     transition: background-color 0.2s, color 0.2s;
@@ -106,24 +110,27 @@ body {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
+
+    min-height: 150px;
     padding: 25px 22px;
+
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 20px;
-    min-height: 150px;
     text-align: left;
 }
 
 /* 通知の文章を表示する領域 */
 
 .notification-content {
-    flex: 1;
-    min-width: 0;
-    width: 100%;
     display: flex;
+    flex: 1;
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
     justify-content: flex-start;
+
+    width: 100%;
+    min-width: 0;
     text-align: left !important;
 }
 
@@ -134,12 +141,14 @@ body {
 .notification-message {
     display: block;
     width: 100%;
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
     padding: 0;
+
     font-size: 19px;
     font-weight: bold;
     line-height: 1.7;
     color: #59483d;
+
     text-align: left !important;
     overflow-wrap: anywhere;
 }
@@ -151,14 +160,17 @@ body {
 .notification-detail {
     display: block;
     width: 100%;
-    margin: 0 0 15px 0 !important;
-    padding: 0 0 0 10px;
+    margin: 0 0 15px !important;
+    padding: 0;
+
     font-size: 17px;
     font-weight: normal;
     line-height: 1.8;
     color: #75665c;
+
     text-align: left !important;
-    white-space: pre-wrap;
+    align-self: flex-start;
+    white-space: pre-line;
     overflow-wrap: anywhere;
 }
 
@@ -171,6 +183,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
+
     font-size: 15px;
     color: #a39a92;
     text-align: left !important;
@@ -182,6 +195,7 @@ body {
 
 .no-notification {
     padding: 40px 10px;
+
     text-align: center;
     font-size: 17px;
     color: #998a7e;
@@ -194,20 +208,22 @@ body {
 @media screen and (max-width: 600px) {
 
     .notification-container {
-        width: calc(100% - 100px);
+        width: 100%;
         max-width: none;
         min-height: calc(100vh - 20px);
-        margin: 10px 10px 10px 90px;
+        margin: 0;
         padding: 18px 12px;
+
         border-radius: 16px;
     }
 
     .notification-header {
-        margin-bottom: 20px;
+        margin-bottom: 18px;
     }
 
     .notification-header h1 {
-        font-size: 24px;
+        font-size: 20px;
+        letter-spacing: 1px;
     }
 
     .notification-tabs {
@@ -223,30 +239,31 @@ body {
     }
 
     .notification-item {
-        padding: 18px 14px;
         min-height: 120px;
+        padding: 18px 14px;
         border-radius: 15px;
     }
 
     .notification-content {
         width: 100%;
-        align-items: stretch;
+        align-items: flex-start;
         text-align: left !important;
     }
 
     .notification-message {
+        margin-bottom: 8px;
         font-size: 16px;
         line-height: 1.7;
-        margin-bottom: 8px;
         text-align: left !important;
     }
 
     .notification-detail {
-        padding-left: 5px;
+        margin-bottom: 12px !important;
+        padding: 0;
         font-size: 14px;
         line-height: 1.8;
-        margin-bottom: 12px !important;
         text-align: left !important;
+        align-self: flex-start;
     }
 
     .notification-date {
@@ -271,12 +288,12 @@ body {
     }
 
     .notification-header h1 {
-        font-size: 21px;
+        font-size: 20px;
     }
 
     .notification-tabs .tab {
-        font-size: 12px;
         padding: 10px 2px;
+        font-size: 12px;
     }
 
     .notification-item {
@@ -289,5 +306,22 @@ body {
 
     .notification-detail {
         font-size: 12px;
+        white-space: pre-line;
     }
+}
+
+/* =========================
+   コメント本文を左端に揃える
+========================= */
+
+.notification-item .notification-content .notification-detail {
+    display: block !important;
+    width: 100% !important;
+
+    text-align: left !important;
+    text-indent: 0 !important;
+
+    align-self: stretch !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
 }

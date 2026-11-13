@@ -2,11 +2,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="../header.jsp" %>
 
-<!-- ギフト詳細画面のCSSを読み込む -->
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/gift.css">
-
-
 <%
     String gift = request.getParameter("gift");
 

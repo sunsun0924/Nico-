@@ -1,29 +1,73 @@
-/* 画面全体の基本設定 */
+/* =========================
+   全体設定
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
     margin: 0;
     padding: 0;
-    font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
     background-color: #ffe8d1;
     color: #59483d;
 }
 
-/* メニューと本文を横並びにする */
+/* =========================
+   画面全体のレイアウト
+========================= */
+
 .page-layout {
     display: flex;
+    width: 100%;
     min-height: 100vh;
 }
 
-/* メインコンテンツ */
+/* =========================
+   メインコンテンツ
+========================= */
+
 .main-content {
-    flex: 1;
+    width: calc(100% - 266px);
+    min-height: calc(100vh - 40px);
+    margin: 20px 20px 20px 246px;
+    padding: 0;
     min-width: 0;
-    padding: 25px;
-    box-sizing: border-box;
 }
 
-/* スマートフォン向け */
+/* マイページ用 */
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    width: calc(100% - 266px);
+    min-height: calc(100vh - 40px);
+
+    margin: 20px 20px 20px 246px;
+    padding: 0;
+}
+
+/* =========================
+   スマートフォン対応
+========================= */
+
 @media screen and (max-width: 600px) {
-    .main-content {
-        padding: 15px;
+
+    .main-content,
+    .main-container {
+        width: calc(100% - 100px);
+        min-height: calc(100vh - 20px);
+
+        margin: 10px 10px 10px 90px;
+        padding: 0;
     }
+
 }
