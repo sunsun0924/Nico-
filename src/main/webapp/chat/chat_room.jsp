@@ -20,7 +20,7 @@
                         <div class="no-image"></div>
                     </div>
                     <div class="header-user-info">
-                        <span class="header-user-name"><c:out value="${partnerUserId}" /> さん</span>
+                        <span class="header-user-name"><c:out value="${partnerUserName}" /> さん</span>
                         <span class="header-status"><span class="status-dot"></span>オンライン</span>
                     </div>
                 </div>

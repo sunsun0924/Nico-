@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList; // ★追加
 import java.util.List;
 
 import bean.ChatListBean;
@@ -41,6 +40,7 @@ public class ChatListServlet extends HttpServlet {
 
             // 新規チャット用ユーザー一覧（モーダル用JSONなど）
             if (jsonRequest) {
+                // DAO経由でユーザー一覧を取得するように修正
                 List<ChatListBean> userList = dao.getAllUsers(myUserId);
 
                 response.setContentType("application/json; charset=UTF-8");
@@ -62,13 +62,9 @@ public class ChatListServlet extends HttpServlet {
             }
 
             // ==========================================
-            // ★ テーブル未作成時の画面表示テスト用（空のリストを渡す）
+            // ★ DB接続を有効化（データベースからチャット一覧を取得）
             // ==========================================
-            List<ChatListBean> chatList = new ArrayList<>();
-            
-            /* -- DB接続を有効にする場合はこちらのコメントアウトを解除 --
             List<ChatListBean> chatList = dao.getChatList(myUserId);
-            ----------------------------------------------------- */
 
             request.setAttribute("chatList", chatList);
 

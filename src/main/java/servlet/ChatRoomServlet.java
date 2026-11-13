@@ -24,11 +24,7 @@ public class ChatRoomServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        // ==========================================
-        // ★ テスト用ダミーユーザーの設定
-        // ==========================================
         String myUserId = "userA";
-
         String partnerUserId = request.getParameter("partnerId");
 
         try {
@@ -48,19 +44,21 @@ public class ChatRoomServlet extends HttpServlet {
                 return;
             }
 
-            // ==========================================
-            // ★ テーブル未作成時の画面表示テスト用（DB接続時は dao.getMessageList に切り替えてください）
-            // ==========================================
-            List<ChatRoomBean> messageList = new ArrayList<>();
-            
-            /* -- DB接続を有効にする場合はこちらのコメントアウトを解除 --
             ChatRoomDAO dao = new ChatRoomDAO();
+
+            // メッセージ一覧を取得
             List<ChatRoomBean> messageList =
                 dao.getMessageList(myUserId, partnerUserId);
-            ----------------------------------------------------- */
+
+            // ★ データベースからパートナーのユーザー名を取得してセット
+            String partnerUserName = dao.getUserName(partnerUserId);
+            if (partnerUserName == null || partnerUserName.trim().isEmpty()) {
+                partnerUserName = partnerUserId; // 取得できない場合のフォールバック
+            }
 
             request.setAttribute("messageList", messageList);
             request.setAttribute("partnerUserId", partnerUserId);
+            request.setAttribute("partnerUserName", partnerUserName); // ← JSPへ渡す名前
 
             request.getRequestDispatcher(
                 "/chat/chat_room.jsp"
@@ -80,11 +78,7 @@ public class ChatRoomServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        // ==========================================
-        // ★ テスト用ダミーユーザーの設定
-        // ==========================================
         String myUserId = "userA";
-
         String partnerUserId = request.getParameter("partnerId");
         String messageText = request.getParameter("message");
 
