@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.UUID;
 
 import bean.Admin;
+import bean.Announcement;
 import bean.Post;
 import bean.User;
+import dao.AnnouncementDAO;
 import dao.PostDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import tool.Action;
 
-// 新規投稿をDBに登録するServlet
+// 新規投稿・お知らせをDBに登録するServlet
 public class PostInsertServlet extends Action {
 
     // 画像の制限
@@ -83,9 +85,76 @@ public class PostInsertServlet extends Action {
             }
 
             // ========================================
-            // 画像ファイルを取得
+            // お知らせとして投稿するか確認
             // ========================================
 
+            boolean isAnnouncement =
+                "true".equals(request.getParameter("isAnnouncement"));
+
+            // お知らせとして投稿する場合
+            if (isAnnouncement) {
+
+                // 管理者以外はお知らせを登録できない
+                if (admin == null) {
+                    request.setAttribute(
+                        "message",
+                        "お知らせを投稿できるのは管理者のみです。"
+                    );
+                    return "/post/postnew.jsp";
+                }
+
+                // お知らせには画像を添付できない
+                for (Part part : request.getParts()) {
+
+                    if ("post_image".equals(part.getName())
+                            && part.getSize() > 0) {
+
+                        request.setAttribute(
+                            "message",
+                            "お知らせには画像を添付できません。"
+                        );
+                        return "/post/postnew.jsp";
+                    }
+                }
+
+                // お知らせBeanを作成
+                Announcement announcement = new Announcement();
+
+                // お知らせ本文を設定
+                announcement.setAnnouncementText(postText);
+
+                // お知らせをDBに登録
+                AnnouncementDAO announcementDAO =
+                    new AnnouncementDAO();
+
+                int result = announcementDAO.insert(announcement);
+
+                // 登録成功
+                if (result > 0) {
+
+                    session.setAttribute(
+                        "message",
+                        "お知らせを登録しました！"
+                    );
+
+                    return "/servlet.PostServlet.action";
+
+                } else {
+
+                    request.setAttribute(
+                        "message",
+                        "お知らせの登録に失敗しました。"
+                    );
+
+                    return "/post/postnew.jsp";
+                }
+            }
+
+            // ========================================
+            // ここから通常投稿の処理
+            // ========================================
+
+            // 画像ファイルを取得
             List<Part> imageParts = new ArrayList<>();
 
             // 合計画像サイズ
@@ -104,7 +173,6 @@ public class PostInsertServlet extends Action {
                 }
 
                 imageParts.add(part);
-
                 totalImageSize += part.getSize();
             }
 
@@ -267,9 +335,14 @@ public class PostInsertServlet extends Action {
 
             // 画像ファイル名をカンマ区切りで設定
             if (imageFileNames.isEmpty()) {
+
                 post.setPost_img(null);
+
             } else {
-                post.setPost_img(String.join(",", imageFileNames));
+
+                post.setPost_img(
+                    String.join(",", imageFileNames)
+                );
             }
 
             // コメントは初期状態では空
@@ -329,9 +402,11 @@ public class PostInsertServlet extends Action {
         for (Path imagePath : savedImagePaths) {
 
             try {
+
                 Files.deleteIfExists(imagePath);
 
             } catch (Exception e) {
+
                 e.printStackTrace();
             }
         }

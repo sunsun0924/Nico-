@@ -1,12 +1,15 @@
+
 package servlet;
 
 import java.util.List;
 
 import bean.Admin;
+import bean.Announcement;
 import bean.Comment;
 import bean.Post;
 import bean.User;
 import dao.AdminDAO;
+import dao.AnnouncementDAO;
 import dao.BookmarkDAO;
 import dao.CommentDAO;
 import dao.PostDAO;
@@ -16,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
-// 投稿一覧表示処理
+// 投稿一覧・お知らせ一覧表示処理
 public class PostServlet extends Action {
 
     @Override
@@ -68,7 +71,26 @@ public class PostServlet extends Action {
             UserDAO userDAO = new UserDAO();
             AdminDAO adminDAO = new AdminDAO();
 
+            // ========================================
+            // お知らせ一覧を取得
+            // ========================================
+
+            AnnouncementDAO announcementDAO =
+                new AnnouncementDAO();
+
+            List<Announcement> announcementList =
+                announcementDAO.findAll();
+
+            // お知らせ一覧をJSPに渡す
+            request.setAttribute(
+                "announcementList",
+                announcementList
+            );
+
+            // ========================================
             // 投稿一覧を取得
+            // ========================================
+
             List<Post> postList = postDAO.findAll();
 
             for (Post post : postList) {
@@ -214,7 +236,7 @@ public class PostServlet extends Action {
 
                         }
 
-                        // 管理者名が取得できない場合は管理者IDを表示
+                        // 管理者名が取得できない場合
                         if (comment.getAuthorName() == null
                                 || comment.getAuthorName().trim().isEmpty()) {
 
@@ -252,7 +274,7 @@ public class PostServlet extends Action {
 
                         }
 
-                        // ユーザー名が取得できない場合はユーザーIDを表示
+                        // ユーザー名が取得できない場合
                         if (comment.getAuthorName() == null
                                 || comment.getAuthorName().trim().isEmpty()) {
 
@@ -356,7 +378,11 @@ public class PostServlet extends Action {
 
             request.setAttribute("postList", postList);
 
+            // ========================================
             // 処理結果メッセージ
+            // ========================================
+
+            // 削除結果メッセージ
             String deleteMessage =
                 (String) session.getAttribute("deleteMessage");
 
@@ -365,6 +391,20 @@ public class PostServlet extends Action {
                 request.setAttribute("message", deleteMessage);
 
                 session.removeAttribute("deleteMessage");
+
+            } else {
+
+                // 通常投稿・お知らせの登録結果メッセージ
+                String message =
+                    (String) session.getAttribute("message");
+
+                if (message != null) {
+
+                    request.setAttribute("message", message);
+
+                    session.removeAttribute("message");
+
+                }
 
             }
 

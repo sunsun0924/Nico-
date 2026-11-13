@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <%@ include file="../header.jsp" %>
 
@@ -15,6 +16,84 @@
 
 <main class="home-header">
 
+    <%-- ========================================
+         お知らせ一覧
+    ======================================== --%>
+
+    <c:if test="${not empty announcementList}">
+
+        <section class="announcement-section">
+
+            <h2 class="announcement-heading">お知らせ</h2>
+
+            <c:forEach var="announcement" items="${announcementList}">
+
+                <div class="announcement-item">
+
+                    <%-- お知らせラベル --%>
+                    <span class="announcement-label">
+                        お知らせ
+                    </span>
+
+                    <%-- お知らせ日時 --%>
+                    <div class="announcement-date">
+                        <fmt:formatDate
+                            value="${announcement.announcementDatetime}"
+                            pattern="yyyy年M月d日" />
+                    </div>
+
+                    <%-- 管理者用三点メニュー --%>
+                    <c:if test="${not empty sessionScope.admin}">
+
+                        <div class="announcement-menu">
+
+                            <button type="button"
+                                    class="menu-button"
+                                    aria-label="お知らせメニュー">
+                                ⋯
+                            </button>
+
+                            <div class="menu-dropdown">
+
+                                <button type="button"
+                                        class="edit-button"
+                                        data-edit-type="announcement"
+                                        data-announcement-id="${announcement.announcementId}"
+                                        data-edit-text="${fn:escapeXml(announcement.announcementText)}">
+                                    編集
+                                </button>
+
+                                <button type="button"
+                                        class="delete-button"
+                                        data-delete-type="announcement"
+                                        data-announcement-id="${announcement.announcementId}">
+                                    削除
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </c:if>
+
+                    <%-- お知らせ本文 --%>
+                    <div class="announcement-text">
+                        <c:out value="${announcement.announcementText}" />
+                    </div>
+
+                </div>
+
+            </c:forEach>
+
+        </section>
+
+    </c:if>
+
+
+    <%-- ========================================
+         投稿エリア
+    ======================================== --%>
+
     <h1>投稿</h1>
 
     <a href="${pageContext.request.contextPath}/post/postnew.jsp"
@@ -26,50 +105,23 @@
 
     <h3>投稿一覧</h3>
 
-    <%-- 処理結果メッセージ --%>
-    <c:if test="${not empty message}">
-        <div class="success-message">
-            <c:out value="${message}" />
-        </div>
-    </c:if>
 
     <%-- 投稿がない場合 --%>
+
     <c:if test="${empty postList}">
         <p>投稿はまだありません。</p>
     </c:if>
 
-    <%-- 投稿一覧 --%>
+
+    <%-- ========================================
+         投稿一覧
+    ======================================== --%>
+
     <c:forEach var="post" items="${postList}">
 
         <div class="post-item">
 
-            <%-- 投稿者情報 --%>
-            <div class="post-author">
-
-                <img
-                    class="post-author-icon"
-                    src="${pageContext.request.contextPath}/images/${empty post.authorImage ? 'default-profile.png' : post.authorImage}"
-                    alt="プロフィール画像"
-                    style="object-position: ${post.authorImagePositionX}% ${post.authorImagePositionY}%"
-                    onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
-                >
-
-                <div class="post-author-info">
-
-                    <strong class="post-author-name">
-                        <c:out value="${post.authorName}" />
-                    </strong>
-
-                    <c:if test="${post.author_type eq 'ADMIN'}">
-                        <span class="post-author-label">
-                            管理者
-                        </span>
-                    </c:if>
-
-                </div>
-            </div>
-
-            <%-- 投稿の三点ボタン --%>
+            <%-- 投稿の三点メニュー --%>
             <c:if test="${post.editable}">
 
                 <div class="post-menu">
@@ -98,23 +150,61 @@
                         </button>
 
                     </div>
+
                 </div>
 
             </c:if>
 
+
+            <%-- 投稿者情報 --%>
+
+            <div class="post-author">
+
+                <img
+                    class="post-author-icon"
+                    src="${pageContext.request.contextPath}/images/${empty post.authorImage ? 'default-profile.png' : post.authorImage}"
+                    alt="プロフィール画像"
+                    style="object-position: ${post.authorImagePositionX}% ${post.authorImagePositionY}%"
+                    onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
+                >
+
+                <div class="post-author-info">
+
+                    <strong class="post-author-name">
+                        <c:out value="${post.authorName}" />
+                    </strong>
+
+                    <c:if test="${post.author_type eq 'ADMIN'}">
+                        <span class="post-author-label">
+                            管理者
+                        </span>
+                    </c:if>
+
+                </div>
+
+            </div>
+
+
             <%-- 投稿本文 --%>
+
             <div class="post-text">
                 <c:out value="${fn:trim(post.post_text)}" />
             </div>
 
+
             <%-- 投稿日時 --%>
+
             <div class="post-date">
+
                 <c:if test="${not empty post.post_datetime}">
                     <c:out value="${fn:replace(fn:substring(post.post_datetime, 0, 19), 'T', ' ')}" />
                 </c:if>
+
             </div>
 
-            <%-- 投稿画像（複数対応） --%>
+
+            <%-- 投稿画像 --%>
+
             <c:if test="${not empty post.postImages}">
 
                 <div class="post-image-list">
@@ -138,7 +228,11 @@
 
             </c:if>
 
-            <%-- コメント一覧 --%>
+
+            <%-- ========================================
+                 コメント一覧
+            ======================================== --%>
+
             <div class="comment-list">
 
                 <h4>コメント</h4>
@@ -152,6 +246,7 @@
                             <div class="comment-item">
 
                                 <%-- コメント投稿者情報 --%>
+
                                 <div class="comment-author">
 
                                     <img
@@ -174,9 +269,12 @@
                                         </c:if>
 
                                     </div>
+
                                 </div>
 
-                                <%-- コメントの三点ボタン --%>
+
+                                <%-- コメント三点メニュー --%>
+
                                 <c:if test="${comment.editable}">
 
                                     <div class="comment-menu">
@@ -205,20 +303,27 @@
                                             </button>
 
                                         </div>
+
                                     </div>
 
                                 </c:if>
 
+
                                 <%-- コメント本文 --%>
+
                                 <p class="comment-text">
                                     <c:out value="${comment.commentText}" />
                                 </p>
 
+
                                 <%-- コメント日時 --%>
+
                                 <small class="comment-date">
+
                                     <c:if test="${not empty comment.commentDatetime}">
                                         <c:out value="${fn:replace(fn:substring(comment.commentDatetime, 0, 19), 'T', ' ')}" />
                                     </c:if>
+
                                 </small>
 
                             </div>
@@ -228,14 +333,18 @@
                     </c:when>
 
                     <c:otherwise>
+
                         <p>コメントはありません。</p>
+
                     </c:otherwise>
 
                 </c:choose>
 
             </div>
 
+
             <%-- コメント入力フォーム --%>
+
             <form action="${pageContext.request.contextPath}/servlet.CommentServlet.action"
                   method="post"
                   class="comment-form">
@@ -254,7 +363,9 @@
 
             </form>
 
+
             <%-- ブックマーク --%>
+
             <form action="${pageContext.request.contextPath}/servlet.BookmarkServlet.action"
                   method="post"
                   class="bookmark-form">
@@ -284,7 +395,11 @@
 
 </main>
 
-<%-- 削除確認モーダル --%>
+
+<%-- ========================================
+     削除確認モーダル
+======================================== --%>
+
 <div id="deleteModal" class="delete-modal">
 
     <div class="delete-modal-content">
@@ -313,7 +428,11 @@
 
 </div>
 
-<%-- 投稿編集モーダル --%>
+
+<%-- ========================================
+     投稿編集モーダル
+======================================== --%>
+
 <div id="postEditModal" class="edit-modal">
 
     <div class="edit-modal-content">
@@ -351,7 +470,11 @@
 
 </div>
 
-<%-- コメント編集モーダル --%>
+
+<%-- ========================================
+     コメント編集モーダル
+======================================== --%>
+
 <div id="commentEditModal" class="edit-modal">
 
     <div class="edit-modal-content">
@@ -389,6 +512,50 @@
 
 </div>
 
+
+<%-- ========================================
+     お知らせ編集モーダル
+======================================== --%>
+
+<div id="announcementEditModal" class="edit-modal">
+
+    <div class="edit-modal-content">
+
+        <h3>お知らせを編集</h3>
+
+        <form action="${pageContext.request.contextPath}/servlet.AnnouncementEditServlet.action"
+              method="post">
+
+            <input type="hidden"
+                   name="announcementId"
+                   id="editAnnouncementId">
+
+            <textarea name="announcementText"
+                      id="editAnnouncementText"
+                      maxlength="200"
+                      required></textarea>
+
+            <div class="edit-modal-buttons">
+
+                <button type="submit" class="edit-save-button">
+                    保存
+                </button>
+
+                <button type="button"
+                        class="edit-cancel-button"
+                        data-close-modal="announcementEditModal">
+                    キャンセル
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
 <script>
 
 /* ========================================
@@ -417,6 +584,7 @@ document.querySelectorAll(".menu-button").forEach(button => {
 
 });
 
+
 /* ========================================
    メニュー外をクリックしたとき
 ======================================== */
@@ -428,6 +596,7 @@ document.addEventListener("click", function() {
     });
 
 });
+
 
 /* ========================================
    削除処理
@@ -444,7 +613,9 @@ const deleteCancelButton =
 let deleteType = "";
 let deleteId = "";
 
+
 /* 削除ボタン */
+
 document.querySelectorAll(".delete-button").forEach(button => {
 
     button.addEventListener("click", function(event) {
@@ -454,9 +625,17 @@ document.querySelectorAll(".delete-button").forEach(button => {
         deleteType = this.dataset.deleteType;
 
         if (deleteType === "post") {
+
             deleteId = this.dataset.postId;
-        } else {
+
+        } else if (deleteType === "comment") {
+
             deleteId = this.dataset.commentId;
+
+        } else if (deleteType === "announcement") {
+
+            deleteId = this.dataset.announcementId;
+
         }
 
         document.querySelectorAll(".menu-dropdown").forEach(menu => {
@@ -469,7 +648,9 @@ document.querySelectorAll(".delete-button").forEach(button => {
 
 });
 
+
 /* 削除確定 */
+
 deleteConfirmButton.addEventListener("click", function() {
 
     if (!deleteType || !deleteId) {
@@ -486,6 +667,7 @@ deleteConfirmButton.addEventListener("click", function() {
 
     idInput.type = "hidden";
 
+
     if (deleteType === "post") {
 
         form.action =
@@ -493,12 +675,19 @@ deleteConfirmButton.addEventListener("click", function() {
 
         idInput.name = "postId";
 
-    } else {
+    } else if (deleteType === "comment") {
 
         form.action =
             contextPath + "/servlet.CommentDeleteServlet.action";
 
         idInput.name = "commentId";
+
+    } else if (deleteType === "announcement") {
+
+        form.action =
+            contextPath + "/servlet.AnnouncementDeleteServlet.action";
+
+        idInput.name = "announcementId";
 
     }
 
@@ -512,7 +701,9 @@ deleteConfirmButton.addEventListener("click", function() {
 
 });
 
+
 /* 削除キャンセル */
+
 deleteCancelButton.addEventListener("click", function() {
 
     deleteModal.classList.remove("show");
@@ -521,6 +712,7 @@ deleteCancelButton.addEventListener("click", function() {
     deleteId = "";
 
 });
+
 
 /* ========================================
    編集処理
@@ -539,6 +731,9 @@ document.querySelectorAll(".edit-button").forEach(button => {
             menu.classList.remove("show");
         });
 
+
+        /* 投稿編集 */
+
         if (type === "post") {
 
             document.getElementById("editPostId").value =
@@ -549,7 +744,12 @@ document.querySelectorAll(".edit-button").forEach(button => {
 
             document.getElementById("postEditModal").classList.add("show");
 
-        } else {
+        }
+
+
+        /* コメント編集 */
+
+        else if (type === "comment") {
 
             document.getElementById("editCommentId").value =
                 this.dataset.commentId;
@@ -561,9 +761,25 @@ document.querySelectorAll(".edit-button").forEach(button => {
 
         }
 
+
+        /* お知らせ編集 */
+
+        else if (type === "announcement") {
+
+            document.getElementById("editAnnouncementId").value =
+                this.dataset.announcementId;
+
+            document.getElementById("editAnnouncementText").value =
+                text;
+
+            document.getElementById("announcementEditModal").classList.add("show");
+
+        }
+
     });
 
 });
+
 
 /* ========================================
    編集モーダルを閉じる
@@ -581,7 +797,9 @@ document.querySelectorAll("[data-close-modal]").forEach(button => {
 
 });
 
-/* モーダルの外側をクリックして閉じる */
+
+/* モーダル外側をクリック */
+
 document.querySelectorAll(".edit-modal").forEach(modal => {
 
     modal.addEventListener("click", function(event) {
@@ -591,6 +809,24 @@ document.querySelectorAll(".edit-modal").forEach(modal => {
         }
 
     });
+
+});
+
+
+/* ========================================
+   削除モーダル外側をクリック
+======================================== */
+
+deleteModal.addEventListener("click", function(event) {
+
+    if (event.target === this) {
+
+        this.classList.remove("show");
+
+        deleteType = "";
+        deleteId = "";
+
+    }
 
 });
 

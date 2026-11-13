@@ -21,7 +21,7 @@ body {
 
 .home-header {
     width: calc(100% - 266px);
-    max-width: 900px;
+    max-width: 1100px;
     min-height: 90vh;
     margin: 20px 20px 20px 246px;
     padding: 30px;
@@ -37,19 +37,19 @@ body {
 
 .home-header h1 {
     margin: 0 0 25px;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: bold;
     color: #654b39;
 }
 
 .home-header h3 {
     margin: 25px 0;
-    font-size: 22px;
+    font-size: 25px;
     color: #654b39;
 }
 
 .home-header hr {
-    margin: 25px 0;
+    margin: 30px 0;
     border: none;
     border-top: 1px solid #eee4d8;
 }
@@ -60,12 +60,12 @@ body {
 
 .reserve-btn {
     display: inline-block;
-    padding: 13px 25px;
+    padding: 14px 28px;
     border: none;
     border-radius: 30px;
     background-color: #ed947c;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
@@ -99,7 +99,7 @@ body {
     position: relative;
     display: block;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     padding: 25px 22px;
     background-color: #fffdf8;
     border: 1px solid #f0e8de;
@@ -125,9 +125,9 @@ body {
 
 .post-author-icon {
     display: block;
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -140,7 +140,7 @@ body {
 
 .post-author-name {
     color: #59483d;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .post-author-label {
@@ -148,7 +148,7 @@ body {
     border-radius: 5px;
     background-color: #f5e3d8;
     color: #a17b65;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 /* ========================================
@@ -161,7 +161,7 @@ body {
     margin: 15px 0;
     padding: 0;
     color: #75665c;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.8;
     text-align: left;
     text-indent: 0;
@@ -178,7 +178,7 @@ body {
     width: 100%;
     margin: 8px 0 12px;
     color: #a39a92;
-    font-size: 11px;
+    font-size: 13px;
     text-align: left;
 }
 
@@ -227,7 +227,7 @@ body {
     margin: 0 0 15px;
     padding-bottom: 10px;
     color: #654b39;
-    font-size: 16px;
+    font-size: 18px;
     border-bottom: 1px solid #f0dfd0;
 }
 
@@ -243,9 +243,9 @@ body {
 }
 
 .comment-author-icon {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -258,7 +258,7 @@ body {
 
 .comment-author-name {
     color: #59483d;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .comment-author-label {
@@ -290,13 +290,13 @@ body {
     display: block;
     margin-bottom: 7px;
     color: #59483d;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .comment-item p {
     margin: 5px 0;
     color: #75665c;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.7;
     text-align: left;
     overflow-wrap: anywhere;
@@ -310,13 +310,13 @@ body {
     display: block;
     margin-top: 8px;
     color: #a39a92;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .comment-list > p {
     margin: 0;
     color: #a39a92;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 /* ========================================
@@ -341,7 +341,7 @@ body {
     background-color: #fffdf8;
     color: #59483d;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 15px;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -436,7 +436,8 @@ body {
 ======================================== */
 
 .post-menu,
-.comment-menu {
+.comment-menu,
+.announcement-menu {
     position: absolute;
     top: 12px;
     right: 12px;
@@ -447,14 +448,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     padding: 0;
     border: none;
     border-radius: 50%;
     background-color: transparent;
     color: #75665c;
-    font-size: 25px;
+    font-size: 26px;
     font-weight: bold;
     line-height: 1;
     cursor: pointer;
@@ -464,14 +465,17 @@ body {
     background-color: #f3e9df;
 }
 
-/* メニュー本体 */
+/* ========================================
+   メニュー本体
+======================================== */
+
 .menu-dropdown {
     display: none;
     position: absolute;
-    top: 35px;
+    top: 38px;
     right: 0;
     z-index: 500;
-    width: 115px;
+    width: 120px;
     padding: 6px;
     background-color: #ffffff;
     opacity: 1;
@@ -480,12 +484,12 @@ body {
     box-shadow: 0 4px 12px rgba(70, 50, 35, 0.2);
 }
 
-/* メニュー表示 */
 .menu-dropdown.show {
     display: block;
 }
 
 /* 編集・削除 */
+
 .menu-dropdown button {
     display: block;
     width: 100%;
@@ -625,6 +629,100 @@ body {
 }
 
 /* ========================================
+   お知らせエリア全体
+======================================== */
+
+.announcement-section {
+    position: relative;
+    width: 100%;
+    margin: 0 0 28px;
+    padding: 15px 22px 8px;
+    background-color: #fff0e4;
+    border: 1px solid #f5d6c0;
+    border-radius: 19px;
+    box-shadow: 0 3px 9px rgba(160, 100, 60, 0.07);
+}
+
+/* ========================================
+   お知らせ見出し
+======================================== */
+
+.announcement-heading {
+    display: inline-block;
+    margin: 0 0 5px;
+    padding: 0 0 10px;
+    color: #654b39;
+    font-size: 25px;
+    font-weight: bold;
+    border-bottom: 1px solid #f0d9c8;
+    width: 100%;
+}
+
+/* ========================================
+   お知らせ1件ごとの表示
+======================================== */
+
+.announcement-item {
+    position: relative;
+    margin: 0;
+    padding: 13px 55px 13px 10px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #f0dfd1;
+    border-radius: 0;
+    overflow-wrap: anywhere;
+}
+
+.announcement-item:last-child {
+    border-bottom: none;
+}
+
+/* ========================================
+   お知らせ本文
+======================================== */
+
+.announcement-text {
+    display: block;
+    margin: 0;
+    padding: 0;
+    color: #59483d;
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.65;
+    white-space: pre-line;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+/* ========================================
+   お知らせ日付
+======================================== */
+
+.announcement-date {
+    margin-top: 5px;
+    color: #a38b78;
+    font-size: 13px;
+    text-align: left;
+}
+
+/* ========================================
+   お知らせの三点メニュー
+======================================== */
+
+.announcement-menu {
+    top: 8px;
+    right: 8px;
+}
+
+/* ========================================
+   お知らせ編集モーダル
+======================================== */
+
+#announcementEditModal .edit-modal-content {
+    border: 1px solid #f0dfd1;
+}
+
+/* ========================================
    スマートフォン対応
 ======================================== */
 
@@ -636,8 +734,20 @@ body {
         padding: 18px;
     }
 
+    .home-header h1 {
+        font-size: 30px;
+    }
+
+    .home-header h3 {
+        font-size: 22px;
+    }
+
     .post-item {
         padding: 18px 14px;
+    }
+
+    .post-item .post-text {
+        font-size: 16px;
     }
 
     .comment-form {
@@ -653,4 +763,44 @@ body {
         max-height: 300px;
     }
 
+    /* お知らせエリア */
+
+    .announcement-section {
+        margin: 0 0 20px;
+        padding: 12px 14px 5px;
+        background-color: #fff0e4;
+        border: 1px solid #f5d6c0;
+        border-radius: 16px;
+    }
+
+    .announcement-heading {
+        margin-bottom: 4px;
+        padding-bottom: 8px;
+        font-size: 22px;
+    }
+
+    .announcement-item {
+        padding: 11px 42px 11px 5px;
+    }
+
+    .announcement-text {
+        font-size: 16px;
+        line-height: 1.65;
+    }
+
+    .announcement-date {
+        margin-top: 4px;
+        font-size: 12px;
+    }
+
+    .announcement-menu {
+        top: 5px;
+        right: 0;
+    }
+
+    .announcement-menu .menu-button {
+        width: 32px;
+        height: 32px;
+        font-size: 23px;
+    }
 }

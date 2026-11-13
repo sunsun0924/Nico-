@@ -1,5 +1,7 @@
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <%@ include file="../header.jsp" %>
 
 <link rel="stylesheet"
@@ -41,8 +43,30 @@
                     <span id="count">0</span>/200
                 </p>
 
+                <%-- 管理者だけに表示するお知らせ設定 --%>
+                <c:if test="${not empty sessionScope.admin}">
+                    <div class="announcement-option">
+
+                        <label>
+                            <input
+                                type="checkbox"
+                                id="isAnnouncement"
+                                name="isAnnouncement"
+                                value="true">
+
+                            お知らせとして投稿する
+                        </label>
+
+                        <p>
+                            チェックを入れると、お知らせとして登録されます。
+                            お知らせには画像を添付できません。
+                        </p>
+
+                    </div>
+                </c:if>
+
                 <%-- 画像選択 --%>
-                <div class="image-select-area">
+                <div class="image-select-area" id="imageSelectArea">
 
                     <label for="post_image" class="image-select-label">
                         <span>▧</span>
@@ -121,7 +145,54 @@
         document.getElementById("count").textContent = text.length;
     }
 
+    // ========================================
+    // お知らせチェック時の画像欄の切り替え
+    // ========================================
+
+    const announcementCheckbox =
+        document.getElementById("isAnnouncement");
+
+    const imageSelectArea =
+        document.getElementById("imageSelectArea");
+
+    const previewArea =
+        document.getElementById("previewArea");
+
+    const imageInput =
+        document.getElementById("post_image");
+
+    // チェックボックスが存在する場合だけ設定
+    if (announcementCheckbox) {
+
+        announcementCheckbox.addEventListener("change", function() {
+
+            if (this.checked) {
+
+                // お知らせの場合は画像欄を非表示
+                imageSelectArea.style.display = "none";
+                previewArea.style.display = "none";
+
+                // 選択済み画像をクリア
+                selectedImages = [];
+
+                // ファイル入力欄もクリア
+                imageInput.value = "";
+
+                // 選択画像の表示をリセット
+                renderPreviews();
+
+            } else {
+
+                // 通常投稿の場合は画像欄を表示
+                imageSelectArea.style.display = "block";
+            }
+        });
+    }
+
+    // ========================================
     // 画像選択
+    // ========================================
+
     function previewImage(event) {
 
         const input = event.target;
@@ -131,28 +202,34 @@
             return;
         }
 
-        let addedCount = 0;
         let errorMessages = [];
 
         newFiles.forEach(function(file) {
 
             // 画像形式の確認
-            const allowedExtensions = /\.(jpg|jpeg|png|gif|webp)$/i;
+            const allowedExtensions =
+                /\.(jpg|jpeg|png|gif|webp)$/i;
 
             if (!allowedExtensions.test(file.name)) {
-                errorMessages.push(file.name + "：対応していない画像形式です。");
+                errorMessages.push(
+                    file.name + "：対応していない画像形式です。"
+                );
                 return;
             }
 
             // 1枚あたりの容量確認
             if (file.size > MAX_IMAGE_SIZE) {
-                errorMessages.push(file.name + "：5MBを超えています。");
+                errorMessages.push(
+                    file.name + "：5MBを超えています。"
+                );
                 return;
             }
 
             // 5枚制限
             if (selectedImages.length >= MAX_IMAGE_COUNT) {
-                errorMessages.push("画像は最大5枚までです。");
+                errorMessages.push(
+                    "画像は最大5枚までです。"
+                );
                 return;
             }
 
@@ -163,13 +240,14 @@
             );
 
             if (currentTotal + file.size > MAX_TOTAL_SIZE) {
-                errorMessages.push("画像の合計容量は20MBまでです。");
+                errorMessages.push(
+                    "画像の合計容量は20MBまでです。"
+                );
                 return;
             }
 
             // 画像を追加
             selectedImages.push(file);
-            addedCount++;
 
         });
 
@@ -185,10 +263,14 @@
         }
     }
 
+    // ========================================
     // inputのファイル一覧を更新
+    // ========================================
+
     function updateFileInput() {
 
         const input = document.getElementById("post_image");
+
         const dataTransfer = new DataTransfer();
 
         selectedImages.forEach(function(file) {
@@ -198,12 +280,20 @@
         input.files = dataTransfer.files;
     }
 
+    // ========================================
     // プレビュー表示
+    // ========================================
+
     function renderPreviews() {
 
-        const previewArea = document.getElementById("previewArea");
-        const previewList = document.getElementById("previewList");
-        const imageStatus = document.getElementById("imageStatus");
+        const previewArea =
+            document.getElementById("previewArea");
+
+        const previewList =
+            document.getElementById("previewList");
+
+        const imageStatus =
+            document.getElementById("imageStatus");
 
         // プレビューを初期化
         previewList.innerHTML = "";
@@ -211,6 +301,7 @@
         if (selectedImages.length === 0) {
 
             previewArea.style.display = "none";
+
             imageStatus.textContent = "選択されていません";
 
             return;
@@ -224,9 +315,11 @@
         selectedImages.forEach(function(file, index) {
 
             const wrapper = document.createElement("div");
+
             wrapper.className = "preview-image-wrapper";
 
             const image = document.createElement("img");
+
             image.alt = "選択した画像 " + (index + 1);
 
             // プレビュー画像を読み込む
@@ -239,11 +332,15 @@
             reader.readAsDataURL(file);
 
             // 削除ボタン
-            const removeButton = document.createElement("button");
+            const removeButton =
+                document.createElement("button");
 
             removeButton.type = "button";
+
             removeButton.className = "remove-image-btn";
+
             removeButton.textContent = "×";
+
             removeButton.setAttribute(
                 "aria-label",
                 "画像" + (index + 1) + "を削除"
@@ -254,14 +351,17 @@
             };
 
             wrapper.appendChild(image);
+
             wrapper.appendChild(removeButton);
 
             previewList.appendChild(wrapper);
-
         });
     }
 
+    // ========================================
     // 画像を個別に削除
+    // ========================================
+
     function removeImage(index) {
 
         selectedImages.splice(index, 1);
