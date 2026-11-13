@@ -1,122 +1,59 @@
 package servlet;
 
-import java.io.IOException;
 import java.util.List;
-
 import bean.ChatListBean;
 import dao.ChatListDAO;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import tool.Action;
 
-@WebServlet("/chat-list")
-public class ChatListServlet extends HttpServlet {
+public class ChatListServlet extends Action {
 
-    private static final long serialVersionUID = 1L;
-
-    // GET：チャット一覧・新規チャット用ユーザー一覧取得
     @Override
-    protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        String action = request.getParameter("action");
-        boolean jsonRequest = "json".equals(action);
-
-        // ==========================================
-        // ★ テスト用ダミーユーザーの設定
-        // ==========================================
+        boolean jsonRequest = "json".equals(request.getParameter("action"));
         String myUserId = "userA";
-
         ChatListDAO dao = new ChatListDAO();
 
-        try {
-
-            // 新規チャット用ユーザー一覧（モーダル用JSONなど）
-            if (jsonRequest) {
-                // DAO経由でユーザー一覧を取得するように修正
-                List<ChatListBean> userList = dao.getAllUsers(myUserId);
-
-                response.setContentType("application/json; charset=UTF-8");
-                StringBuilder json = new StringBuilder();
-                json.append("[");
-                for (int i = 0; i < userList.size(); i++) {
-                    ChatListBean user = userList.get(i);
-                    if (i > 0) {
-                        json.append(",");
-                    }
-                    json.append("{");
-                    json.append("\"userId\":\"").append(escapeJson(user.getUserId())).append("\",");
-                    json.append("\"userName\":\"").append(escapeJson(user.getUserName())).append("\"");
-                    json.append("}");
-                }
-                json.append("]");
-                response.getWriter().write(json.toString());
-                return;
+        if (jsonRequest) {
+            List<ChatListBean> userList = dao.getAllUsers(myUserId);
+            response.setContentType("application/json; charset=UTF-8");
+            StringBuilder json = new StringBuilder("[");
+            for (int i = 0; i < userList.size(); i++) {
+                ChatListBean u = userList.get(i);
+                if (i > 0) json.append(",");
+                json.append("{\"userId\":\"").append(escapeJson(u.getUserId()))
+                    .append("\",\"userName\":\"").append(escapeJson(u.getUserName())).append("\"}");
             }
-
-            // ==========================================
-            // ★ DB接続を有効化（データベースからチャット一覧を取得）
-            // ==========================================
-            List<ChatListBean> chatList = dao.getChatList(myUserId);
-
-            request.setAttribute("chatList", chatList);
-
-            request.getRequestDispatcher(
-                "/chat/chat_list.jsp"
-            ).forward(request, response);
-
-        } catch (Exception e) {
-
-            if (jsonRequest) {
-                response.setStatus(
-                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR
-                );
-                response.setContentType(
-                    "application/json; charset=UTF-8"
-                );
-                response.getWriter().write(
-                    "{\"error\":\"ユーザー一覧の取得に失敗しました。\"}"
-                );
-            } else {
-                throw new ServletException(
-                    "チャット一覧の取得に失敗しました。", e
-                );
-            }
+            json.append("]");
+            response.getWriter().write(json.toString());
+            return null;
         }
+
+        request.setAttribute("chatList", dao.getChatList(myUserId));
+        return "/chat/chat_list.jsp";
     }
 
-    // JSON用の文字列エスケープ
     private String escapeJson(String value) {
-        if (value == null) {
-            return "";
-        }
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < value.length(); i++) {
-            char c = value.charAt(i);
+        if (value == null) return "";
+        StringBuilder sb = new StringBuilder();
+        for (char c : value.toCharArray()) {
             switch (c) {
-                case '"': result.append("\\\""); break;
-                case '\\': result.append("\\\\"); break;
-                case '\b': result.append("\\b"); break;
-                case '\f': result.append("\\f"); break;
-                case '\n': result.append("\\n"); break;
-                case '\r': result.append("\\r"); break;
-                case '\t': result.append("\\t"); break;
+                case '"': sb.append("\\\""); break;
+                case '\\': sb.append("\\\\"); break;
+                case '\b': sb.append("\\b"); break;
+                case '\f': sb.append("\\f"); break;
+                case '\n': sb.append("\\n"); break;
+                case '\r': sb.append("\\r"); break;
+                case '\t': sb.append("\\t"); break;
                 default:
-                    if (c < 0x20) {
-                        result.append(String.format("\\u%04x", (int) c));
-                    } else {
-                        result.append(c);
-                    }
-                    break;
+                    if (c < 0x20) sb.append(String.format("\\u%04x", (int) c));
+                    else sb.append(c);
             }
         }
-        return result.toString();
+        return sb.toString();
     }
 }
