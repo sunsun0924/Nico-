@@ -14,10 +14,11 @@
 
 <%@ include file="../sidebar.jsp" %>
 
-<main class="home-header">
+<main class="home-header"
+      data-context-path="${pageContext.request.contextPath}">
 
     <%-- ========================================
-         お知らせ一覧
+         お知らせ一覧・スライド
     ======================================== --%>
 
     <c:if test="${not empty announcementList}">
@@ -26,64 +27,88 @@
 
             <h2 class="announcement-heading">お知らせ</h2>
 
-            <c:forEach var="announcement" items="${announcementList}">
+            <%-- スライド表示エリア --%>
+            <div class="announcement-slider">
 
-                <div class="announcement-item">
+                <button type="button"
+                        class="announcement-arrow announcement-prev"
+                        aria-label="前のお知らせ">
+                    &#10094;
+                </button>
 
-                    <%-- お知らせラベル --%>
-                    <span class="announcement-label">
-                        お知らせ
-                    </span>
+                <div class="announcement-viewport">
 
-                    <%-- お知らせ日時 --%>
-                    <div class="announcement-date">
-                        <fmt:formatDate
-                            value="${announcement.announcementDatetime}"
-                            pattern="yyyy年M月d日" />
-                    </div>
+                    <div class="announcement-track">
 
-                    <%-- 管理者用三点メニュー --%>
-                    <c:if test="${not empty sessionScope.admin}">
+                        <c:forEach var="announcement"
+                                   items="${announcementList}">
 
-                        <div class="announcement-menu">
+                            <div class="announcement-item">
 
-                            <button type="button"
-                                    class="menu-button"
-                                    aria-label="お知らせメニュー">
-                                ⋯
-                            </button>
+                                <%-- 管理者用三点メニュー --%>
+                                <c:if test="${not empty sessionScope.admin}">
 
-                            <div class="menu-dropdown">
+                                    <div class="announcement-menu">
 
-                                <button type="button"
-                                        class="edit-button"
-                                        data-edit-type="announcement"
-                                        data-announcement-id="${announcement.announcementId}"
-                                        data-edit-text="${fn:escapeXml(announcement.announcementText)}">
-                                    編集
-                                </button>
+                                        <button type="button"
+                                                class="menu-button"
+                                                aria-label="お知らせメニュー">
+                                            ⋯
+                                        </button>
 
-                                <button type="button"
-                                        class="delete-button"
-                                        data-delete-type="announcement"
-                                        data-announcement-id="${announcement.announcementId}">
-                                    削除
-                                </button>
+                                        <div class="menu-dropdown">
+
+                                            <button type="button"
+                                                    class="edit-button"
+                                                    data-edit-type="announcement"
+                                                    data-announcement-id="${announcement.announcementId}"
+                                                    data-edit-text="${fn:escapeXml(announcement.announcementText)}">
+                                                編集
+                                            </button>
+
+                                            <button type="button"
+                                                    class="delete-button"
+                                                    data-delete-type="announcement"
+                                                    data-announcement-id="${announcement.announcementId}">
+                                                削除
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </c:if>
+
+                                <%-- 本文と日時 --%>
+                                <div class="announcement-content">
+
+                                    <div class="announcement-text">
+                                        <c:out value="${announcement.announcementText}" />
+                                    </div>
+
+                                    <div class="announcement-date">
+                                        <fmt:formatDate
+                                            value="${announcement.announcementDatetime}"
+                                            pattern="yyyy年M月d日" />
+                                    </div>
+
+                                </div>
 
                             </div>
 
-                        </div>
+                        </c:forEach>
 
-                    </c:if>
-
-                    <%-- お知らせ本文 --%>
-                    <div class="announcement-text">
-                        <c:out value="${announcement.announcementText}" />
                     </div>
 
                 </div>
 
-            </c:forEach>
+                <button type="button"
+                        class="announcement-arrow announcement-next"
+                        aria-label="次のお知らせ">
+                    &#10095;
+                </button>
+
+            </div>
 
         </section>
 
@@ -105,9 +130,7 @@
 
     <h3>投稿一覧</h3>
 
-
     <%-- 投稿がない場合 --%>
-
     <c:if test="${empty postList}">
         <p>投稿はまだありません。</p>
     </c:if>
@@ -157,7 +180,6 @@
 
 
             <%-- 投稿者情報 --%>
-
             <div class="post-author">
 
                 <img
@@ -185,26 +207,7 @@
             </div>
 
 
-            <%-- 投稿本文 --%>
-
-            <div class="post-text">
-                <c:out value="${fn:trim(post.post_text)}" />
-            </div>
-
-
-            <%-- 投稿日時 --%>
-
-            <div class="post-date">
-
-                <c:if test="${not empty post.post_datetime}">
-                    <c:out value="${fn:replace(fn:substring(post.post_datetime, 0, 19), 'T', ' ')}" />
-                </c:if>
-
-            </div>
-
-
             <%-- 投稿画像 --%>
-
             <c:if test="${not empty post.postImages}">
 
                 <div class="post-image-list">
@@ -246,7 +249,6 @@
                             <div class="comment-item">
 
                                 <%-- コメント投稿者情報 --%>
-
                                 <div class="comment-author">
 
                                     <img
@@ -274,7 +276,6 @@
 
 
                                 <%-- コメント三点メニュー --%>
-
                                 <c:if test="${comment.editable}">
 
                                     <div class="comment-menu">
@@ -310,14 +311,12 @@
 
 
                                 <%-- コメント本文 --%>
-
                                 <p class="comment-text">
                                     <c:out value="${comment.commentText}" />
                                 </p>
 
 
                                 <%-- コメント日時 --%>
-
                                 <small class="comment-date">
 
                                     <c:if test="${not empty comment.commentDatetime}">
@@ -333,9 +332,7 @@
                     </c:when>
 
                     <c:otherwise>
-
                         <p>コメントはありません。</p>
-
                     </c:otherwise>
 
                 </c:choose>
@@ -344,7 +341,6 @@
 
 
             <%-- コメント入力フォーム --%>
-
             <form action="${pageContext.request.contextPath}/servlet.CommentServlet.action"
                   method="post"
                   class="comment-form">
@@ -365,7 +361,6 @@
 
 
             <%-- ブックマーク --%>
-
             <form action="${pageContext.request.contextPath}/servlet.BookmarkServlet.action"
                   method="post"
                   class="bookmark-form">
@@ -556,280 +551,7 @@
 </div>
 
 
-<script>
-
-/* ========================================
-   三点メニューの開閉
-======================================== */
-
-document.querySelectorAll(".menu-button").forEach(button => {
-
-    button.addEventListener("click", function(event) {
-
-        event.stopPropagation();
-
-        const dropdown = this.nextElementSibling;
-
-        document.querySelectorAll(".menu-dropdown").forEach(menu => {
-
-            if (menu !== dropdown) {
-                menu.classList.remove("show");
-            }
-
-        });
-
-        dropdown.classList.toggle("show");
-
-    });
-
-});
-
-
-/* ========================================
-   メニュー外をクリックしたとき
-======================================== */
-
-document.addEventListener("click", function() {
-
-    document.querySelectorAll(".menu-dropdown").forEach(menu => {
-        menu.classList.remove("show");
-    });
-
-});
-
-
-/* ========================================
-   削除処理
-======================================== */
-
-const deleteModal = document.getElementById("deleteModal");
-
-const deleteConfirmButton =
-    document.getElementById("deleteConfirmButton");
-
-const deleteCancelButton =
-    document.getElementById("deleteCancelButton");
-
-let deleteType = "";
-let deleteId = "";
-
-
-/* 削除ボタン */
-
-document.querySelectorAll(".delete-button").forEach(button => {
-
-    button.addEventListener("click", function(event) {
-
-        event.stopPropagation();
-
-        deleteType = this.dataset.deleteType;
-
-        if (deleteType === "post") {
-
-            deleteId = this.dataset.postId;
-
-        } else if (deleteType === "comment") {
-
-            deleteId = this.dataset.commentId;
-
-        } else if (deleteType === "announcement") {
-
-            deleteId = this.dataset.announcementId;
-
-        }
-
-        document.querySelectorAll(".menu-dropdown").forEach(menu => {
-            menu.classList.remove("show");
-        });
-
-        deleteModal.classList.add("show");
-
-    });
-
-});
-
-
-/* 削除確定 */
-
-deleteConfirmButton.addEventListener("click", function() {
-
-    if (!deleteType || !deleteId) {
-        return;
-    }
-
-    const form = document.createElement("form");
-
-    form.method = "post";
-
-    const contextPath = "${pageContext.request.contextPath}";
-
-    const idInput = document.createElement("input");
-
-    idInput.type = "hidden";
-
-
-    if (deleteType === "post") {
-
-        form.action =
-            contextPath + "/servlet.PostDeleteServlet.action";
-
-        idInput.name = "postId";
-
-    } else if (deleteType === "comment") {
-
-        form.action =
-            contextPath + "/servlet.CommentDeleteServlet.action";
-
-        idInput.name = "commentId";
-
-    } else if (deleteType === "announcement") {
-
-        form.action =
-            contextPath + "/servlet.AnnouncementDeleteServlet.action";
-
-        idInput.name = "announcementId";
-
-    }
-
-    idInput.value = deleteId;
-
-    form.appendChild(idInput);
-
-    document.body.appendChild(form);
-
-    form.submit();
-
-});
-
-
-/* 削除キャンセル */
-
-deleteCancelButton.addEventListener("click", function() {
-
-    deleteModal.classList.remove("show");
-
-    deleteType = "";
-    deleteId = "";
-
-});
-
-
-/* ========================================
-   編集処理
-======================================== */
-
-document.querySelectorAll(".edit-button").forEach(button => {
-
-    button.addEventListener("click", function(event) {
-
-        event.stopPropagation();
-
-        const type = this.dataset.editType;
-        const text = this.dataset.editText;
-
-        document.querySelectorAll(".menu-dropdown").forEach(menu => {
-            menu.classList.remove("show");
-        });
-
-
-        /* 投稿編集 */
-
-        if (type === "post") {
-
-            document.getElementById("editPostId").value =
-                this.dataset.postId;
-
-            document.getElementById("editPostText").value =
-                text;
-
-            document.getElementById("postEditModal").classList.add("show");
-
-        }
-
-
-        /* コメント編集 */
-
-        else if (type === "comment") {
-
-            document.getElementById("editCommentId").value =
-                this.dataset.commentId;
-
-            document.getElementById("editCommentText").value =
-                text;
-
-            document.getElementById("commentEditModal").classList.add("show");
-
-        }
-
-
-        /* お知らせ編集 */
-
-        else if (type === "announcement") {
-
-            document.getElementById("editAnnouncementId").value =
-                this.dataset.announcementId;
-
-            document.getElementById("editAnnouncementText").value =
-                text;
-
-            document.getElementById("announcementEditModal").classList.add("show");
-
-        }
-
-    });
-
-});
-
-
-/* ========================================
-   編集モーダルを閉じる
-======================================== */
-
-document.querySelectorAll("[data-close-modal]").forEach(button => {
-
-    button.addEventListener("click", function() {
-
-        const modalId = this.dataset.closeModal;
-
-        document.getElementById(modalId).classList.remove("show");
-
-    });
-
-});
-
-
-/* モーダル外側をクリック */
-
-document.querySelectorAll(".edit-modal").forEach(modal => {
-
-    modal.addEventListener("click", function(event) {
-
-        if (event.target === this) {
-            this.classList.remove("show");
-        }
-
-    });
-
-});
-
-
-/* ========================================
-   削除モーダル外側をクリック
-======================================== */
-
-deleteModal.addEventListener("click", function(event) {
-
-    if (event.target === this) {
-
-        this.classList.remove("show");
-
-        deleteType = "";
-        deleteId = "";
-
-    }
-
-});
-
-</script>
+<%-- 外部JavaScript --%>
+<script src="${pageContext.request.contextPath}/js/post.js"></script>
 
 <%@ include file="../footer.jsp" %>
