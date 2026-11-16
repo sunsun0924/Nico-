@@ -114,7 +114,7 @@
         </a>
 
         <%-- 検索 --%>
-        <a href="${pageContext.request.contextPath}/search/search.jsp"
+        <a href="${pageContext.request.contextPath}/servlet.SearchServlet.action"
            class="menu-item">
 
             <span class="menu-icon">⌕</span>
