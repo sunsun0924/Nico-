@@ -92,8 +92,8 @@
 
                 <input
                     type="button"
-                    value="戻る"
-                    onclick="history.back()">
+                    id="back-button"
+                    value="戻る">
 
             </div>
 
@@ -102,5 +102,8 @@
     </main>
 
 </div>
+
+<!-- JavaScript -->
+<script src="${pageContext.request.contextPath}/js/company.js" defer></script>
 
 <%@ include file="../footer.jsp" %>

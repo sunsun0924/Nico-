@@ -1,46 +1,90 @@
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <%@ include file="../header.jsp" %>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chat.css">
+<link rel="stylesheet"
+      href="${pageContext.request.contextPath}/css/chat.css">
 
 <div class="page-layout">
 
     <%@ include file="../sidebar.jsp" %>
 
-    <main class="main-content">
+    <main class="main-content"
+          data-context-path="${pageContext.request.contextPath}">
 
         <div class="chat-container">
 
+            <!-- チャット画面ヘッダー -->
             <header class="chat-header">
 
                 <h2 id="header-title">チャット</h2>
 
-                <div id="action-buttons" class="action-buttons" style="display: none;">
-                    <button type="button" class="btn-action" onclick="handleAction('unblock')">解除</button>
-                    <button type="button" class="btn-action block" onclick="handleAction('block')">ブロック</button>
-                    <button type="button" class="btn-close-mode" onclick="toggleEditMode()">✕</button>
+                <!-- 編集モード時に表示するボタン -->
+                <div id="action-buttons"
+                     class="action-buttons"
+                     style="display: none;">
+
+                    <button type="button"
+                            class="btn-action"
+                            data-action="unblock">
+                        解除
+                    </button>
+
+                    <button type="button"
+                            class="btn-action block"
+                            data-action="block">
+                        ブロック
+                    </button>
+
+                    <button type="button"
+                            class="btn-close-mode"
+                            id="close-edit-mode">
+                        ✕
+                    </button>
+
                 </div>
 
+                <!-- 通常モード時のアイコン -->
                 <div class="header-icons" id="header-gear">
-                    <span class="icon" onclick="openNewChatModal()" title="新規チャット" style="cursor: pointer; margin-right: 12px; font-size: 20px;">＋</span>
-                    <span class="icon" onclick="toggleEditMode()" title="編集モード" style="cursor: pointer;">⚙️</span>
+
+                    <span class="icon"
+                          id="open-new-chat"
+                          title="新規チャット"
+                          style="cursor: pointer; margin-right: 12px; font-size: 20px;">
+                        ＋
+                    </span>
+
+                    <span class="icon"
+                          id="toggle-edit-mode"
+                          title="編集モード"
+                          style="cursor: pointer;">
+                        ⚙️
+                    </span>
+
                 </div>
 
             </header>
 
+            <!-- ユーザー検索欄 -->
             <div class="search-box">
-                <input type="text" name="user_search" placeholder="ユーザー名で検索">
+
+                <input type="text"
+                       name="user_search"
+                       placeholder="ユーザー名で検索">
+
             </div>
 
+            <!-- チャット一覧 -->
             <div class="chat-list" id="chat-list-area">
 
                 <c:forEach var="chat" items="${chatList}">
 
-                    <div class="chat-item" onclick="onItemClick(event, this)">
+                    <div class="chat-item">
 
-                        <input type="checkbox" class="chat-checkbox"
+                        <input type="checkbox"
+                               class="chat-checkbox"
                                value="<c:out value='${chat.userId}'/>">
 
                         <div class="user-icon">
@@ -50,6 +94,7 @@
                         <div class="chat-info">
 
                             <div class="chat-top">
+
                                 <span class="user-name">
                                     <c:out value="${chat.userName}" />
                                 </span>
@@ -57,9 +102,11 @@
                                 <span class="chat-time">
                                     <c:out value="${chat.lastTime}" />
                                 </span>
+
                             </div>
 
                             <div class="chat-bottom">
+
                                 <p class="last-message">
                                     <c:out value="${chat.lastMessage}" />
                                 </p>
@@ -69,6 +116,7 @@
                                         <c:out value="${chat.unreadCount}" />
                                     </span>
                                 </c:if>
+
                             </div>
 
                         </div>
@@ -85,216 +133,64 @@
 
 </div>
 
-<!-- 新規チャットモーダル -->
+
+<!-- ========================================
+     新規チャットモーダル
+======================================== -->
+
 <div id="new-chat-modal"
-     style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000;">
+     style="display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;">
 
-    <div style="background: #fff; width: 420px; max-height: 80vh; border-radius: 12px; padding: 20px; overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+    <div style="background: #fff;
+                width: 420px;
+                max-height: 80vh;
+                border-radius: 12px;
+                padding: 20px;
+                overflow-y: auto;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+        <div style="display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 15px;
+                    border-bottom: 1px solid #eee;
+                    padding-bottom: 10px;">
 
-            <h3 style="margin: 0; font-size: 16px; color: #333;">新規チャット相手を選択</h3>
+            <h3 style="margin: 0; font-size: 16px; color: #333;">
+                新規チャット相手を選択
+            </h3>
 
-            <button type="button" onclick="closeNewChatModal()"
-                    style="background: none; border: none; font-size: 18px; cursor: pointer; color: #666;">✕</button>
+            <button type="button"
+                    id="close-new-chat"
+                    style="background: none;
+                           border: none;
+                           font-size: 18px;
+                           cursor: pointer;
+                           color: #666;">
+                ✕
+            </button>
 
         </div>
 
+        <!-- JavaScriptでユーザー一覧を表示 -->
         <div class="chat-list" id="modal-user-list-area"></div>
 
     </div>
 
 </div>
 
-<script>
 
-    let isEditMode = false;
-
-    // コンテキストパス
-    const contextPath = '${pageContext.request.contextPath}';
-
-    // 編集モード切り替え
-    function toggleEditMode() {
-
-        isEditMode = !isEditMode;
-
-        const checkboxes = document.querySelectorAll('.chat-checkbox');
-        const actionButtons = document.getElementById('action-buttons');
-        const headerTitle = document.getElementById('header-title');
-        const headerGear = document.getElementById('header-gear');
-
-        checkboxes.forEach(cb => {
-
-            cb.classList.toggle('show', isEditMode);
-
-            if (!isEditMode) {
-                cb.checked = false;
-            }
-        });
-
-        if (isEditMode) {
-            headerTitle.style.display = 'none';
-            headerGear.style.display = 'none';
-            actionButtons.style.display = 'flex';
-        } else {
-            headerTitle.style.display = 'block';
-            headerGear.style.display = 'flex';
-            actionButtons.style.display = 'none';
-        }
-    }
-
-    // チャット項目クリック
-    function onItemClick(event, itemElement) {
-
-        if (event.target.tagName === 'INPUT') {
-            return;
-        }
-
-        if (isEditMode) {
-
-            const cb = itemElement.querySelector('.chat-checkbox');
-
-            if (cb) {
-                cb.checked = !cb.checked;
-            }
-
-        } else {
-
-            const cb = itemElement.querySelector('.chat-checkbox');
-
-            if (cb) {
-                location.href = contextPath
-                    + '/chat-room?partnerId='
-                    + encodeURIComponent(cb.value);
-            }
-        }
-    }
-
-    // 新規チャットモーダルを開く
-    function openNewChatModal() {
-
-        const modal = document.getElementById('new-chat-modal');
-        const userListArea = document.getElementById('modal-user-list-area');
-
-        modal.style.display = 'flex';
-
-        userListArea.innerHTML =
-            '<p style="text-align: center; color: #888; padding: 20px;">読み込み中...</p>';
-
-        // ChatListServletへ接続
-        fetch(contextPath + '/chat-list?action=json')
-
-            .then(response => {
-
-                if (!response.ok) {
-                    throw new Error('HTTPエラー: ' + response.status);
-                }
-
-                return response.json();
-            })
-
-            .then(users => {
-
-                userListArea.innerHTML = '';
-
-                if (!Array.isArray(users) || users.length === 0) {
-
-                    userListArea.innerHTML =
-                        '<p style="text-align: center; color: #888; padding: 20px;">チャットできるユーザーがいません。</p>';
-
-                    return;
-                }
-
-                users.forEach(user => {
-
-                    const item = document.createElement('div');
-
-                    item.className = 'chat-item';
-
-                    item.style.cssText =
-                        'cursor: pointer; padding: 8px 0; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center;';
-
-                    item.onclick = function() {
-
-                        location.href = contextPath
-                            + '/chat-room?partnerId='
-                            + encodeURIComponent(String(user.userId));
-                    };
-
-                    const icon = document.createElement('div');
-
-                    icon.className = 'user-icon';
-                    icon.style.marginRight = '12px';
-
-                    const noImage = document.createElement('div');
-
-                    noImage.className = 'no-image';
-
-                    icon.appendChild(noImage);
-
-                    const info = document.createElement('div');
-
-                    info.className = 'chat-info';
-
-                    const name = document.createElement('span');
-
-                    name.className = 'user-name';
-                    name.style.fontWeight = 'bold';
-                    name.style.color = '#333';
-
-                    name.textContent = user.userName + ' さん';
-
-                    info.appendChild(name);
-
-                    item.appendChild(icon);
-                    item.appendChild(info);
-
-                    userListArea.appendChild(item);
-                });
-
-            })
-
-            .catch(error => {
-
-                console.error('通信エラー:', error);
-
-                userListArea.innerHTML =
-                    '<p style="text-align: center; color: #e74c3c; padding: 20px;">ユーザーの取得に失敗しました。</p>';
-            });
-    }
-
-    // 新規チャットモーダルを閉じる
-    function closeNewChatModal() {
-
-        document.getElementById('new-chat-modal').style.display = 'none';
-    }
-
-    // ブロック・解除
-    function handleAction(actionType) {
-
-        const checkedBoxes =
-            document.querySelectorAll('.chat-checkbox:checked');
-
-        if (checkedBoxes.length === 0) {
-
-            alert('ユーザーが選択されていません。');
-
-            return;
-        }
-
-        if (actionType === 'block') {
-
-            alert('選択したユーザーをブロックしました。');
-
-        } else {
-
-            alert('選択したユーザーのブロックを解除しました。');
-        }
-
-        toggleEditMode();
-    }
-
-</script>
+<!-- JavaScriptファイルの読み込み -->
+<script src="${pageContext.request.contextPath}/js/chat.js" defer></script>
 
 </body>
 </html>
