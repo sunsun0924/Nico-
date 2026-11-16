@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="bean.User" %>
@@ -19,25 +20,19 @@
     // プロフィール情報
     String profileName;
     String profileImage;
-
     int positionX;
     int positionY;
 
     // 管理者の場合
     if (isAdmin) {
-
         profileName = admin.getCpUsername();
         profileImage = admin.getCpUserimg();
-
         positionX = admin.getCpUserimgPositionX();
         positionY = admin.getCpUserimgPositionY();
-
     } else {
-
         // 一般ユーザーの場合
         profileName = user.getUserName();
         profileImage = user.getUserImg();
-
         positionX = user.getUserImgPositionX();
         positionY = user.getUserImgPositionY();
     }
@@ -68,9 +63,7 @@
                 <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
                    class="back-btn"
                    aria-label="戻る">
-
                     <i class="fa-solid fa-chevron-left"></i>
-
                 </a>
 
                 <h1 class="header-title">プロフィール編集</h1>
@@ -79,18 +72,17 @@
 
             <%-- エラーメッセージ --%>
             <% if (request.getAttribute("error") != null) { %>
-
                 <div class="error-message">
                     <%= request.getAttribute("error") %>
                 </div>
-
             <% } %>
 
             <%-- プロフィール編集フォーム --%>
             <form action="${pageContext.request.contextPath}/servlet.UserProfileServlet.action"
                   method="post"
                   enctype="multipart/form-data"
-                  id="profile-form">
+                  id="profile-form"
+                  data-default-image="${pageContext.request.contextPath}/images/default-profile.png">
 
                 <%-- プロフィール画像 --%>
                 <section class="profile-card">
@@ -233,12 +225,12 @@
                 <%-- 保存・戻るボタン --%>
                 <div class="btn-container">
 
-                    <%-- 保存ボタン（左） --%>
+                    <%-- 保存ボタン --%>
                     <button type="submit" class="btn-save">
                         保存する
                     </button>
 
-                    <%-- 戻るボタン（右） --%>
+                    <%-- 戻るボタン --%>
                     <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
                        class="btn-back">
                         戻る
@@ -254,145 +246,7 @@
 
 </div>
 
-<%-- 画像プレビュー・入力チェック --%>
-<script>
-
-    const imageInput = document.getElementById("profile-image");
-    const preview = document.getElementById("profile-preview");
-
-    const deleteButton = document.getElementById("delete-image");
-    const deleteFlag = document.getElementById("delete-profile-image");
-
-    const nameInput = document.getElementById("user-name");
-    const clearButton = document.getElementById("clear-name");
-
-    const profileForm = document.getElementById("profile-form");
-
-    const positionX = document.getElementById("position-x");
-    const positionY = document.getElementById("position-y");
-
-    // 初期画像（PNG）
-    const defaultImage =
-        "${pageContext.request.contextPath}/images/default-profile.png";
-
-    // 画像表示位置をプレビューに反映
-    function updateImagePosition() {
-
-        preview.style.objectPosition =
-            positionX.value + "% " + positionY.value + "%";
-
-    }
-
-    // 初期位置を反映
-    updateImagePosition();
-
-    // 横方向の位置を変更
-    positionX.addEventListener("input", function () {
-
-        updateImagePosition();
-
-    });
-
-    // 縦方向の位置を変更
-    positionY.addEventListener("input", function () {
-
-        updateImagePosition();
-
-    });
-
-    // 選択した画像をプレビュー表示
-    imageInput.addEventListener("change", function () {
-
-        const file = this.files[0];
-
-        if (!file) {
-            return;
-        }
-
-        // 画像ファイルか確認
-        if (!file.type.startsWith("image/")) {
-
-            alert("画像ファイルを選択してください。");
-            this.value = "";
-
-            return;
-        }
-
-        // 1MB以内か確認
-        if (file.size > 1024 * 1024) {
-
-            alert("画像は1MB以内にしてください。");
-            this.value = "";
-
-            return;
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-
-            preview.src = event.target.result;
-
-            deleteFlag.value = "false";
-
-            // 新しい画像は中央から調整
-            positionX.value = 50;
-            positionY.value = 50;
-
-            updateImagePosition();
-
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-
-    // プロフィール画像を削除
-    deleteButton.addEventListener("click", function () {
-
-        preview.src = defaultImage;
-
-        imageInput.value = "";
-
-        deleteFlag.value = "true";
-
-        // デフォルト画像は中央表示
-        positionX.value = 50;
-        positionY.value = 50;
-
-        updateImagePosition();
-
-    });
-
-    // 名前を消去
-    clearButton.addEventListener("click", function () {
-
-        nameInput.value = "";
-
-        nameInput.focus();
-
-    });
-
-    // 名前の入力チェック
-    profileForm.addEventListener("submit", function (event) {
-
-        const name = nameInput.value.trim();
-
-        if (name.length < 2 || name.length > 20) {
-
-            event.preventDefault();
-
-            alert("名前は2〜20文字で入力してください。");
-
-            nameInput.focus();
-
-            return;
-        }
-
-        nameInput.value = name;
-
-    });
-
-</script>
+<%-- 外部JavaScript --%>
+<script src="${pageContext.request.contextPath}/js/profile.js" defer></script>
 
 <%@ include file="../footer.jsp" %>

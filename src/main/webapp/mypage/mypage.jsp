@@ -21,7 +21,6 @@
     }
 
     // 管理者専用マイページか判定
-    // IDの文字ではなく、adminセッションの有無で判断
     boolean adminMyPage = (admin != null);
 
     // 管理者プロフィール画像
@@ -117,8 +116,7 @@
 
             <%-- ログアウト --%>
             <a href="#"
-               class="menu-item-card"
-               onclick="openLogoutModal(); return false;">
+               class="menu-item-card js-open-logout-modal">
 
                 <div class="menu-item-left">
 
@@ -236,8 +234,7 @@
 
             <%-- ログアウト --%>
             <a href="#"
-               class="menu-item-card"
-               onclick="openLogoutModal(); return false;">
+               class="menu-item-card js-open-logout-modal">
 
                 <div class="menu-item-left">
 
@@ -273,18 +270,14 @@
                 <%-- キャンセル --%>
                 <button type="button"
                         class="btn-cancel"
-                        onclick="closeLogoutModal()">
-
+                        id="closeLogoutModalButton">
                     キャンセル
-
                 </button>
 
                 <%-- ログアウト --%>
                 <a href="${pageContext.request.contextPath}/servlet.LogoutServlet.action"
                    class="btn-logout">
-
                     ログアウト
-
                 </a>
 
             </div>
@@ -295,27 +288,7 @@
 
 </main>
 
-<script>
-
-    // ログアウト確認ポップアップを表示
-    function openLogoutModal() {
-        document.getElementById("logout-modal").style.display = "flex";
-    }
-
-    // ログアウト確認ポップアップを閉じる
-    function closeLogoutModal() {
-        document.getElementById("logout-modal").style.display = "none";
-    }
-
-    // ポップアップの背景をクリックした場合も閉じる
-    document.getElementById("logout-modal").addEventListener("click", function(event) {
-
-        if (event.target === this) {
-            closeLogoutModal();
-        }
-
-    });
-
-</script>
+<%-- 外部JavaScript --%>
+<script src="${pageContext.request.contextPath}/js/mypage.js" defer></script>
 
 <%@ include file="../footer.jsp" %>

@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <%@ include file="../header.jsp" %>
@@ -36,6 +37,7 @@
 
             <!-- メールアドレス -->
             <div class="form-group">
+
                 <div class="input-box">
 
                     <span class="field-icon" aria-hidden="true">
@@ -66,11 +68,14 @@
                             required>
 
                     </div>
+
                 </div>
+
             </div>
 
             <!-- 管理者ID -->
             <div class="form-group">
+
                 <div class="input-box">
 
                     <span class="field-icon" aria-hidden="true">
@@ -104,11 +109,14 @@
                             required>
 
                     </div>
+
                 </div>
+
             </div>
 
             <!-- パスワード -->
             <div class="form-group">
+
                 <div class="input-box">
 
                     <span class="field-icon" aria-hidden="true">
@@ -185,10 +193,12 @@
                     </button>
 
                 </div>
+
             </div>
 
             <!-- 企業コード -->
             <div class="form-group">
+
                 <div class="input-box">
 
                     <span class="field-icon" aria-hidden="true">
@@ -220,14 +230,15 @@
                             required>
 
                     </div>
+
                 </div>
+
             </div>
 
             <!-- 登録ボタン -->
             <button type="submit" class="register-button">
 
                 <span>登録する</span>
-
                 <span class="button-arrow" aria-hidden="true">→</span>
 
             </button>
@@ -236,40 +247,7 @@
 
     </main>
 
-    <!-- パスワード表示切り替え -->
-    <script>
-
-        const password = document.getElementById("password");
-
-        const togglePassword = document.getElementById("togglePassword");
-
-        const eyeOpen = document.getElementById("eyeOpen");
-
-        const eyeClosed = document.getElementById("eyeClosed");
-
-        // パスワード表示切り替え
-        togglePassword.addEventListener("click", function () {
-
-            const isHidden = password.type === "password";
-
-            password.type = isHidden ? "text" : "password";
-
-            eyeOpen.style.display = isHidden ? "inline" : "none";
-
-            eyeClosed.style.display = isHidden ? "none" : "inline";
-
-            togglePassword.setAttribute(
-                "aria-label",
-                isHidden ? "パスワードを非表示" : "パスワードを表示"
-            );
-
-            togglePassword.setAttribute(
-                "aria-pressed",
-                String(isHidden)
-            );
-
-        });
-
-    </script>
+    <!-- 外部JavaScript -->
+    <script src="${pageContext.request.contextPath}/js/adminRegister.js" defer></script>
 
 <%@ include file="../footer.jsp" %>

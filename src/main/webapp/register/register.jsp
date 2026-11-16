@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ include file="../header.jsp" %>
@@ -12,10 +13,12 @@
 
         <!-- ユーザー登録アイコン -->
         <div class="register-icon">
+
             <span class="user-symbol"
                   style="font-size: 32px !important;
                          line-height: 1;
                          display: inline-block;">♟</span>
+
         </div>
 
         <h1>ユーザー新規登録</h1>
@@ -25,6 +28,7 @@
         </p>
 
     </header>
+
 
     <!-- 登録フォーム -->
     <form action="${pageContext.request.contextPath}/servlet.RegisterServlet.action"
@@ -71,6 +75,7 @@
 
         </div>
 
+
         <!-- パスワード入力欄 -->
         <div class="input-group">
 
@@ -110,6 +115,7 @@
                     required>
 
             </div>
+
 
             <!-- パスワード表示切り替えボタン -->
             <button
@@ -153,6 +159,7 @@
 
         </div>
 
+
         <!-- エラーメッセージ -->
         <% if (request.getAttribute("errorMessage") != null) { %>
 
@@ -162,10 +169,12 @@
 
         <% } %>
 
+
         <!-- 登録ボタン -->
         <button type="submit" class="register-button">
 
             <span>登録する</span>
+
             <span class="button-arrow" aria-hidden="true">→</span>
 
         </button>
@@ -174,47 +183,8 @@
 
 </main>
 
-<!-- パスワードの表示・非表示 -->
-<script>
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    const password = document.getElementById("userPass");
-    const togglePassword = document.getElementById("togglePassword");
-    const eyeSlash = document.getElementById("eyeSlash");
-
-    // 必要な要素がそろっているか確認
-    if (!password || !togglePassword || !eyeSlash) {
-        console.error("パスワード表示切り替え用のHTMLが見つかりません。");
-        return;
-    }
-
-    // パスワード表示切り替え
-    togglePassword.addEventListener("click", function () {
-
-        const isHidden = password.type === "password";
-
-        // パスワードの表示・非表示を切り替える
-        password.type = isHidden ? "text" : "password";
-
-        // 目の斜線を切り替える
-        eyeSlash.style.display = isHidden ? "none" : "inline";
-
-        // ボタンの説明を変更する
-        togglePassword.setAttribute(
-            "aria-label",
-            isHidden ? "パスワードを非表示" : "パスワードを表示"
-        );
-
-        togglePassword.setAttribute(
-            "aria-pressed",
-            String(isHidden)
-        );
-
-    });
-
-});
-
-</script>
+<!-- 外部JavaScript -->
+<script src="${pageContext.request.contextPath}/js/userRegister.js" defer></script>
 
 <%@ include file="../footer.jsp" %>
