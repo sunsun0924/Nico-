@@ -1,27 +1,28 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ include file="../header.jsp" %>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminLogin.css">
+<link rel="stylesheet"
+      href="${pageContext.request.contextPath}/css/adminLogin.css">
 
 </head>
-
 <body>
 
     <main class="login-container">
 
-        <!-- ヘッダー -->
+        <!-- ========================================
+             ヘッダー
+        ======================================== -->
+
         <header class="login-header">
 
             <div class="admin-icon">
 
                 <svg viewBox="0 0 48 48" aria-hidden="true">
-
                     <circle cx="24" cy="14" r="8" fill="currentColor"/>
-
                     <path d="M9 36c0-8 6-13 15-13s15 5 15 13"
                           fill="currentColor"/>
-
                 </svg>
 
             </div>
@@ -34,7 +35,11 @@
 
         </header>
 
-        <!-- ログインフォーム -->
+
+        <!-- ========================================
+             ログインフォーム
+        ======================================== -->
+
         <form id="adminLoginForm"
               action="${pageContext.request.contextPath}/servlet.AdminLoginServlet.action"
               method="post">
@@ -75,6 +80,7 @@
 
             </div>
 
+
             <!-- パスワード -->
             <div class="input-box">
 
@@ -111,6 +117,7 @@
 
                 </div>
 
+
                 <!-- パスワード表示・非表示ボタン -->
                 <button
                     type="button"
@@ -140,6 +147,7 @@
 
             </div>
 
+
             <!-- エラーメッセージ -->
             <% if (request.getAttribute("errorMessage") != null) { %>
 
@@ -148,6 +156,7 @@
                 </p>
 
             <% } %>
+
 
             <!-- ログインボタン -->
             <button type="submit" class="login-button">
@@ -160,7 +169,11 @@
 
         </form>
 
-        <!-- 新規登録画面へのリンク -->
+
+        <!-- ========================================
+             新規登録画面へのリンク
+        ======================================== -->
+
         <a class="register-button"
            href="${pageContext.request.contextPath}/register/adminRegister.jsp">
 
@@ -172,36 +185,8 @@
 
     </main>
 
-    <!-- パスワード表示切り替え -->
-    <script>
 
-        const password = document.getElementById("cpUserpass");
-
-        const togglePassword = document.getElementById("togglePassword");
-
-        const eyeSlash = document.getElementById("eyeSlash");
-
-        // パスワード表示切り替え
-        togglePassword.addEventListener("click", function () {
-
-            const isHidden = password.type === "password";
-
-            password.type = isHidden ? "text" : "password";
-
-            eyeSlash.style.display = isHidden ? "none" : "inline";
-
-            togglePassword.setAttribute(
-                "aria-label",
-                isHidden ? "パスワードを非表示" : "パスワードを表示"
-            );
-
-            togglePassword.setAttribute(
-                "aria-pressed",
-                String(isHidden)
-            );
-
-        });
-
-    </script>
+    <!-- JavaScriptファイル -->
+    <script src="${pageContext.request.contextPath}/js/adminLogin.js" defer></script>
 
 <%@ include file="../footer.jsp" %>
