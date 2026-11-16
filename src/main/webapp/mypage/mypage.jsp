@@ -193,7 +193,7 @@
             </a>
 
             <%-- ギフトの履歴 --%>
-            <a href="${pageContext.request.contextPath}/mypage/gift_history.jsp"
+            <a href="${pageContext.request.contextPath}/servlet.Gift_historyServlet.action"
                class="menu-item-card">
 
                 <div class="menu-item-left">

@@ -123,7 +123,7 @@
         </a>
 
         <%-- ギフト --%>
-        <a href="${pageContext.request.contextPath}/gift/gift.jsp"
+        <a href="${pageContext.request.contextPath}/servlet.GiftServlet.action"
            class="menu-item">
 
             <span class="menu-icon">🎁︎</span>

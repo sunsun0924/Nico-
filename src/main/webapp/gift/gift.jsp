@@ -1,71 +1,231 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="../header.jsp" %>
 
-<!-- ギフト画面のCSSを読み込む -->
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/gift.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/gift.css">
 
-<!-- サイドバーとギフト画面を横並びにする -->
 <div class="page-layout">
 
-    <!-- 左側：サイドバー -->
-    <%@ include file="../sidebar.jsp" %>
+    <jsp:include page="/sidebar.jsp" />
 
-    <!-- 右側：ギフト画面 -->
     <main class="main-content">
 
         <div class="gift-container">
 
-            <!-- ヘッダー -->
-            <header class="gift-header">
-                <span class="gift-icon"></span>
+            <!-- =========================
+                 ページタイトル
+            ========================= -->
+
+            <div class="gift-header">
+
                 <h1>ギフト</h1>
-            </header>
 
-            <!-- メッセージ -->
-            <section class="gift-message">
-                <div class="message-text">
-                    <p>大切な人に</p>
-                    <p>「ありがとう」を届けよう <span></span></p>
+                <p class="gift-message">
+                    大切な人へのプレゼントを選びましょう
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 エラーメッセージ
+            ========================= -->
+
+            <c:if test="${not empty errorMessage}">
+
+                <div class="error-message">
+                    ${errorMessage}
                 </div>
-            </section>
 
-            <!-- 人気のギフト -->
-            <section class="popular-gifts">
+            </c:if>
+
+
+            <!-- =========================
+                 成功メッセージ
+            ========================= -->
+
+            <c:if test="${not empty successMessage}">
+
+                <div class="success-message">
+                    ${successMessage}
+                </div>
+
+            </c:if>
+
+
+            <!-- =========================
+                 商品検索フォーム
+            ========================= -->
+
+            <form class="gift-search-form"
+                  action="${pageContext.request.contextPath}/servlet.GiftServlet.action"
+                  method="get">
+
+                <input
+                    type="text"
+                    name="keyword"
+                    value="${keyword}"
+                    placeholder="商品名・説明・カテゴリーで検索">
+
+                <button type="submit">
+                    検索
+                </button>
+
+            </form>
+
+
+            <!-- =========================
+                 誕生日が近い家族へのおすすめ
+            ========================= -->
+
+            <c:if test="${not empty recommendedGiftSections}">
+
+                <section class="popular-gifts">
+
+                    <div class="section-header">
+
+                        <h2>🎂 誕生日が近い家族へのおすすめ</h2>
+
+                    </div>
+
+                    <c:forEach var="section"
+                               items="${recommendedGiftSections}">
+
+                        <div class="recommend-section">
+
+                            <h3>
+                                ${section.relation}へのおすすめ
+                            </h3>
+
+                            <p class="recommend-info">
+                                誕生日：${section.birthday}
+                                ／ 年齢：${section.age}歳
+                            </p>
+
+                            <div class="gift-grid">
+
+                                <c:forEach var="gift"
+                                           items="${section.giftList}">
+
+                                    <a class="gift-card"
+                                       href="${pageContext.request.contextPath}/servlet.GiftServlet.action?giftProductId=${gift.giftProductId}&familyBirthdayId=${section.familyBirthdayId}">
+
+                                        <c:choose>
+
+                                            <c:when test="${not empty gift.giftImage}">
+
+                                                <img
+                                                    src="${pageContext.request.contextPath}/gift-images/${gift.giftImage}"
+                                                    alt="${gift.giftName}"
+                                                    class="gift-image">
+
+                                            </c:when>
+
+                                            <c:otherwise>
+
+                                                <div class="gift-placeholder">
+                                                    🎁
+                                                </div>
+
+                                            </c:otherwise>
+
+                                        </c:choose>
+
+                                        <h3>${gift.giftName}</h3>
+
+                                        <p class="gift-description">
+                                            ${gift.giftText}
+                                        </p>
+
+                                    </a>
+
+                                </c:forEach>
+
+                                <c:if test="${empty section.giftList}">
+
+                                    <p class="no-gift-message">
+                                        おすすめの商品はありません。
+                                    </p>
+
+                                </c:if>
+
+                            </div>
+
+                        </div>
+
+                    </c:forEach>
+
+                </section>
+
+            </c:if>
+
+
+            <!-- =========================
+                 全商品一覧
+            ========================= -->
+
+            <section class="all-gifts">
+
                 <div class="section-header">
-                    <h2>人気のギフト</h2>
+
+                    <h2>🎁 すべてのギフト</h2>
+
                 </div>
 
-                <!-- DBから取得したギフト一覧 -->
+
+                <!-- =========================
+                     商品一覧
+                ========================= -->
+
                 <div class="gift-grid">
 
                     <c:forEach var="gift" items="${giftList}">
 
-                        <!-- ギフトカード -->
-                        <a href="${pageContext.request.contextPath}/gift/giftdetail.jsp?giftId=${gift.giftId}"
-                           class="gift-card">
+                        <a class="gift-card"
+                           href="${pageContext.request.contextPath}/servlet.GiftServlet.action?giftProductId=${gift.giftProductId}">
 
-                            <div class="gift-placeholder">🎁</div>
+                            <c:choose>
 
-                            <h3>
-                                <c:out value="${gift.giftName}" />
-                            </h3>
+                                <c:when test="${not empty gift.giftImage}">
+
+                                    <img
+                                        src="${pageContext.request.contextPath}/gift-images/${gift.giftImage}"
+                                        alt="${gift.giftName}"
+                                        class="gift-image">
+
+                                </c:when>
+
+                                <c:otherwise>
+
+                                    <div class="gift-placeholder">
+                                        🎁
+                                    </div>
+
+                                </c:otherwise>
+
+                            </c:choose>
+
+                            <h3>${gift.giftName}</h3>
 
                             <p class="gift-description">
-                                <c:out value="${gift.giftText}" />
+                                ${gift.giftText}
                             </p>
 
                         </a>
 
                     </c:forEach>
 
-                    <!-- ギフトが登録されていない場合 -->
+
                     <c:if test="${empty giftList}">
-                        <p>現在、ギフトは登録されていません。</p>
+
+                        <p class="no-gift-message">
+                            該当する商品がありません。
+                        </p>
+
                     </c:if>
 
                 </div>
+
             </section>
 
         </div>

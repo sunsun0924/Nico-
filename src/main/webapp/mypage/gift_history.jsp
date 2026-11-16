@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-
 <%@ include file="../header.jsp" %>
 
 <link rel="stylesheet"
@@ -41,7 +39,7 @@
                                 <div class="gift-image">
 
                                     <img
-                                        src="${pageContext.request.contextPath}/images/gift/${gift.giftImage}"
+                                        src="${pageContext.request.contextPath}/gift-images/${gift.giftImage}"
                                         alt="${gift.giftName}">
 
                                 </div>
@@ -49,17 +47,37 @@
                                 <%-- ギフト情報 --%>
                                 <div class="gift-info">
 
+                                    <%-- 商品名 --%>
                                     <h4 class="gift-name">
+
                                         <c:out value="${gift.giftName}" />
+
                                     </h4>
 
+                                    <%-- 商品説明 --%>
+                                    <p class="gift-description">
+
+                                        <c:out value="${gift.giftText}" />
+
+                                    </p>
+
+                                    <%-- 贈った相手 --%>
+                                    <p class="gift-relation">
+
+                                        贈った相手：
+
+                                        <c:out value="${gift.relation}" />
+
+                                    </p>
+
+                                    <%-- 贈った日 --%>
                                     <p class="gift-date">
 
                                         <i class="fa-regular fa-calendar"></i>
 
-                                        受け取った日：
+                                        贈った日：
 
-                                        <c:out value="${gift.receivedDate}" />
+                                        <c:out value="${gift.selectedDate}" />
 
                                     </p>
 
@@ -80,7 +98,7 @@
 
                         <i class="fa-solid fa-gift"></i>
 
-                        <p>まだ受け取ったギフトはありません。</p>
+                        <p>ギフト履歴はありません。</p>
 
                     </div>
 
@@ -95,7 +113,9 @@
 
             <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
                class="back-button">
+
                 戻る
+
             </a>
 
         </div>
