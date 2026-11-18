@@ -1,30 +1,22 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-
 <%@ include file="../header.jsp" %>
 
-<!-- 通知画面のCSSを読み込む -->
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/notification.css">
 
-<!-- サイドバーと通知画面を横並びにする -->
 <div class="page-layout">
 
-    <!-- 左側：サイドバー -->
     <%@ include file="../sidebar.jsp" %>
 
-    <!-- 右側：通知画面 -->
     <main class="main-content">
 
-        <!-- 通知画面全体 -->
         <div class="notification-container">
 
-            <!-- 画面上部のタイトル -->
             <div class="notification-header">
                 <h1>通知</h1>
             </div>
 
-            <!-- 通知の種類を切り替えるタブ -->
             <div class="notification-tabs">
 
                 <a href="?filter=all"
@@ -44,16 +36,24 @@
 
             </div>
 
-            <!-- 通知一覧 -->
             <div class="notification-list">
+
                 <c:choose>
+
                     <c:when test="${not empty notifications}">
-                        <c:forEach var="notification" items="${notifications}">
+
+                        <c:forEach var="notification"
+                                   items="${notifications}">
+
                             <div class="notification-item">
 
-                                <c:if test="${notification.type == 'gift'}">
+                                <%-- 未登録のギフト通知だけリンクにする --%>
+                                <c:if test="${notification.type == 'gift'
+                                             and not notification.giftRegistered}">
+
                                     <a href="${pageContext.request.contextPath}/servlet.GiftServlet.action"
                                        class="notification-link">
+
                                 </c:if>
 
                                 <div class="notification-content">
@@ -68,10 +68,31 @@
                                         </p>
                                     </c:if>
 
+                                    <%-- ギフト通知の表示 --%>
                                     <c:if test="${notification.type == 'gift'}">
-                                        <p class="notification-link-text">
-                                            プレゼントを選ぶ →
-                                        </p>
+
+                                        <c:choose>
+
+                                            <%-- 登録済みの場合 --%>
+                                            <c:when test="${notification.giftRegistered}">
+
+                                                <p class="notification-link-text">
+                                                    プレゼント登録済み
+                                                </p>
+
+                                            </c:when>
+
+                                            <%-- 未登録の場合 --%>
+                                            <c:otherwise>
+
+                                                <p class="notification-link-text">
+                                                    プレゼントを選ぶ →
+                                                </p>
+
+                                            </c:otherwise>
+
+                                        </c:choose>
+
                                     </c:if>
 
                                     <p class="notification-date">
@@ -80,20 +101,30 @@
 
                                 </div>
 
-                                <c:if test="${notification.type == 'gift'}">
+                                <%-- 未登録のギフト通知だけリンクを閉じる --%>
+                                <c:if test="${notification.type == 'gift'
+                                             and not notification.giftRegistered}">
+
                                     </a>
+
                                 </c:if>
 
                             </div>
+
                         </c:forEach>
+
                     </c:when>
 
                     <c:otherwise>
+
                         <p class="no-notification">
                             通知はありません。
                         </p>
+
                     </c:otherwise>
+
                 </c:choose>
+
             </div>
 
         </div>

@@ -101,7 +101,6 @@
                     <button type="submit" class="btn btn-confirm">
 
                         <span>決定</span>
-                        <span class="gift-icon">♡</span>
 
                     </button>
 
