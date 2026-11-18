@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
@@ -189,8 +188,8 @@
 </div>
 
 
-<!-- JavaScriptファイルの読み込み -->
-<script src="${pageContext.request.contextPath}/js/chat.js" defer></script>
+<!-- JavaScriptファイルの読み込み（chat_list.jsに修正） -->
+<script src="${pageContext.request.contextPath}/js/chat_list.js" defer></script>
 
 </body>
 </html>

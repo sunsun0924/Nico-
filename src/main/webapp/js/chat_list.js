@@ -1,4 +1,3 @@
-
 /* ========================================
    チャット画面のJavaScript
 ======================================== */
@@ -105,9 +104,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } else {
 
-            // 通常モードの場合はチャットルームへ移動
+            // 通常モードの場合はチャットルームへ移動（FrontController経由の.actionに修正済み）
             location.href = contextPath
-                + '/chat-room?partnerId='
+                + '/servlet.ChatRoomServlet.action?partnerId='
                 + encodeURIComponent(checkbox.value);
 
         }
@@ -126,8 +125,8 @@ document.addEventListener('DOMContentLoaded', function () {
         userListArea.innerHTML =
             '<p style="text-align: center; color: #888; padding: 20px;">読み込み中...</p>';
 
-        // ChatListServletへ接続
-        fetch(contextPath + '/chat-list?action=json')
+        // ChatListServletへ接続（FrontController経由の.actionに修正済み）
+        fetch(contextPath + '/servlet.ChatListServlet.action?action=json')
 
             .then(function (response) {
 
@@ -165,11 +164,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     item.style.cssText =
                         'cursor: pointer; padding: 8px 0; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center;';
 
-                    // ユーザーをクリックしたらチャットルームへ移動
+                    // ユーザーをクリックしたらチャットルームへ移動（FrontController経由の.actionに修正済み）
                     item.addEventListener('click', function () {
 
                         location.href = contextPath
-                            + '/chat-room?partnerId='
+                            + '/servlet.ChatRoomServlet.action?partnerId='
                             + encodeURIComponent(String(user.userId));
 
                     });

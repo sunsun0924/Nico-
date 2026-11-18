@@ -15,7 +15,7 @@
             <!-- ヘッダー（戻るボタン付き） -->
             <header class="chat-room-header">
                 <div class="header-left">
-                    <a href="${pageContext.request.contextPath}/chat-list" class="back-link">＜</a>
+                    <a href="${pageContext.request.contextPath}/servlet.ChatListServlet.action" class="back-link">＜</a>
                     <div class="user-icon">
                         <div class="no-image"></div>
                     </div>
@@ -30,8 +30,9 @@
             <!-- メッセージ表示エリア -->
             <div class="chat-messages-area">
                 <c:forEach var="msg" items="${messageList}">
-                    <div class="message-row <c:choose><c:when test='${msg.senderId == "userA"}'>mine</c:when><c:otherwise>partner</c:otherwise></c:choose>">
-                        <c:if test="${msg.senderId != 'userA'}">
+                    <!-- ログイン中の自分のIDと一致する場合は mine（右側）、それ以外は partner（左側） -->
+                    <div class="message-row <c:choose><c:when test='${msg.senderId == myUserId}'>mine</c:when><c:otherwise>partner</c:otherwise></c:choose>">
+                        <c:if test="${msg.senderId != myUserId}">
                             <div class="message-user-icon">
                                 <div class="no-image-small"></div>
                             </div>
@@ -47,7 +48,7 @@
             </div>
 
             <!-- メッセージ送信フォーム -->
-            <form action="${pageContext.request.contextPath}/chat-room" method="post" class="chat-input-form">
+            <form action="${pageContext.request.contextPath}/servlet.ChatRoomServlet.action" method="post" class="chat-input-form">
                 <input type="hidden" name="partnerId" value="${partnerUserId}">
                 <button type="button" class="btn-plus">＋</button>
                 <input type="text" name="message" placeholder="メッセージを入力..." required autocomplete="off">

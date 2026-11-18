@@ -1,10 +1,13 @@
 package servlet;
 
 import java.util.List;
+
 import bean.ChatListBean;
+import bean.User;
 import dao.ChatListDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
 public class ChatListServlet extends Action {
@@ -14,8 +17,20 @@ public class ChatListServlet extends Action {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
+        // セッションを取得
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return "/login/userLogin.jsp";
+        }
+
+        // ログイン中のユーザー情報を取得
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "/login/userLogin.jsp";
+        }
+
+        String myUserId = user.getUserId();
         boolean jsonRequest = "json".equals(request.getParameter("action"));
-        String myUserId = "userA";
         ChatListDAO dao = new ChatListDAO();
 
         if (jsonRequest) {
