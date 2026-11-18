@@ -187,23 +187,26 @@ public class UserProfileServlet extends Action {
                 }
 
                 // 画像の保存先
-                String savePath =
-                        req.getServletContext().getRealPath("/images");
-
-                if (savePath == null) {
-
-                    req.setAttribute(
-                        "error",
-                        "画像の保存先を取得できませんでした。"
-                    );
-
-                    return "/mypage/profile.jsp";
-                }
+                // Tomcatの管理フォルダではなくCドライブに保存する
+                String savePath = "C:\\NicoData\\images";
 
                 File saveDirectory = new File(savePath);
 
+                // 保存先フォルダが存在しない場合は作成
                 if (!saveDirectory.exists()) {
                     saveDirectory.mkdirs();
+                }
+
+                // フォルダが作成できなかった場合
+                if (!saveDirectory.exists()
+                        || !saveDirectory.isDirectory()) {
+
+                    req.setAttribute(
+                        "error",
+                        "画像の保存先フォルダを作成できませんでした。"
+                    );
+
+                    return "/mypage/profile.jsp";
                 }
 
                 // 重複しないファイル名を作成

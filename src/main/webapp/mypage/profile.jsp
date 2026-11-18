@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="bean.User" %>
@@ -25,11 +24,14 @@
 
     // 管理者の場合
     if (isAdmin) {
+
         profileName = admin.getCpUsername();
         profileImage = admin.getCpUserimg();
         positionX = admin.getCpUserimgPositionX();
         positionY = admin.getCpUserimgPositionY();
+
     } else {
+
         // 一般ユーザーの場合
         profileName = user.getUserName();
         profileImage = user.getUserImg();
@@ -45,6 +47,17 @@
     // 画像が未登録の場合
     if (profileImage == null || profileImage.isEmpty()) {
         profileImage = "default-profile.png";
+    }
+
+    // 画像の表示先を設定
+    String profileImageUrl;
+
+    if ("default-profile.png".equals(profileImage)) {
+        profileImageUrl =
+                request.getContextPath() + "/images/default-profile.png";
+    } else {
+        profileImageUrl =
+                request.getContextPath() + "/profile-image/" + profileImage;
     }
 %>
 
@@ -63,7 +76,9 @@
                 <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
                    class="back-btn"
                    aria-label="戻る">
+
                     <i class="fa-solid fa-chevron-left"></i>
+
                 </a>
 
                 <h1 class="header-title">プロフィール編集</h1>
@@ -72,9 +87,11 @@
 
             <%-- エラーメッセージ --%>
             <% if (request.getAttribute("error") != null) { %>
+
                 <div class="error-message">
                     <%= request.getAttribute("error") %>
                 </div>
+
             <% } %>
 
             <%-- プロフィール編集フォーム --%>
@@ -95,7 +112,7 @@
                         <div class="profile-image-wrapper">
 
                             <img id="profile-preview"
-                                 src="${pageContext.request.contextPath}/images/<%= profileImage %>"
+                                 src="<%= profileImageUrl %>"
                                  alt="プロフィール画像"
                                  style="object-position: <%= positionX %>% <%= positionY %>%">
 

@@ -106,6 +106,61 @@ public class FamilyBDDAO extends DAO {
     }
 
 
+    // 全ユーザーの家族の誕生日を取得する
+    public List<FamilyBD> findAll() throws Exception {
+
+        List<FamilyBD> list = new ArrayList<>();
+
+        // DB接続を取得
+        Connection con = getConnection();
+
+        // SQLを準備
+        PreparedStatement st = con.prepareStatement(
+            "SELECT family_birthday_id, user_id, \"relation\", birthday " +
+            "FROM birthday " +
+            "ORDER BY user_id, birthday"
+        );
+
+        // SQLを実行
+        ResultSet rs = st.executeQuery();
+
+        // 検索結果をBeanに格納
+        while (rs.next()) {
+
+            FamilyBD familyBirthday = new FamilyBD();
+
+            // 家族の誕生日ID
+            familyBirthday.setFamilyBirthdayId(
+                rs.getString("family_birthday_id")
+            );
+
+            // ユーザーID
+            familyBirthday.setUserId(
+                rs.getString("user_id")
+            );
+
+            // 続柄
+            familyBirthday.setRelation(
+                rs.getString("relation")
+            );
+
+            // 誕生日
+            familyBirthday.setBirthday(
+                rs.getDate("birthday").toLocalDate()
+            );
+
+            list.add(familyBirthday);
+        }
+
+        // リソースを解放
+        rs.close();
+        st.close();
+        con.close();
+
+        return list;
+    }
+
+
     // 同じユーザーに同じ続柄が登録されているか確認する
     public boolean isExist(String userId, String relation) throws Exception {
 

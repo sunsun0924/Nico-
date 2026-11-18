@@ -49,50 +49,20 @@ public class NotificationDAO extends DAO {
             + "WHERE user_id = ? "
             + "ORDER BY notification_datetime DESC";
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement(sql);
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, userId);
+        st.setString(1, userId);
 
-            rs = st.executeQuery();
+        ResultSet rs = st.executeQuery();
 
-            while (rs.next()) {
-                list.add(mapNotification(rs));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        while (rs.next()) {
+            list.add(mapNotification(rs));
         }
+
+        rs.close();
+        st.close();
+        con.close();
 
         return list;
     }
@@ -107,50 +77,20 @@ public class NotificationDAO extends DAO {
             + "WHERE admin_id = ? "
             + "ORDER BY notification_datetime DESC";
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement(sql);
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, adminId);
+        st.setString(1, adminId);
 
-            rs = st.executeQuery();
+        ResultSet rs = st.executeQuery();
 
-            while (rs.next()) {
-                list.add(mapNotification(rs));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        while (rs.next()) {
+            list.add(mapNotification(rs));
         }
+
+        rs.close();
+        st.close();
+        con.close();
 
         return list;
     }
@@ -162,52 +102,24 @@ public class NotificationDAO extends DAO {
             "SELECT COUNT(*) FROM notification "
             + "WHERE user_id = ? AND is_read = FALSE";
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement(sql);
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, userId);
+        st.setString(1, userId);
 
-            rs = st.executeQuery();
+        ResultSet rs = st.executeQuery();
 
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
+        int count = 0;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        if (rs.next()) {
+            count = rs.getInt(1);
         }
 
-        return 0;
+        rs.close();
+        st.close();
+        con.close();
+
+        return count;
     }
 
     // 管理者の未読通知件数を取得する
@@ -217,52 +129,24 @@ public class NotificationDAO extends DAO {
             "SELECT COUNT(*) FROM notification "
             + "WHERE admin_id = ? AND is_read = FALSE";
 
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement(sql);
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, adminId);
+        st.setString(1, adminId);
 
-            rs = st.executeQuery();
+        ResultSet rs = st.executeQuery();
 
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
+        int count = 0;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        if (rs.next()) {
+            count = rs.getInt(1);
         }
 
-        return 0;
+        rs.close();
+        st.close();
+        con.close();
+
+        return count;
     }
 
     // ユーザーの通知をすべて既読にする
@@ -272,37 +156,17 @@ public class NotificationDAO extends DAO {
             "UPDATE notification SET is_read = TRUE "
             + "WHERE user_id = ? AND is_read = FALSE";
 
-        Connection con = null;
-        PreparedStatement st = null;
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement(sql);
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, userId);
+        st.setString(1, userId);
 
-            return st.executeUpdate();
+        int result = st.executeUpdate();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+        st.close();
+        con.close();
 
-        } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        return result;
     }
 
     // 管理者の通知をすべて既読にする
@@ -312,37 +176,17 @@ public class NotificationDAO extends DAO {
             "UPDATE notification SET is_read = TRUE "
             + "WHERE admin_id = ? AND is_read = FALSE";
 
-        Connection con = null;
-        PreparedStatement st = null;
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement(sql);
 
-        try {
-            con = getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, adminId);
+        st.setString(1, adminId);
 
-            return st.executeUpdate();
+        int result = st.executeUpdate();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+        st.close();
+        con.close();
 
-        } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        return result;
     }
 
     // 通知を登録する
@@ -355,76 +199,88 @@ public class NotificationDAO extends DAO {
             + "post_id, gift_id) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        Connection con = null;
-        PreparedStatement st = null;
+        // 通知先がユーザーか管理者のどちらか一方か確認
+        boolean validReceiver =
+            (notification.getUserId() != null
+                && notification.getAdminId() == null)
+            ||
+            (notification.getUserId() == null
+                && notification.getAdminId() != null);
 
-        try {
-            // 通知先がユーザーか管理者のどちらか一方か確認
-            boolean validReceiver =
-                (notification.getUserId() != null
-                    && notification.getAdminId() == null)
-                ||
-                (notification.getUserId() == null
-                    && notification.getAdminId() != null);
+        // 通知元がユーザーか管理者のどちらか一方か確認
+        boolean validSender =
+            (notification.getSenderId() != null
+                && notification.getSenderAdminId() == null)
+            ||
+            (notification.getSenderId() == null
+                && notification.getSenderAdminId() != null);
 
-            // 通知元がユーザーか管理者のどちらか一方か確認
-            boolean validSender =
-                (notification.getSenderId() != null
-                    && notification.getSenderAdminId() == null)
-                ||
-                (notification.getSenderId() == null
-                    && notification.getSenderAdminId() != null);
-
-            if (!validReceiver || !validSender) {
-                throw new Exception(
-                    "通知先または通知元のIDが正しく設定されていません。"
-                );
-            }
-
-            con = getConnection();
-            st = con.prepareStatement(sql);
-
-            st.setString(1, notification.getUserId());
-            st.setString(2, notification.getAdminId());
-            st.setString(3, notification.getSenderId());
-            st.setString(4, notification.getSenderAdminId());
-            st.setString(5, notification.getNotificationType());
-            st.setString(6, notification.getMessage());
-
-            java.time.LocalDateTime datetime =
-                notification.getNotificationDatetime();
-
-            if (datetime == null) {
-                datetime = java.time.LocalDateTime.now();
-            }
-
-            st.setTimestamp(7, Timestamp.valueOf(datetime));
-            st.setString(8, notification.getPostId());
-            st.setString(9, notification.getGiftId());
-
-            // is_readはDEFAULT FALSEが設定される
-            return st.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-
-        } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        if (!validReceiver || !validSender) {
+            throw new Exception(
+                "通知先または通知元のIDが正しく設定されていません。"
+            );
         }
+
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement(sql);
+
+        st.setString(1, notification.getUserId());
+        st.setString(2, notification.getAdminId());
+        st.setString(3, notification.getSenderId());
+        st.setString(4, notification.getSenderAdminId());
+        st.setString(5, notification.getNotificationType());
+        st.setString(6, notification.getMessage());
+
+        java.time.LocalDateTime datetime =
+            notification.getNotificationDatetime();
+
+        if (datetime == null) {
+            datetime = java.time.LocalDateTime.now();
+        }
+
+        st.setTimestamp(7, Timestamp.valueOf(datetime));
+        st.setString(8, notification.getPostId());
+        st.setString(9, notification.getGiftId());
+
+        // is_readはDEFAULT FALSEが設定される
+        int result = st.executeUpdate();
+
+        st.close();
+        con.close();
+
+        return result;
+    }
+
+    // 誕生日通知を登録する（重複登録を防止）
+    public int insertBirthdayNotification(
+            String userId,
+            String message,
+            String notificationKey) throws Exception {
+
+        String sql =
+            "INSERT INTO notification "
+            + "(user_id, notification_type, message, notification_datetime) "
+            + "SELECT ?, 'gift', ?, CURRENT_TIMESTAMP "
+            + "WHERE NOT EXISTS ( "
+            + "    SELECT 1 FROM notification "
+            + "    WHERE user_id = ? "
+            + "    AND notification_type = 'gift' "
+            + "    AND POSITION(? IN message) > 0 "
+            + ")";
+
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement(sql);
+
+        st.setString(1, userId);
+        st.setString(2, message);
+        st.setString(3, userId);
+        st.setString(4, notificationKey);
+
+        int result = st.executeUpdate();
+
+        st.close();
+        con.close();
+
+        return result;
     }
 }

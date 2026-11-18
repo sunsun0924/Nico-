@@ -108,23 +108,30 @@ public class NotificationServlet extends Action {
                     type != null ? type : ""
                 );
 
-                // コメント本文を含む通知メッセージ
-	             // 通知メッセージを取得
-	                String message = notification.getMessage() != null
-	                    ? notification.getMessage()
-	                    : "";
-	
-	                // 改行位置で通知タイトルとコメント本文に分ける
-	                String[] messageParts = message.split("\\r?\\n", 2);
-	
-	                // 通知タイトル
-	                map.put("title", messageParts[0]);
-	
-	                // コメント本文
-	                map.put(
-	                    "detail",
-	                    messageParts.length > 1 ? messageParts[1] : ""
-	                );
+                // 通知メッセージを取得
+                String message = notification.getMessage() != null
+                    ? notification.getMessage()
+                    : "";
+
+                // 誕生日通知の識別情報を取り除く
+                message = message.replaceAll(
+                    "\\[\\[BIRTHDAY_NOTICE:[^\\]]+\\]\\]",
+                    ""
+                ).trim();
+
+                // 改行位置で通知タイトルと本文に分ける
+                String[] messageParts = message.split("\\r?\\n", 2);
+
+                // 通知タイトル
+                map.put("title", messageParts[0]);
+
+                // コメント本文
+                map.put(
+                    "detail",
+                    messageParts.length > 1
+                        ? messageParts[1].trim()
+                        : ""
+                );
 
                 // 投稿ID
                 map.put(

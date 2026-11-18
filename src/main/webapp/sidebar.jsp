@@ -19,11 +19,13 @@
         (Admin) session.getAttribute("admin");
 
     try {
+
         NotificationDAO notificationDAO =
             new NotificationDAO();
 
         // 一般ユーザーの場合
         if (loginUser != null) {
+
             notificationCount =
                 notificationDAO.countByUserId(
                     loginUser.getUserId()
@@ -31,6 +33,7 @@
 
         // 管理者の場合
         } else if (loginAdmin != null) {
+
             notificationCount =
                 notificationDAO.countByAdminId(
                     loginAdmin.getCpUserid()
@@ -38,6 +41,7 @@
         }
 
     } catch (Exception e) {
+
         e.printStackTrace();
     }
 
@@ -45,6 +49,7 @@
     String badgeText = "";
 
     if (notificationCount > 0) {
+
         String[] circledNumbers = {
             "",
             "①", "②", "③", "④", "⑤",
@@ -54,8 +59,11 @@
         };
 
         if (notificationCount <= 20) {
+
             badgeText = circledNumbers[notificationCount];
+
         } else {
+
             badgeText = "⑳+";
         }
     }
@@ -69,12 +77,16 @@
 
     <%-- ロゴエリア --%>
     <div class="sidebar-logo">
+
         <a href="${pageContext.request.contextPath}/servlet.PostServlet.action">
+
             <img
-			    src="${pageContext.request.contextPath}/images/nico-logo.png"
-			    alt="Nico+"
-			    class="sidebar-logo-img">
+                src="${pageContext.request.contextPath}/images/nico-logo.png"
+                alt="Nico+"
+                class="sidebar-logo-img">
+
         </a>
+
     </div>
 
     <%-- メニュー一覧 --%>
@@ -88,9 +100,11 @@
             <span>通知</span>
 
             <% if (notificationCount > 0) { %>
+
                 <span class="notification-badge">
                     <%= badgeText %>
                 </span>
+
             <% } %>
 
         </a>
@@ -132,29 +146,36 @@
         </a>
 
         <%-- 管理者の種類によって表示を切り替える --%>
-        <c:choose><c:when test="${sessionScope.admin.cpUserid == 'admin000'}">
+        <c:choose>
 
-            <%-- 企業新規登録 --%>
-            <a href="${pageContext.request.contextPath}/company/company.jsp"
-               class="menu-item">
+            <c:when test="${sessionScope.admin.cpUserid == 'admin000'}">
 
-                <span class="menu-icon">🏢</span>
-                <span>企業新規登録</span>
+                <%-- 企業新規登録 --%>
+                <a href="${pageContext.request.contextPath}/company/company.jsp"
+                   class="menu-item">
 
-            </a>
+                    <span class="menu-icon">🏢</span>
+                    <span>企業新規登録</span>
 
-        </c:when><c:when test="${not empty sessionScope.admin.cpUserid and fn:substring(sessionScope.admin.cpUserid, 2, 4) == 'ad'}">
+                </a>
 
-            <%-- ユーザー新規登録 --%>
-            <a href="${pageContext.request.contextPath}/register/register.jsp"
-               class="menu-item">
+            </c:when>
 
-                <span class="menu-icon">👤</span>
-                <span>ユーザー新規登録</span>
+            <c:when test="${not empty sessionScope.admin.cpUserid
+                            and fn:substring(sessionScope.admin.cpUserid, 2, 4) == 'ad'}">
 
-            </a>
+                <%-- ユーザー新規登録 --%>
+                <a href="${pageContext.request.contextPath}/register/register.jsp"
+                   class="menu-item">
 
-        </c:when></c:choose>
+                    <span class="menu-icon">👤</span>
+                    <span>ユーザー新規登録</span>
+
+                </a>
+
+            </c:when>
+
+        </c:choose>
 
     </nav>
 
@@ -164,25 +185,37 @@
         <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
            class="mypage-item">
 
-            <c:choose><c:when test="${not empty sessionScope.admin}">
+            <c:choose>
 
-                <%-- 管理者のプロフィール画像 --%>
-                <img
-                    src="${pageContext.request.contextPath}/images/${empty sessionScope.admin.cpUserimg ? 'default-profile.png' : sessionScope.admin.cpUserimg}"
-                    alt="管理者アイコン"
-                    class="profile-icon"
-                    style="object-position: ${empty sessionScope.admin.cpUserimgPositionX ? 50 : sessionScope.admin.cpUserimgPositionX}% ${empty sessionScope.admin.cpUserimgPositionY ? 50 : sessionScope.admin.cpUserimgPositionY}%;">
+                <c:when test="${not empty sessionScope.admin}">
 
-            </c:when><c:otherwise>
+                    <%-- 管理者のプロフィール画像 --%>
+                    <img
+                        src="${empty sessionScope.admin.cpUserimg
+                            or sessionScope.admin.cpUserimg eq 'default-profile.png'
+                            ? pageContext.request.contextPath.concat('/images/default-profile.png')
+                            : pageContext.request.contextPath.concat('/profile-image/').concat(sessionScope.admin.cpUserimg)}"
+                        alt="管理者アイコン"
+                        class="profile-icon"
+                        style="object-position: ${empty sessionScope.admin.cpUserimgPositionX ? 50 : sessionScope.admin.cpUserimgPositionX}% ${empty sessionScope.admin.cpUserimgPositionY ? 50 : sessionScope.admin.cpUserimgPositionY}%;">
 
-                <%-- 一般ユーザーのプロフィール画像 --%>
-                <img
-                    src="${pageContext.request.contextPath}/images/${empty sessionScope.user.userImg ? 'default-profile.png' : sessionScope.user.userImg}"
-                    alt="ユーザーアイコン"
-                    class="profile-icon"
-                    style="object-position: ${empty sessionScope.user.userImgPositionX ? 50 : sessionScope.user.userImgPositionX}% ${empty sessionScope.user.userImgPositionY ? 50 : sessionScope.user.userImgPositionY}%;">
+                </c:when>
 
-            </c:otherwise></c:choose>
+                <c:otherwise>
+
+                    <%-- 一般ユーザーのプロフィール画像 --%>
+                    <img
+                        src="${empty sessionScope.user.userImg
+                            or sessionScope.user.userImg eq 'default-profile.png'
+                            ? pageContext.request.contextPath.concat('/images/default-profile.png')
+                            : pageContext.request.contextPath.concat('/profile-image/').concat(sessionScope.user.userImg)}"
+                        alt="ユーザーアイコン"
+                        class="profile-icon"
+                        style="object-position: ${empty sessionScope.user.userImgPositionX ? 50 : sessionScope.user.userImgPositionX}% ${empty sessionScope.user.userImgPositionY ? 50 : sessionScope.user.userImgPositionY}%;">
+
+                </c:otherwise>
+
+            </c:choose>
 
             <span>マイページ</span>
 

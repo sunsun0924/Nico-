@@ -49,6 +49,17 @@
     int adminPositionY = admin != null
             ? admin.getCpUserimgPositionY()
             : 50;
+
+    // 管理者画像の表示先
+    String adminImageUrl;
+
+    if ("default-profile.png".equals(adminImage)) {
+        adminImageUrl =
+                request.getContextPath() + "/images/default-profile.png";
+    } else {
+        adminImageUrl =
+                request.getContextPath() + "/profile-image/" + adminImage;
+    }
 %>
 
 <%-- 左側サイドバー --%>
@@ -60,8 +71,10 @@
 
         <%-- ページタイトル --%>
         <div class="card-header">
+
             <i class="fa-regular fa-user"></i>
             <h2>マイページ</h2>
+
         </div>
 
         <%-- プロフィール変更完了メッセージ --%>
@@ -70,6 +83,7 @@
                 (String) session.getAttribute("mypageMessage");
 
             if (mypageMessage != null) {
+
                 session.removeAttribute("mypageMessage");
         %>
 
@@ -89,10 +103,12 @@
 
                 <%-- 管理者アイコン --%>
                 <div class="user-avatar">
+
                     <img
-                        src="${pageContext.request.contextPath}/images/<%= adminImage %>"
+                        src="<%= adminImageUrl %>"
                         alt="プロフィール画像"
                         style="object-position: <%= adminPositionX %>% <%= adminPositionY %>%">
+
                 </div>
 
                 <%-- 管理者名・編集ボタン --%>
@@ -145,9 +161,9 @@
                 <div class="user-avatar">
 
                     <img
-                        src="${empty user.userImg
+                        src="${empty user.userImg or user.userImg eq 'default-profile.png'
                             ? pageContext.request.contextPath.concat('/images/default-profile.png')
-                            : pageContext.request.contextPath.concat('/images/').concat(user.userImg)}"
+                            : pageContext.request.contextPath.concat('/profile-image/').concat(user.userImg)}"
                         alt="プロフィール画像"
                         style="object-position: ${user.userImgPositionX}% ${user.userImgPositionY}%;">
 

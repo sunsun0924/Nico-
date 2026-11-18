@@ -44,62 +44,57 @@
 
             </div>
 
-            
-		<!-- 通知一覧 -->
-		<div class="notification-list">
-		
-		    <c:choose>
-		
-		        <%-- 通知がある場合 --%>
-		        <c:when test="${not empty notifications}">
-		
-		            <c:forEach var="notification"
-		                       items="${notifications}">
-		
-		                <!-- 通知1件分 -->
-		                <div class="notification-item">
-		
-		                    <div class="notification-content">
-		
-		                        <!-- 通知内容 -->
-		                        <!-- 通知タイトル -->
-								<p class="notification-message">
-								    <c:out value="${notification.title}" />
-								</p>
-								
-								<!-- コメント本文 -->
-								<c:if test="${not empty notification.detail}">
-								    <p class="notification-detail">
-								        <c:out value="${notification.detail}" />
-								    </p>
-								</c:if>
-		
-		                        <!-- 通知日時 -->
-		                        <p class="notification-date">
-		                            <c:out value="${notification.date}" />
-		                        </p>
-		
-		                    </div>
-		
-		                </div>
-		
-		            </c:forEach>
-		
-		        </c:when>
-		
-		        <%-- 通知がない場合 --%>
-		        <c:otherwise>
-		
-		            <p class="no-notification">
-		                通知はありません。
-		            </p>
-		
-		        </c:otherwise>
-		
-		    </c:choose>
-		
-		</div>
+            <!-- 通知一覧 -->
+            <div class="notification-list">
+                <c:choose>
+                    <c:when test="${not empty notifications}">
+                        <c:forEach var="notification" items="${notifications}">
+                            <div class="notification-item">
 
+                                <c:if test="${notification.type == 'gift'}">
+                                    <a href="${pageContext.request.contextPath}/servlet.GiftServlet.action"
+                                       class="notification-link">
+                                </c:if>
+
+                                <div class="notification-content">
+
+                                    <p class="notification-message">
+                                        <c:out value="${notification.title}" />
+                                    </p>
+
+                                    <c:if test="${not empty notification.detail}">
+                                        <p class="notification-detail">
+                                            <c:out value="${notification.detail}" />
+                                        </p>
+                                    </c:if>
+
+                                    <c:if test="${notification.type == 'gift'}">
+                                        <p class="notification-link-text">
+                                            プレゼントを選ぶ →
+                                        </p>
+                                    </c:if>
+
+                                    <p class="notification-date">
+                                        <c:out value="${notification.date}" />
+                                    </p>
+
+                                </div>
+
+                                <c:if test="${notification.type == 'gift'}">
+                                    </a>
+                                </c:if>
+
+                            </div>
+                        </c:forEach>
+                    </c:when>
+
+                    <c:otherwise>
+                        <p class="no-notification">
+                            通知はありません。
+                        </p>
+                    </c:otherwise>
+                </c:choose>
+            </div>
 
         </div>
 

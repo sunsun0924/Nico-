@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
@@ -182,13 +181,35 @@
             <%-- 投稿者情報 --%>
             <div class="post-author">
 
-                <img
-                    class="post-author-icon"
-                    src="${pageContext.request.contextPath}/images/${empty post.authorImage ? 'default-profile.png' : post.authorImage}"
-                    alt="プロフィール画像"
-                    style="object-position: ${post.authorImagePositionX}% ${post.authorImagePositionY}%"
-                    onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
-                >
+                <%-- 投稿者プロフィール画像 --%>
+                <c:choose>
+
+                    <%-- デフォルト画像の場合 --%>
+                    <c:when test="${empty post.authorImage or post.authorImage eq 'default-profile.png'}">
+
+                        <img
+                            class="post-author-icon"
+                            src="${pageContext.request.contextPath}/images/default-profile.png"
+                            alt="プロフィール画像"
+                            style="object-position: ${post.authorImagePositionX}% ${post.authorImagePositionY}%"
+                        >
+
+                    </c:when>
+
+                    <%-- 外部フォルダに保存した画像の場合 --%>
+                    <c:otherwise>
+
+                        <img
+                            class="post-author-icon"
+                            src="${pageContext.request.contextPath}/profile-image/${post.authorImage}"
+                            alt="プロフィール画像"
+                            style="object-position: ${post.authorImagePositionX}% ${post.authorImagePositionY}%"
+                            onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
+                        >
+
+                    </c:otherwise>
+
+                </c:choose>
 
                 <div class="post-author-info">
 
@@ -251,12 +272,33 @@
                                 <%-- コメント投稿者情報 --%>
                                 <div class="comment-author">
 
-                                    <img
-                                        class="comment-author-icon"
-                                        src="${pageContext.request.contextPath}/images/${empty comment.authorImage ? 'default-profile.png' : comment.authorImage}"
-                                        alt="プロフィール画像"
-                                        onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
-                                    >
+                                    <%-- コメント投稿者プロフィール画像 --%>
+                                    <c:choose>
+
+                                        <%-- デフォルト画像の場合 --%>
+                                        <c:when test="${empty comment.authorImage or comment.authorImage eq 'default-profile.png'}">
+
+                                            <img
+                                                class="comment-author-icon"
+                                                src="${pageContext.request.contextPath}/images/default-profile.png"
+                                                alt="プロフィール画像"
+                                            >
+
+                                        </c:when>
+
+                                        <%-- 外部フォルダに保存した画像の場合 --%>
+                                        <c:otherwise>
+
+                                            <img
+                                                class="comment-author-icon"
+                                                src="${pageContext.request.contextPath}/profile-image/${comment.authorImage}"
+                                                alt="プロフィール画像"
+                                                onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
+                                            >
+
+                                        </c:otherwise>
+
+                                    </c:choose>
 
                                     <div class="comment-author-info">
 
