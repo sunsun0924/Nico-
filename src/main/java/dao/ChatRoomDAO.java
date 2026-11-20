@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -12,18 +13,19 @@ import bean.ChatRoomBean;
 
 public class ChatRoomDAO extends DAO {
 
-	// メッセージ登録（チャットルームが存在しない場合は参加者IDも含めて自動作成する）
+    // メッセージ登録（チャットルームが存在しない場合は参加者IDも含めて自動作成する）
     public boolean insertMessage(ChatRoomBean chat) throws Exception {
         String chatId = chat.getReceiverId();
 
         // 1. chatテーブルにルームがなければ、IDと参加者（自分・相手）をセットで登録するSQL
         String insertChatSql = "INSERT INTO chat (chat_id, user_id_1, user_id_2) VALUES (?, ?, ?) ON CONFLICT (chat_id) DO NOTHING";
 
-        // 2. メッセージ登録用SQL（? を4つにして、時刻は NOW() を使用）
+        // 2. メッセージ登録用SQL
+        // message_id はDB側で自動採番する
         String insertMsgSql =
             "INSERT INTO chat_message " +
-            "(message_id, chat_id, sender_user_id, chat_text, chat_time) " +
-            "VALUES (?, ?, ?, ?, NOW())";
+            "(chat_id, sender_user_id, chat_text, chat_time) " +
+            "VALUES (?, ?, ?, NOW())";
 
         try (Connection con = getConnection()) {
             con.setAutoCommit(false);
@@ -37,13 +39,12 @@ public class ChatRoomDAO extends DAO {
                     stChat.executeUpdate();
                 }
 
-                // ② chat_message テーブルにメッセージを登録（? は4つなので 1〜4 をセット）
-                String messageId = "MSG" + System.currentTimeMillis();
+                // ② chat_message テーブルにメッセージを登録
+                // message_id はDB側で自動生成される
                 try (PreparedStatement stMsg = con.prepareStatement(insertMsgSql)) {
-                    stMsg.setString(1, messageId);
-                    stMsg.setString(2, chatId);
-                    stMsg.setString(3, chat.getSenderId());
-                    stMsg.setString(4, chat.getMessage());
+                    stMsg.setString(1, chatId);
+                    stMsg.setString(2, chat.getSenderId());
+                    stMsg.setString(3, chat.getMessage());
                     stMsg.executeUpdate();
                 }
 
@@ -90,7 +91,7 @@ public class ChatRoomDAO extends DAO {
                     chat.setReceiverId(partnerUserId);
                     chat.setMessage(rs.getString("chat_text"));
 
-                    // ▼ ここでデータベースの時間を "HH:mm"（例: 12:20）に変換しています
+                    // ここでデータベースの時間を "HH:mm"（例: 12:20）に変換
                     if (rs.getTimestamp("chat_time") != null) {
                         LocalDateTime ldt = rs.getTimestamp("chat_time").toLocalDateTime();
                         chat.setSentAt(ldt.format(DateTimeFormatter.ofPattern("HH:mm")));
@@ -106,7 +107,7 @@ public class ChatRoomDAO extends DAO {
         return messageList;
     }
 
-    //ユーザーIDからユーザー名を取得（TRIMでスペースのズレに対応）
+    // ユーザーIDからユーザー名を取得（TRIMでスペースのズレに対応）
     public String getUserName(String userId) throws Exception {
         String userName = null;
         String sql = "SELECT user_name FROM \"user\" WHERE TRIM(user_id) = ?";
