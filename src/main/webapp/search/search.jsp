@@ -1,4 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <%@ include file="../header.jsp" %>
 
@@ -18,21 +22,91 @@
         <!-- 外側の白いエリア -->
         <div class="container">
 
+            <!-- エラーメッセージ -->
+            <c:if test="${not empty errorMessage}">
+                <p class="search-error">
+                    <c:out value="${errorMessage}" />
+                </p>
+            </c:if>
+
+            <!-- 会話表示エリア -->
+            <div class="chat-area" id="chatArea">
+
+                <c:forEach var="detail" items="${detailList}">
+
+                    <!-- ユーザーの質問 -->
+                    <c:if test="${detail.senderType == 'user'}">
+                        <div class="message-row user-row">
+                            <div class="user-message"><c:out value="${fn:trim(detail.searchDetailText)}" /></div>
+                        </div>
+                    </c:if>
+
+                    <!-- AIの回答 -->
+                    <c:if test="${detail.senderType == 'assistant'}">
+                        <div class="message-row assistant-row">
+                            <div class="assistant-message"><c:out value="${fn:trim(detail.searchDetailText)}" /></div>
+                        </div>
+                    </c:if>
+
+                </c:forEach>
+
+                <!-- Web検索の検索元 -->
+                <c:if test="${webSearchUsed and not empty searchResults}">
+                    <div class="search-sources">
+
+                        <p class="search-sources-title">
+                            参考にしたWebサイト
+                        </p>
+
+                        <ul class="search-sources-list">
+
+                            <c:forEach var="result" items="${searchResults}">
+
+                                <c:if test="${fn:startsWith(result.url, 'https://')
+                                            or fn:startsWith(result.url, 'http://')}">
+                                    <li>
+                                        <a href="<c:out value='${result.url}' />"
+                                           target="_blank"
+                                           rel="noopener noreferrer">
+                                            <c:out value="${result.title}" />
+                                        </a>
+                                    </li>
+                                </c:if>
+
+                            </c:forEach>
+
+                        </ul>
+                    </div>
+                </c:if>
+
+            </div>
+
             <!-- 質問入力欄全体 -->
-            <div class="question-box">
+            <form action="${pageContext.request.contextPath}/servlet/SearchServlet.action"
+                  method="post"
+                  class="question-box">
 
                 <!-- ＋ボタン -->
                 <button type="button" class="plus-button">+</button>
 
                 <!-- 質問を入力する部分 -->
-                <input
-                    type="text"
+                <textarea
+                    name="question"
                     class="question-input"
                     placeholder="質問してみましょう"
+                    rows="1"
+                    required
+                ></textarea>
+
+                <!-- 検索履歴ID -->
+                <input
+                    type="hidden"
+                    name="searchId"
+                    value="<c:out value='${searchId}' />"
                 >
 
-                <!-- 紙飛行機の送信ボタン -->
-                <button type="button"
+                <!-- 送信ボタン -->
+                <button type="submit"
                         class="send-button"
                         aria-label="送信">
 
@@ -51,13 +125,50 @@
 
                 </button>
 
-            </div>
+            </form>
 
         </div>
 
     </main>
 
 </div>
+
+<!-- 入力欄の高さ調整・会話の最新位置までスクロール -->
+<script>
+    window.addEventListener("load", function() {
+
+        const chatArea = document.getElementById("chatArea");
+        const questionInput = document.querySelector(".question-input");
+
+        // 会話を最新位置までスクロール
+        if (chatArea) {
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        // 入力内容に合わせて高さを調整
+        if (questionInput) {
+
+            const adjustHeight = function() {
+
+                questionInput.style.height = "auto";
+
+                const maxHeight = 100;
+
+                questionInput.style.height =
+                    Math.min(questionInput.scrollHeight, maxHeight) + "px";
+
+                questionInput.style.overflowY =
+                    questionInput.scrollHeight > maxHeight ? "auto" : "hidden";
+            };
+
+            questionInput.addEventListener("input", adjustHeight);
+
+            // 初期表示時にも高さを調整
+            adjustHeight();
+        }
+
+    });
+</script>
 
 <!-- フッター -->
 <%@ include file="../footer.jsp" %>
