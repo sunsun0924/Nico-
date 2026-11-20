@@ -1,4 +1,3 @@
-
 /* ========================================
    画面全体の基本設定
 ======================================== */
@@ -158,13 +157,18 @@ body {
 .post-item .post-text {
     display: block;
     width: 100%;
-    margin: 15px 0;
+    margin: 15px 0 15px 0;
     padding: 0;
     color: #75665c;
     font-size: 18px;
     line-height: 1.8;
-    text-align: left;
-    text-indent: 0;
+
+    /* 投稿本文を左端に揃える */
+    text-align: left !important;
+    text-indent: 0 !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+
     white-space: pre-line;
     overflow-wrap: anywhere;
 }
@@ -655,6 +659,7 @@ body {
     font-weight: bold;
     border-bottom: 1px solid #f0d9c8;
 }
+
 /* ========================================
    お知らせスライド全体
 ======================================== */
@@ -668,6 +673,7 @@ body {
 }
 
 /* 表示範囲 */
+
 .announcement-viewport {
     flex: 1;
     min-width: 0;
@@ -675,6 +681,7 @@ body {
 }
 
 /* スライドする部分 */
+
 .announcement-track {
     display: flex;
     width: 100%;
@@ -692,26 +699,25 @@ body {
     flex: 0 0 100%;
     width: 100%;
     min-width: 100%;
-
-    /* 三点メニューが収まる高さを確保 */
     min-height: 145px;
-
     padding: 18px 45px 18px 15px;
     border-bottom: none;
     overflow-wrap: anywhere;
 }
 
 /* 本文と日時 */
+
 .announcement-content {
     width: 100%;
     text-align: left;
 }
 
 /* お知らせ本文 */
+
 .announcement-text {
     margin: 0;
     color: #59483d;
-    font-size: 25px;  
+    font-size: 25px;
     font-weight: bold;
     line-height: 1.6;
     text-align: left;
@@ -719,6 +725,7 @@ body {
 }
 
 /* お知らせ日時 */
+
 .announcement-date {
     display: block;
     margin-top: 8px;
@@ -860,11 +867,11 @@ body {
         text-align: left;
     }
 
-   .announcement-text {
-    font-size: 20px; 
-    line-height: 1.65;
-    text-align: left;
-}
+    .announcement-text {
+        font-size: 20px;
+        line-height: 1.65;
+        text-align: left;
+    }
 
     .announcement-date {
         margin-top: 6px;
@@ -882,5 +889,4 @@ body {
         height: 32px;
         font-size: 23px;
     }
-
 }

@@ -1,4 +1,6 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
@@ -178,7 +180,10 @@
             </c:if>
 
 
-            <%-- 投稿者情報 --%>
+            <%-- ========================================
+                 投稿者情報
+            ======================================== --%>
+
             <div class="post-author">
 
                 <%-- 投稿者プロフィール画像 --%>
@@ -211,6 +216,7 @@
 
                 </c:choose>
 
+
                 <div class="post-author-info">
 
                     <strong class="post-author-name">
@@ -228,7 +234,19 @@
             </div>
 
 
-            <%-- 投稿画像 --%>
+            <%-- ========================================
+                 投稿本文
+            ======================================== --%>
+
+            <div class="post-text">
+                <c:out value="${post.post_text}" />
+            </div>
+
+
+            <%-- ========================================
+                 投稿画像
+            ======================================== --%>
+
             <c:if test="${not empty post.postImages}">
 
                 <div class="post-image-list">
@@ -300,6 +318,7 @@
 
                                     </c:choose>
 
+
                                     <div class="comment-author-info">
 
                                         <strong class="comment-author-name">
@@ -362,7 +381,9 @@
                                 <small class="comment-date">
 
                                     <c:if test="${not empty comment.commentDatetime}">
+
                                         <c:out value="${fn:replace(fn:substring(comment.commentDatetime, 0, 19), 'T', ' ')}" />
+
                                     </c:if>
 
                                 </small>
@@ -374,7 +395,9 @@
                     </c:when>
 
                     <c:otherwise>
+
                         <p>コメントはありません。</p>
+
                     </c:otherwise>
 
                 </c:choose>
@@ -382,7 +405,10 @@
             </div>
 
 
-            <%-- コメント入力フォーム --%>
+            <%-- ========================================
+                 コメント入力フォーム
+            ======================================== --%>
+
             <form action="${pageContext.request.contextPath}/servlet.CommentServlet.action"
                   method="post"
                   class="comment-form">
@@ -402,7 +428,10 @@
             </form>
 
 
-            <%-- ブックマーク --%>
+            <%-- ========================================
+                 ブックマーク
+            ======================================== --%>
+
             <form action="${pageContext.request.contextPath}/servlet.BookmarkServlet.action"
                   method="post"
                   class="bookmark-form">
@@ -594,6 +623,7 @@
 
 
 <%-- 外部JavaScript --%>
+
 <script src="${pageContext.request.contextPath}/js/post.js"></script>
 
 <%@ include file="../footer.jsp" %>
