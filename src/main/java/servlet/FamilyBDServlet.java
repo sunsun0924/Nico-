@@ -1,5 +1,7 @@
 package servlet;
 
+import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -41,6 +43,9 @@ public class FamilyBDServlet extends Action {
         String userNumber = request.getParameter("userNumber");
         String userAddress = request.getParameter("userAddress");
 
+        // 自分の誕生日を取得
+        String userBirthday = request.getParameter("userBirthday");
+
         // 家族情報を取得
         String[] familyTypes = request.getParameterValues("familyType");
         String[] childGenders = request.getParameterValues("childGender");
@@ -67,6 +72,55 @@ public class FamilyBDServlet extends Action {
         userMail = userMail.trim();
         userNumber = userNumber.trim();
         userAddress = userAddress.trim();
+
+        // 自分の誕生日を初回登録する
+        // すでに登録済みの場合は変更しない
+        if (user.getUserBirthday() == null) {
+
+            // 誕生日が未入力の場合
+            if (userBirthday == null || userBirthday.trim().isEmpty()) {
+
+                request.setAttribute("errorMessage",
+                    "＊自分の誕生日を入力してください");
+
+                request.setAttribute("familyList",
+                    familyDao.findByUserId(user.getUserId()));
+
+                return "/mypage/user_information.jsp";
+            }
+
+            // 誕生日を変換
+            LocalDate birthday;
+
+            try {
+                birthday = LocalDate.parse(userBirthday.trim());
+
+            } catch (DateTimeParseException e) {
+
+                request.setAttribute("errorMessage",
+                    "＊誕生日を正しく入力してください");
+
+                request.setAttribute("familyList",
+                    familyDao.findByUserId(user.getUserId()));
+
+                return "/mypage/user_information.jsp";
+            }
+
+            // 未来の日付を確認
+            if (birthday.isAfter(LocalDate.now())) {
+
+                request.setAttribute("errorMessage",
+                    "＊未来の日付は登録できません");
+
+                request.setAttribute("familyList",
+                    familyDao.findByUserId(user.getUserId()));
+
+                return "/mypage/user_information.jsp";
+            }
+
+            // 誕生日をUserに設定
+            user.setUserBirthday(Date.valueOf(birthday));
+        }
 
         // ユーザー情報を設定
         user.setUserMail(userMail);
@@ -228,7 +282,6 @@ public class FamilyBDServlet extends Action {
                         } else {
                             relation = "第" + order + "子（女）";
                         }
-
                     }
 
                 } else {
@@ -306,7 +359,7 @@ public class FamilyBDServlet extends Action {
         }
 
         // ユーザー情報を更新
-        // 自分の誕生日は更新しない
+        // 自分の誕生日はDBが未登録の場合だけ登録する
         int userLine = userDao.updateUserInfo(user);
 
         if (userLine == 0) {
@@ -318,6 +371,14 @@ public class FamilyBDServlet extends Action {
                 familyDao.findByUserId(user.getUserId()));
 
             return "/mypage/user_information.jsp";
+        }
+
+        // DBから最新の誕生日を取得
+        // すでに登録済みの誕生日をセッションにも反映する
+        User savedUser = userDao.findByUserId(user.getUserId());
+
+        if (savedUser != null) {
+            user.setUserBirthday(savedUser.getUserBirthday());
         }
 
         // セッションのユーザー情報を更新
@@ -340,7 +401,7 @@ public class FamilyBDServlet extends Action {
                 familyDao.insert(family);
             }
 
-        } catch (java.sql.SQLException e) {
+        } catch (SQLException e) {
 
             // 続柄が重複した場合
             if ("23505".equals(e.getSQLState())) {

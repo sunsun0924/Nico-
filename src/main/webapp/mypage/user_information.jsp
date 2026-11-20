@@ -1,8 +1,8 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.util.List" %>
+<%@ page import="bean.User" %>
 <%@ page import="bean.FamilyBD" %>
 
 <%@ include file="../header.jsp" %>
@@ -11,11 +11,21 @@
       href="${pageContext.request.contextPath}/css/user_information.css">
 
 <%
+    // セッションからログインユーザーを取得
+    // sidebar.jsp の loginUser と重複しないように名前を変更
+    User informationUser = (User) session.getAttribute("user");
+
+    // 登録済み家族情報を取得
     List<FamilyBD> familyList =
         (List<FamilyBD>) request.getAttribute("familyList");
 
     boolean hasFamily =
         familyList != null && !familyList.isEmpty();
+
+    // 自分の誕生日が登録済みか確認
+    boolean hasBirthday =
+        informationUser != null &&
+        informationUser.getUserBirthday() != null;
 %>
 
 <div class="page-layout">
@@ -30,7 +40,9 @@
 
             <!-- タイトル -->
             <div class="page-header">
-                <h2 class="page-title">住所・連絡先・誕生日</h2>
+                <h2 class="page-title">
+                    住所・連絡先・誕生日
+                </h2>
 
                 <p class="page-desc">
                     登録情報を確認・変更できます。
@@ -62,11 +74,12 @@
                 ========================== -->
                 <section class="profile-section">
 
-                    <h3 class="section-title">自分の登録情報</h3>
+                    <h3 class="section-title">
+                        自分の登録情報
+                    </h3>
 
                     <!-- メールアドレス -->
                     <div class="form-group">
-
                         <label class="form-label">
                             メールアドレス
                         </label>
@@ -76,12 +89,10 @@
                                class="form-input"
                                value="${sessionScope.user.userMail}"
                                placeholder="メールアドレスを入力">
-
                     </div>
 
                     <!-- 電話番号 -->
                     <div class="form-group">
-
                         <label class="form-label">
                             電話番号
                         </label>
@@ -91,12 +102,10 @@
                                class="form-input"
                                value="${sessionScope.user.userNumber}"
                                placeholder="電話番号を入力">
-
                     </div>
 
                     <!-- 住所 -->
                     <div class="form-group">
-
                         <label class="form-label">
                             住所
                         </label>
@@ -106,27 +115,30 @@
                                class="form-input"
                                value="${sessionScope.user.userAddress}"
                                placeholder="住所を入力">
-
                     </div>
 
                     <!-- 自分の誕生日 -->
                     <div class="form-group">
-
                         <label class="form-label">
                             自分の誕生日
                         </label>
 
-                        <p class="input-note">
-                            ※自分の誕生日は変更できません。
-                        </p>
+                        <% if (hasBirthday) { %>
+                            <p class="input-note">
+                                ※自分の誕生日は変更できません。
+                            </p>
+                        <% } else { %>
+                            <p class="input-note">
+                                ※誕生日を登録してください。登録後は変更できません。
+                            </p>
+                        <% } %>
 
                         <input type="date"
                                name="userBirthday"
                                class="form-input birthday-input"
-                               value="${sessionScope.user.userBirthday}"
+                               value="<%= hasBirthday ? informationUser.getUserBirthday().toString() : "" %>"
                                max="<%= LocalDate.now() %>"
-                               readonly>
-
+                               <%= hasBirthday ? "readonly" : "" %>>
                     </div>
 
                 </section>
@@ -167,9 +179,7 @@
                                         formnovalidate
                                         name="familyBirthdayId"
                                         value="<%= family.getFamilyBirthdayId() %>">
-
                                     削除
-
                                 </button>
 
                             </div>
@@ -216,10 +226,21 @@
                                 <select name="familyType"
                                         class="form-input family-type">
 
-                                    <option value="">選択してください</option>
-                                    <option value="夫">夫</option>
-                                    <option value="妻">妻</option>
-                                    <option value="子供">子ども</option>
+                                    <option value="">
+                                        選択してください
+                                    </option>
+
+                                    <option value="夫">
+                                        夫
+                                    </option>
+
+                                    <option value="妻">
+                                        妻
+                                    </option>
+
+                                    <option value="子供">
+                                        子ども
+                                    </option>
 
                                 </select>
 
@@ -239,9 +260,17 @@
                                     <select name="childGender"
                                             class="form-input child-gender">
 
-                                        <option value="">選択してください</option>
-                                        <option value="男">男</option>
-                                        <option value="女">女</option>
+                                        <option value="">
+                                            選択してください
+                                        </option>
+
+                                        <option value="男">
+                                            男
+                                        </option>
+
+                                        <option value="女">
+                                            女
+                                        </option>
 
                                     </select>
 
@@ -257,7 +286,9 @@
                                     <select name="childOrder"
                                             class="form-input child-order">
 
-                                        <option value="">選択してください</option>
+                                        <option value="">
+                                            選択してください
+                                        </option>
 
                                         <% for (int i = 1; i <= 10; i++) { %>
                                             <option value="<%= i %>">
@@ -288,9 +319,7 @@
                             <!-- 入力欄削除 -->
                             <button type="button"
                                     class="btn-remove-row">
-
                                 この入力欄を削除
-
                             </button>
 
                         </div>
@@ -301,9 +330,7 @@
                     <button type="button"
                             class="btn-add-family"
                             id="add-family-button">
-
                         ＋ 家族を追加
-
                     </button>
 
                 </section>

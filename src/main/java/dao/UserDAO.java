@@ -59,13 +59,8 @@ public class UserDAO extends DAO {
             u.setUserImg(userImg);
 
             // プロフィール画像の表示位置
-            u.setUserImgPositionX(
-                rs.getInt("user_img_position_x")
-            );
-
-            u.setUserImgPositionY(
-                rs.getInt("user_img_position_y")
-            );
+            u.setUserImgPositionX(rs.getInt("user_img_position_x"));
+            u.setUserImgPositionY(rs.getInt("user_img_position_y"));
         }
 
         // リソースを解放
@@ -226,18 +221,20 @@ public class UserDAO extends DAO {
 
     // ユーザー情報変更用
     // メール・電話番号・住所を更新
-    // 誕生日は変更しない
+    // 誕生日はDBがNULLの場合だけ初回登録する
     public int updateUserInfo(User user) throws Exception {
 
         // DB接続を取得
         Connection con = getConnection();
 
         // SQLを準備
+        // COALESCEにより、既存の誕生日は上書きしない
         PreparedStatement st = con.prepareStatement(
             "UPDATE \"user\" SET " +
             "user_address = ?, " +
             "user_number = ?, " +
-            "user_mail = ? " +
+            "user_mail = ?, " +
+            "user_birthday = COALESCE(user_birthday, ?) " +
             "WHERE user_id = ?"
         );
 
@@ -250,8 +247,11 @@ public class UserDAO extends DAO {
         // メールアドレス
         st.setString(3, user.getUserMail());
 
+        // 誕生日（DBがNULLの場合だけ登録される）
+        st.setDate(4, user.getUserBirthday());
+
         // ユーザーID
-        st.setString(4, user.getUserId());
+        st.setString(5, user.getUserId());
 
         // SQLを実行
         int line = st.executeUpdate();
@@ -263,7 +263,8 @@ public class UserDAO extends DAO {
         return line;
     }
 
- // 新規チャット用：自分以外の全ユーザーを取得するメソッド
+
+    // 新規チャット用：自分以外の全ユーザーを取得するメソッド
     public List<ChatListBean> getAllUsers(String myUserId) throws Exception {
 
         List<ChatListBean> userList = new ArrayList<>();
@@ -290,7 +291,7 @@ public class UserDAO extends DAO {
 
             ChatListBean user = new ChatListBean();
 
-            // ユーザーID（rs.getStringで文字列として取得してセット）
+            // ユーザーID
             user.setUserId(rs.getString("user_id"));
 
             // ユーザー名
@@ -353,13 +354,8 @@ public class UserDAO extends DAO {
             user.setUserImg(userImg);
 
             // プロフィール画像の表示位置
-            user.setUserImgPositionX(
-                rs.getInt("user_img_position_x")
-            );
-
-            user.setUserImgPositionY(
-                rs.getInt("user_img_position_y")
-            );
+            user.setUserImgPositionX(rs.getInt("user_img_position_x"));
+            user.setUserImgPositionY(rs.getInt("user_img_position_y"));
         }
 
         // リソースを解放
