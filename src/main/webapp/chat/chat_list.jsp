@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
@@ -66,12 +67,14 @@
 
             </header>
 
-            <!-- ユーザー検索欄 -->
+            <!-- ユーザー名検索欄 -->
             <div class="search-box">
 
                 <input type="text"
+                       id="chat-search"
                        name="user_search"
-                       placeholder="ユーザー名で検索">
+                       placeholder="ユーザー名で検索"
+                       autocomplete="off">
 
             </div>
 
@@ -188,7 +191,7 @@
 </div>
 
 
-<!-- JavaScriptファイルの読み込み（chat_list.jsに修正） -->
+<!-- JavaScriptファイルの読み込み -->
 <script src="${pageContext.request.contextPath}/js/chat_list.js" defer></script>
 
 </body>

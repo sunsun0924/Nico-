@@ -13,119 +13,299 @@ import bean.ChatRoomBean;
 
 public class ChatRoomDAO extends DAO {
 
-    // メッセージ登録（チャットルームが存在しない場合は参加者IDも含めて自動作成する）
+    // ========================================
+    // メッセージ登録
+    // ========================================
+
     public boolean insertMessage(ChatRoomBean chat) throws Exception {
-        String chatId = chat.getReceiverId();
 
-        // 1. chatテーブルにルームがなければ、IDと参加者（自分・相手）をセットで登録するSQL
-        String insertChatSql = "INSERT INTO chat (chat_id, user_id_1, user_id_2) VALUES (?, ?, ?) ON CONFLICT (chat_id) DO NOTHING";
+        String senderId = chat.getSenderId();
+        String receiverId = chat.getReceiverId();
+        String message = chat.getMessage();
 
-        // 2. メッセージ登録用SQL
-        // message_id はDB側で自動採番する
-        String insertMsgSql =
+        if (senderId == null || senderId.trim().isEmpty()
+                || receiverId == null || receiverId.trim().isEmpty()
+                || message == null || message.trim().isEmpty()) {
+
+            throw new IllegalArgumentException(
+                "送信者・受信者・メッセージを指定してください。"
+            );
+
+        }
+
+        senderId = senderId.trim();
+        receiverId = receiverId.trim();
+        message = message.trim();
+
+
+        // 参加者の組み合わせから既存チャットを検索
+        String findChatSql =
+            "SELECT chat_id " +
+            "FROM chat " +
+            "WHERE (TRIM(user_id_1) = ? AND TRIM(user_id_2) = ?) " +
+            "   OR (TRIM(user_id_1) = ? AND TRIM(user_id_2) = ?) " +
+            "ORDER BY chat_id " +
+            "LIMIT 1";
+
+
+        // 新しいチャットを登録
+        // chat_idはDB側の自動採番を使用する
+        String insertChatSql =
+            "INSERT INTO chat (user_id_1, user_id_2) " +
+            "VALUES (?, ?) " +
+            "RETURNING chat_id";
+
+
+        // メッセージ登録
+        String insertMessageSql =
             "INSERT INTO chat_message " +
             "(chat_id, sender_user_id, chat_text, chat_time) " +
             "VALUES (?, ?, ?, NOW())";
 
+
         try (Connection con = getConnection()) {
+
             con.setAutoCommit(false);
 
             try {
-                // ① chat テーブルにルームがなければ、参加者情報も含めて自動登録
-                try (PreparedStatement stChat = con.prepareStatement(insertChatSql)) {
-                    stChat.setString(1, chatId);
-                    stChat.setString(2, chat.getSenderId());   // 送信者（自分）
-                    stChat.setString(3, chat.getReceiverId()); // 受信者（相手）
-                    stChat.executeUpdate();
+
+                String chatId = null;
+
+
+                // ========================================
+                // ① 既存チャットを検索
+                // ========================================
+
+                try (PreparedStatement st =
+                        con.prepareStatement(findChatSql)) {
+
+                    st.setString(1, senderId);
+                    st.setString(2, receiverId);
+                    st.setString(3, receiverId);
+                    st.setString(4, senderId);
+
+                    try (ResultSet rs = st.executeQuery()) {
+
+                        if (rs.next()) {
+
+                            chatId = rs.getString("chat_id");
+
+                        }
+
+                    }
+
                 }
 
-                // ② chat_message テーブルにメッセージを登録
-                // message_id はDB側で自動生成される
-                try (PreparedStatement stMsg = con.prepareStatement(insertMsgSql)) {
-                    stMsg.setString(1, chatId);
-                    stMsg.setString(2, chat.getSenderId());
-                    stMsg.setString(3, chat.getMessage());
-                    stMsg.executeUpdate();
+
+                // ========================================
+                // ② チャットがなければ新規作成
+                // ========================================
+
+                if (chatId == null) {
+
+                    try (PreparedStatement st =
+                            con.prepareStatement(insertChatSql)) {
+
+                        st.setString(1, senderId);
+                        st.setString(2, receiverId);
+
+                        try (ResultSet rs = st.executeQuery()) {
+
+                            if (rs.next()) {
+
+                                chatId = rs.getString("chat_id");
+
+                            }
+
+                        }
+
+                    }
+
                 }
+
+
+                if (chatId == null) {
+
+                    throw new Exception(
+                        "チャットIDを取得できませんでした。"
+                    );
+
+                }
+
+
+                // ========================================
+                // ③ メッセージを保存
+                // ========================================
+
+                try (PreparedStatement st =
+                        con.prepareStatement(insertMessageSql)) {
+
+                    st.setString(1, chatId);
+                    st.setString(2, senderId);
+                    st.setString(3, message);
+
+                    st.executeUpdate();
+
+                }
+
+
+                // ========================================
+                // ④ 保存成功
+                // ========================================
 
                 con.commit();
+
                 return true;
 
+
             } catch (Exception e) {
+
                 con.rollback();
+
                 throw e;
+
             } finally {
+
                 con.setAutoCommit(true);
+
             }
 
         } catch (Exception e) {
+
             throw new Exception("メッセージの登録に失敗しました。", e);
+
         }
+
     }
 
+
+    // ========================================
     // メッセージ一覧取得
-    public List<ChatRoomBean> getMessageList(String myUserId, String partnerUserId) throws Exception {
+    // ========================================
+
+    public List<ChatRoomBean> getMessageList(
+            String myUserId,
+            String partnerUserId) throws Exception {
+
         List<ChatRoomBean> messageList = new ArrayList<>();
 
         String sql =
-            "SELECT message_id, chat_id, sender_user_id, chat_text, chat_time " +
-            "FROM chat_message " +
-            "WHERE (sender_user_id = ? AND chat_id = ?) " +
-            "   OR (sender_user_id = ? AND chat_id = ?) " +
-            "ORDER BY chat_time ASC";
+            "SELECT m.message_id, m.chat_id, " +
+            "       m.sender_user_id, m.chat_text, m.chat_time " +
+            "FROM chat c " +
+            "INNER JOIN chat_message m " +
+            "    ON m.chat_id = c.chat_id " +
+            "WHERE ( " +
+            "    TRIM(c.user_id_1) = ? " +
+            "    AND TRIM(c.user_id_2) = ? " +
+            ") OR ( " +
+            "    TRIM(c.user_id_1) = ? " +
+            "    AND TRIM(c.user_id_2) = ? " +
+            ") " +
+            "ORDER BY m.chat_time ASC, m.message_id ASC";
+
 
         try (Connection con = getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
-            st.setString(1, myUserId);
-            st.setString(2, partnerUserId);
-            st.setString(3, partnerUserId);
-            st.setString(4, myUserId);
+            st.setString(1, myUserId.trim());
+            st.setString(2, partnerUserId.trim());
+            st.setString(3, partnerUserId.trim());
+            st.setString(4, myUserId.trim());
+
 
             try (ResultSet rs = st.executeQuery()) {
+
                 while (rs.next()) {
+
                     ChatRoomBean chat = new ChatRoomBean();
 
-                    chat.setMessageId(rs.getString("message_id"));
-                    chat.setSenderId(rs.getString("sender_user_id"));
-                    chat.setReceiverId(partnerUserId);
-                    chat.setMessage(rs.getString("chat_text"));
+                    chat.setMessageId(
+                        rs.getString("message_id")
+                    );
 
-                    // ここでデータベースの時間を "HH:mm"（例: 12:20）に変換
+                    chat.setSenderId(
+                        rs.getString("sender_user_id")
+                    );
+
+                    chat.setReceiverId(partnerUserId);
+
+                    chat.setMessage(
+                        rs.getString("chat_text")
+                    );
+
+
                     if (rs.getTimestamp("chat_time") != null) {
-                        LocalDateTime ldt = rs.getTimestamp("chat_time").toLocalDateTime();
-                        chat.setSentAt(ldt.format(DateTimeFormatter.ofPattern("HH:mm")));
+
+                        LocalDateTime ldt =
+                            rs.getTimestamp("chat_time").toLocalDateTime();
+
+                        chat.setSentAt(
+                            ldt.format(
+                                DateTimeFormatter.ofPattern("HH:mm")
+                            )
+                        );
+
                     }
 
                     messageList.add(chat);
+
                 }
+
             }
+
         } catch (Exception e) {
+
             throw new Exception("メッセージ一覧の取得に失敗しました。", e);
+
         }
 
         return messageList;
+
     }
 
-    // ユーザーIDからユーザー名を取得（TRIMでスペースのズレに対応）
+
+    // ========================================
+    // ユーザーIDからユーザー名を取得
+    // ========================================
+
     public String getUserName(String userId) throws Exception {
+
         String userName = null;
-        String sql = "SELECT user_name FROM \"user\" WHERE TRIM(user_id) = ?";
+
+        String sql =
+            "SELECT user_name " +
+            "FROM \"user\" " +
+            "WHERE TRIM(user_id) = ?";
+
 
         try (Connection con = getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
-            st.setString(1, userId != null ? userId.trim() : "");
+            st.setString(
+                1,
+                userId != null ? userId.trim() : ""
+            );
+
 
             try (ResultSet rs = st.executeQuery()) {
+
                 if (rs.next()) {
+
                     userName = rs.getString("user_name");
+
                 }
+
             }
+
         } catch (Exception e) {
+
             throw new Exception("ユーザー名の取得に失敗しました。", e);
+
         }
 
         return userName;
+
     }
+
 }

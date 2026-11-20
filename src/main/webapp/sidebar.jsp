@@ -1,9 +1,9 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="dao.NotificationDAO" %>
 <%@ page import="bean.User" %>
 <%@ page import="bean.Admin" %>
-
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
@@ -19,13 +19,11 @@
         (Admin) session.getAttribute("admin");
 
     try {
-
         NotificationDAO notificationDAO =
             new NotificationDAO();
 
         // 一般ユーザーの場合
         if (loginUser != null) {
-
             notificationCount =
                 notificationDAO.countByUserId(
                     loginUser.getUserId()
@@ -33,7 +31,6 @@
 
         // 管理者の場合
         } else if (loginAdmin != null) {
-
             notificationCount =
                 notificationDAO.countByAdminId(
                     loginAdmin.getCpUserid()
@@ -41,7 +38,6 @@
         }
 
     } catch (Exception e) {
-
         e.printStackTrace();
     }
 
@@ -49,7 +45,6 @@
     String badgeText = "";
 
     if (notificationCount > 0) {
-
         String[] circledNumbers = {
             "",
             "①", "②", "③", "④", "⑤",
@@ -59,11 +54,8 @@
         };
 
         if (notificationCount <= 20) {
-
             badgeText = circledNumbers[notificationCount];
-
         } else {
-
             badgeText = "⑳+";
         }
     }
@@ -77,16 +69,12 @@
 
     <%-- ロゴエリア --%>
     <div class="sidebar-logo">
-
         <a href="${pageContext.request.contextPath}/servlet.PostServlet.action">
-
             <img
                 src="${pageContext.request.contextPath}/images/nico-logo.png"
                 alt="Nico+"
                 class="sidebar-logo-img">
-
         </a>
-
     </div>
 
     <%-- メニュー一覧 --%>
@@ -100,13 +88,10 @@
             <span>通知</span>
 
             <% if (notificationCount > 0) { %>
-
                 <span class="notification-badge">
                     <%= badgeText %>
                 </span>
-
             <% } %>
-
         </a>
 
         <%-- 投稿 --%>
@@ -115,16 +100,15 @@
 
             <span class="menu-icon">✎</span>
             <span>投稿</span>
-
         </a>
 
         <%-- チャット --%>
-        <a href="${pageContext.request.contextPath}/chat/chat_list.jsp"
+        <%-- ChatListServletを経由してDBから一覧を取得する --%>
+        <a href="${pageContext.request.contextPath}/servlet.ChatListServlet.action"
            class="menu-item">
 
             <span class="menu-icon">✉</span>
             <span>チャット</span>
-
         </a>
 
         <%-- 検索 --%>
@@ -133,7 +117,6 @@
 
             <span class="menu-icon">⌕</span>
             <span>検索</span>
-
         </a>
 
         <%-- ギフト --%>
@@ -142,7 +125,6 @@
 
             <span class="menu-icon">🎁︎</span>
             <span>ギフト</span>
-
         </a>
 
         <%-- 管理者の種類によって表示を切り替える --%>
@@ -156,7 +138,6 @@
 
                     <span class="menu-icon">🏢</span>
                     <span>企業新規登録</span>
-
                 </a>
 
             </c:when>
@@ -170,7 +151,6 @@
 
                     <span class="menu-icon">👤</span>
                     <span>ユーザー新規登録</span>
-
                 </a>
 
             </c:when>
@@ -198,7 +178,6 @@
                         alt="管理者アイコン"
                         class="profile-icon"
                         style="object-position: ${empty sessionScope.admin.cpUserimgPositionX ? 50 : sessionScope.admin.cpUserimgPositionX}% ${empty sessionScope.admin.cpUserimgPositionY ? 50 : sessionScope.admin.cpUserimgPositionY}%;">
-
                 </c:when>
 
                 <c:otherwise>
@@ -212,7 +191,6 @@
                         alt="ユーザーアイコン"
                         class="profile-icon"
                         style="object-position: ${empty sessionScope.user.userImgPositionX ? 50 : sessionScope.user.userImgPositionX}% ${empty sessionScope.user.userImgPositionY ? 50 : sessionScope.user.userImgPositionY}%;">
-
                 </c:otherwise>
 
             </c:choose>
