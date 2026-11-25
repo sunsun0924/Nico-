@@ -302,17 +302,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
 
-        if (actionType === 'block') {
+        const userIds = Array.from(checkedBoxes).map(function (checkbox) {
+            return checkbox.value;
+        });
 
-            alert('選択したユーザーをブロックしました。');
-
-        } else {
-
-            alert('選択したユーザーのブロックを解除しました。');
-
+        // ブロック解除はマイページの「設定 → ブロックリスト」から行う
+        if (actionType !== 'block') {
+            return;
         }
 
-        toggleEditMode();
+        const message = '選択したユーザーをブロックしますか？';
+
+        if (!confirm(message)) {
+            return;
+        }
+
+        const params = new URLSearchParams();
+        params.append('action', actionType);
+        userIds.forEach(function (userId) {
+            params.append('userId', userId);
+        });
+
+        fetch(contextPath + '/servlet.BlockListServlet.action', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: params.toString()
+        })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('HTTPエラー: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(function (result) {
+            if (!result.success) {
+                throw new Error(result.message || '処理に失敗しました。');
+            }
+            alert('選択したユーザーをブロックしました。');
+
+            // 再読み込みして、DBのブロック情報を反映した一覧を取得する
+            window.location.reload();
+        })
+        .catch(function (error) {
+            console.error('ブロック処理エラー:', error);
+            alert('ブロック処理に失敗しました。\n' + error.message);
+        });
 
     }
 

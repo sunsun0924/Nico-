@@ -28,7 +28,14 @@ public class ChatListDAO extends DAO {
         String sql =
             "SELECT u.user_id, u.user_name, " +
             "       latest.chat_text AS last_message, " +
-            "       latest.chat_time AS last_time " +
+            "       latest.chat_time AS last_time, " +
+            "       (SELECT COUNT(*) " +
+            "        FROM chat c2 " +
+            "        INNER JOIN chat_message m2 ON m2.chat_id = c2.chat_id " +
+            "        WHERE ((TRIM(c2.user_id_1) = ? AND TRIM(c2.user_id_2) = TRIM(u.user_id)) " +
+            "            OR (TRIM(c2.user_id_2) = ? AND TRIM(c2.user_id_1) = TRIM(u.user_id))) " +
+            "          AND TRIM(m2.sender_user_id) = TRIM(u.user_id) " +
+            "          AND m2.read_at IS NULL) AS unread_count " +
             "FROM \"user\" u " +
 
             // メッセージが存在するチャットだけを取得
@@ -49,6 +56,14 @@ public class ChatListDAO extends DAO {
             ") latest " +
 
             "WHERE TRIM(u.user_id) <> ? " +
+
+            // 自分がブロックしている相手はチャット一覧に表示しない
+            "AND NOT EXISTS ( " +
+            "    SELECT 1 FROM block_list bl " +
+            "    WHERE TRIM(bl.blocker_user_id) = ? " +
+            "      AND TRIM(bl.blocked_user_id) = TRIM(u.user_id) " +
+            ") " +
+
             "ORDER BY latest.chat_time DESC";
 
 
@@ -58,6 +73,9 @@ public class ChatListDAO extends DAO {
             st.setString(1, userId.trim());
             st.setString(2, userId.trim());
             st.setString(3, userId.trim());
+            st.setString(4, userId.trim());
+            st.setString(5, userId.trim());
+            st.setString(6, userId.trim());
 
             try (ResultSet rs = st.executeQuery()) {
 
@@ -121,7 +139,7 @@ public class ChatListDAO extends DAO {
 
                     }
 
-                    chat.setUnreadCount(0);
+                    chat.setUnreadCount(rs.getInt("unread_count"));
 
                     chatList.add(chat);
 

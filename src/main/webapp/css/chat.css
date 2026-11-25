@@ -1,3 +1,4 @@
+
 @charset "UTF-8";
 
 /* =========================
@@ -191,14 +192,17 @@ body {
     min-width: 0;
 }
 
+/* 未読件数バッジ（赤色） */
 .unread-badge {
-    background-color: #ed947c;
+    background-color: #e53935;
     color: #ffffff;
     font-size: 11px;
     font-weight: 700;
-    padding: 3px 7px;
-    border-radius: 10px;
-    min-width: 20px;
+    padding: 0;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
     text-align: center;
     flex-shrink: 0;
 }
@@ -270,7 +274,7 @@ body {
 
 .chat-room-container {
     width: 100%;
-    max-width: 600px; /* スリムなチャット幅に調整 */
+    max-width: 600px;
     height: 85vh;
     margin: 20px auto;
     background-color: #fffdf8;
@@ -516,6 +520,18 @@ body {
     }
 
     .last-message {
-        font-size: 12
+        font-size: 12px;
     }
-    }
+}
+
+/* =========================
+   既読表示
+========================= */
+
+.read-status {
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
+    color: #ed947c;
+    text-align: right;
+}

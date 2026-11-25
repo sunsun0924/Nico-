@@ -27,12 +27,6 @@
                      style="display: none;">
 
                     <button type="button"
-                            class="btn-action"
-                            data-action="unblock">
-                        解除
-                    </button>
-
-                    <button type="button"
                             class="btn-action block"
                             data-action="block">
                         ブロック

@@ -6,11 +6,12 @@ public class ChatRoomBean {
     private String receiverId;
     private String message;
     private String sentAt;
+    private boolean read;
 
-    // ゲッター・セッター
     public String getMessageId() {
         return messageId;
     }
+
     public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
@@ -18,6 +19,7 @@ public class ChatRoomBean {
     public String getSenderId() {
         return senderId;
     }
+
     public void setSenderId(String senderId) {
         this.senderId = senderId;
     }
@@ -25,6 +27,7 @@ public class ChatRoomBean {
     public String getReceiverId() {
         return receiverId;
     }
+
     public void setReceiverId(String receiverId) {
         this.receiverId = receiverId;
     }
@@ -32,6 +35,7 @@ public class ChatRoomBean {
     public String getMessage() {
         return message;
     }
+
     public void setMessage(String message) {
         this.message = message;
     }
@@ -39,7 +43,16 @@ public class ChatRoomBean {
     public String getSentAt() {
         return sentAt;
     }
+
     public void setSentAt(String sentAt) {
         this.sentAt = sentAt;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }

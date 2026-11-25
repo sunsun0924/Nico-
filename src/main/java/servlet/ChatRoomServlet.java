@@ -1,4 +1,3 @@
-
 package servlet;
 
 import bean.ChatRoomBean;
@@ -20,21 +19,11 @@ public class ChatRoomServlet extends Action {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-
-        // ========================================
-        // ① セッション確認
-        // ========================================
-
         HttpSession session = request.getSession(false);
 
         if (session == null) {
             return "/login/userLogin.jsp";
         }
-
-
-        // ========================================
-        // ② ログインユーザー取得
-        // ========================================
 
         User user = (User) session.getAttribute("user");
 
@@ -50,38 +39,23 @@ public class ChatRoomServlet extends Action {
 
         myUserId = myUserId.trim();
 
-
-        // チャット相手のユーザーID
         String partnerUserId = request.getParameter("partnerId");
 
-
-        // ========================================
-        // ③ POST：メッセージ送信
-        // ========================================
-
+        // POST：メッセージ送信
         if ("POST".equalsIgnoreCase(request.getMethod())) {
 
-            // 相手のIDを確認
             if (partnerUserId == null
                     || partnerUserId.trim().isEmpty()
                     || partnerUserId.trim().equals(myUserId)) {
 
-                response.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST
-                );
-
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return null;
-
             }
 
             partnerUserId = partnerUserId.trim();
 
-
-            // 送信メッセージを取得
             String messageText = request.getParameter("message");
 
-
-            // 空メッセージでなければDBに保存
             if (messageText != null && !messageText.trim().isEmpty()) {
 
                 ChatRoomBean chat = new ChatRoomBean();
@@ -90,45 +64,28 @@ public class ChatRoomServlet extends Action {
                 chat.setReceiverId(partnerUserId);
                 chat.setMessage(messageText.trim());
 
-
-                // メッセージ保存
                 ChatRoomDAO dao = new ChatRoomDAO();
 
                 boolean result = dao.insertMessage(chat);
 
                 if (!result) {
-
                     throw new ServletException(
                         "メッセージの登録に失敗しました。"
                     );
-
                 }
-
             }
 
-
-            // 保存処理後、同じ相手とのチャット画面へ戻る
             response.sendRedirect(
                 request.getContextPath()
                 + "/servlet.ChatRoomServlet.action?partnerId="
-                + java.net.URLEncoder.encode(
-                    partnerUserId,
-                    "UTF-8"
-                )
+                + java.net.URLEncoder.encode(partnerUserId, "UTF-8")
             );
 
             return null;
-
         }
 
-
-        // ========================================
-        // ④ GET：チャット画面を開く
-        // ========================================
-
-        // 相手のIDが指定されていない場合は一覧へ戻す
-        if (partnerUserId == null
-                || partnerUserId.trim().isEmpty()) {
+        // GET：チャット画面を開く
+        if (partnerUserId == null || partnerUserId.trim().isEmpty()) {
 
             response.sendRedirect(
                 request.getContextPath()
@@ -136,77 +93,41 @@ public class ChatRoomServlet extends Action {
             );
 
             return null;
-
         }
 
         partnerUserId = partnerUserId.trim();
 
-
-        // 自分自身とのチャットは禁止
         if (partnerUserId.equals(myUserId)) {
-
-            response.sendError(
-                HttpServletResponse.SC_BAD_REQUEST
-            );
-
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return null;
-
         }
-
-
-        // ========================================
-        // ⑤ 過去のメッセージを取得
-        // ========================================
 
         ChatRoomDAO dao = new ChatRoomDAO();
 
+        // ① 相手から届いた未読メッセージを既読にする
+        dao.markMessagesAsRead(myUserId, partnerUserId);
+
+        // ② メッセージ一覧を取得
         request.setAttribute(
             "messageList",
             dao.getMessageList(myUserId, partnerUserId)
         );
 
-
-        // ========================================
-        // ⑥ 相手のユーザー名を取得
-        // ========================================
-
+        // ③ 相手のユーザー名を取得
         String partnerUserName = dao.getUserName(partnerUserId);
 
-        request.setAttribute(
-            "partnerUserId",
-            partnerUserId
-        );
+        request.setAttribute("partnerUserId", partnerUserId);
 
         request.setAttribute(
             "partnerUserName",
-            (partnerUserName != null
-                && !partnerUserName.trim().isEmpty())
-                    ? partnerUserName
-                    : partnerUserId
+            (partnerUserName != null && !partnerUserName.trim().isEmpty())
+                ? partnerUserName
+                : partnerUserId
         );
 
-
-        // ========================================
-        // ⑦ 自分のユーザーIDをJSPに渡す
-        // ========================================
-
-        request.setAttribute(
-            "myUserId",
-            myUserId
-        );
-
-
-        // ========================================
-        // ⑧ チャット画面を表示
-        // ========================================
-
-        // 重要：
-        // GETではchatテーブルにもchat_messageテーブルにも
-        // INSERTしない。
-        // メッセージ送信時のPOSTだけで登録する。
+        // ④ 自分のユーザーIDをJSPに渡す
+        request.setAttribute("myUserId", myUserId);
 
         return "/chat/chat_room.jsp";
-
     }
-
 }

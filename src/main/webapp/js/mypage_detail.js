@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const hideBlockListButton =
         document.getElementById("hideBlockListButton");
 
+
     // ========================================
     // 必要な要素が存在するか確認
     // ========================================
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("設定画面のHTML要素が見つかりません。");
         return;
     }
+
 
     // ========================================
     // ブロックリストを表示する
@@ -71,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mypageBackArea.style.display = "none";
     }
 
+
     // ========================================
     // 設定メニューに戻る
     // ========================================
@@ -93,39 +96,114 @@ document.addEventListener("DOMContentLoaded", function () {
         mypageBackArea.style.display = "flex";
     }
 
+
     // ========================================
     // ブロック解除
     // ========================================
 
-    function unblockUser(userName) {
+    function unblockUser(userId, button) {
 
-        alert(userName + " のブロックを解除しました");
+        const mainContent =
+            document.querySelector(".main-content");
 
+        const contextPath = mainContent
+            ? mainContent.dataset.contextPath
+            : "";
+
+        if (!confirm("このユーザーのブロックを解除しますか？")) {
+            return;
+        }
+
+        const params = new URLSearchParams();
+
+        params.append("action", "unblock");
+        params.append("userId", userId);
+
+        fetch(contextPath + "/servlet.BlockListServlet.action", {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+
+            body: params.toString()
+        })
+        .then(function (response) {
+
+            if (!response.ok) {
+                throw new Error("HTTPエラー: " + response.status);
+            }
+
+            return response.json();
+
+        })
+        .then(function (result) {
+
+            if (!result.success) {
+                throw new Error(result.message || "解除に失敗しました。");
+            }
+
+            // 解除したユーザーを画面から削除
+            const item = button.closest(".block-item");
+
+            if (item) {
+                item.remove();
+            }
+
+            // ブロックリストが空になった場合
+            if (!blockListSection.querySelector(".block-item")) {
+
+                const emptyMessage = document.createElement("p");
+
+                emptyMessage.className = "block-list-empty";
+
+                emptyMessage.textContent =
+                    "ブロックしているユーザーはいません。";
+
+                blockListSection
+                    .querySelector(".settings-card")
+                    .appendChild(emptyMessage);
+            }
+
+        })
+        .catch(function (error) {
+
+            console.error("ブロック解除エラー:", error);
+
+            alert("ブロック解除に失敗しました。\n" + error.message);
+
+        });
     }
+
 
     // ========================================
     // イベント設定
     // ========================================
 
     // ブロックリストを開く
-    showBlockListButton.addEventListener("click", showBlockList);
+    showBlockListButton.addEventListener(
+        "click",
+        showBlockList
+    );
 
     // 設定メニューに戻る
-    hideBlockListButton.addEventListener("click", hideBlockList);
+    hideBlockListButton.addEventListener(
+        "click",
+        hideBlockList
+    );
 
     // ブロック解除ボタン
-    const unblockButtons =
-        document.querySelectorAll(".btn-unblock");
+    // DBの登録を削除
+    blockListSection.addEventListener("click", function (event) {
 
-    unblockButtons.forEach(function (button) {
+        const button = event.target.closest(".btn-unblock");
 
-        button.addEventListener("click", function () {
+        if (!button) {
+            return;
+        }
 
-            const userName = button.dataset.userName;
-
-            unblockUser(userName);
-
-        });
+        unblockUser(button.dataset.userId, button);
 
     });
 

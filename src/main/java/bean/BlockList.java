@@ -1,4 +1,3 @@
-
 package bean;
 
 // ブロック情報を管理するBean
@@ -13,6 +12,9 @@ public class BlockList {
 
     // ブロックされたユーザーID
     private String blockedUserId;
+
+    // ブロックした相手のユーザー名（画面表示用）
+    private String blockedUserName;
 
     // コンストラクタ
     public BlockList() {
@@ -49,4 +51,13 @@ public class BlockList {
         this.blockedUserId = blockedUserId;
     }
 
+    // ブロックされた相手の名前を取得
+    public String getBlockedUserName() {
+        return blockedUserName;
+    }
+
+    // ブロックされた相手の名前を設定
+    public void setBlockedUserName(String blockedUserName) {
+        this.blockedUserName = blockedUserName;
+    }
 }

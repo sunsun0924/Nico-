@@ -564,4 +564,12 @@ body {
         font-size: 14px;
     }
 
+	/* ブロックリストが空の場合 */
+	.block-list-empty {
+    	margin: 0;
+    	padding: 24px 16px;
+    	text-align: center;
+    	color: #8d7666;
+    	font-size: 14px;
+	}
 }

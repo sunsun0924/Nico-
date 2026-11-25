@@ -1,3 +1,4 @@
+
 /* =========================
    左側サイドバー
 ========================= */
@@ -253,5 +254,40 @@
     .notification-badge {
         margin-left: 0;
         font-size: 13px;
+    }
+}
+
+/* =========================
+   チャット未読件数
+   既存デザインに追加
+========================= */
+
+.chat-unread-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    margin-left: 2px;
+    background-color: #e85d5d;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    border-radius: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* スマートフォン表示 */
+
+@media screen and (max-width: 600px) {
+    .chat-unread-badge {
+        min-width: 17px;
+        height: 17px;
+        padding: 0 4px;
+        margin-left: 0;
+        font-size: 10px;
     }
 }

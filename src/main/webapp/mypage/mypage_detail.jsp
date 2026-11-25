@@ -1,4 +1,11 @@
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="bean.User" %>
+<%@ page import="bean.BlockList" %>
+<%@ page import="dao.BlockListDAO" %>
+
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <%@ include file="../header.jsp" %>
 
@@ -11,7 +18,7 @@
     <%@ include file="../sidebar.jsp" %>
 
     <%-- メイン画面 --%>
-    <main class="main-content">
+    <main class="main-content" data-context-path="${pageContext.request.contextPath}">
 
         <div class="settings-container">
 
@@ -113,83 +120,87 @@
 
             </div>
 
-            <%-- ② ブロックリスト --%>
+            <%-- ② DBから取得したブロックリスト --%>
+            <%
+                List<BlockList> blockedUsers = new java.util.ArrayList<>();
+
+                User blockLoginUser =
+                    (User) session.getAttribute("user");
+
+                if (blockLoginUser != null
+                        && blockLoginUser.getUserId() != null) {
+
+                    try {
+
+                        blockedUsers =
+                            new BlockListDAO().getBlockedUsers(
+                                blockLoginUser.getUserId()
+                            );
+
+                    } catch (Exception e) {
+
+                        application.log(
+                            "ブロックリストの取得に失敗しました。",
+                            e
+                        );
+
+                    }
+                }
+
+                request.setAttribute("blockedUsers", blockedUsers);
+            %>
+
             <div id="block-list-section" style="display: none;">
 
-                <div class="settings-card">
+                <div class="settings-card" id="block-list-items">
 
-                    <%-- ユーザーA --%>
-                    <div class="block-item">
+                    <c:choose>
 
-                        <div class="icon-wrapper icon-purple"
-                             style="width: 36px; height: 36px;">
+                        <c:when test="${empty blockedUsers}">
 
-                            <i class="fa-solid fa-user"
-                               style="font-size: 14px;"></i>
+                            <p class="block-list-empty">
+                                ブロックしているユーザーはいません。
+                            </p>
 
-                        </div>
+                        </c:when>
 
-                        <div class="block-user-name">
-                            ユーザーA
-                        </div>
+                        <c:otherwise>
 
-                        <button type="button"
-                                class="btn-unblock"
-                                data-user-name="ユーザーA">
-                            解除
-                        </button>
+                            <c:forEach var="block" items="${blockedUsers}">
 
-                    </div>
+                                <div class="block-item"
+                                     data-user-id="${block.blockedUserId}">
 
-                    <%-- ユーザーB --%>
-                    <div class="block-item">
+                                    <div class="icon-wrapper icon-purple"
+                                         style="width: 36px; height: 36px;">
 
-                        <div class="icon-wrapper icon-purple"
-                             style="width: 36px; height: 36px;">
+                                        <i class="fa-solid fa-user"
+                                           style="font-size: 14px;"></i>
 
-                            <i class="fa-solid fa-user"
-                               style="font-size: 14px;"></i>
+                                    </div>
 
-                        </div>
+                                    <div class="block-user-name">
 
-                        <div class="block-user-name">
-                            ユーザーB
-                        </div>
+                                        <c:out value="${empty block.blockedUserName ? block.blockedUserId : block.blockedUserName}" />
 
-                        <button type="button"
-                                class="btn-unblock"
-                                data-user-name="ユーザーB">
-                            解除
-                        </button>
+                                    </div>
 
-                    </div>
+                                    <button type="button"
+                                            class="btn-unblock"
+                                            data-user-id="${block.blockedUserId}">
+                                        解除
+                                    </button>
 
-                    <%-- ユーザーC --%>
-                    <div class="block-item">
+                                </div>
 
-                        <div class="icon-wrapper icon-purple"
-                             style="width: 36px; height: 36px;">
+                            </c:forEach>
 
-                            <i class="fa-solid fa-user"
-                               style="font-size: 14px;"></i>
+                        </c:otherwise>
 
-                        </div>
-
-                        <div class="block-user-name">
-                            ユーザーC
-                        </div>
-
-                        <button type="button"
-                                class="btn-unblock"
-                                data-user-name="ユーザーC">
-                            解除
-                        </button>
-
-                    </div>
+                    </c:choose>
 
                 </div>
 
-                <%-- 設定メニューに戻る --%>
                 <button type="button"
                         class="btn-back-bottom"
                         id="hideBlockListButton">

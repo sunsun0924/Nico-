@@ -1,47 +1,40 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ page import="dao.NotificationDAO" %>
+<%@ page import="dao.ChatRoomDAO" %>
 <%@ page import="bean.User" %>
 <%@ page import="bean.Admin" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
-<%-- 通知件数を取得 --%>
 <%
     int notificationCount = 0;
+    int chatUnreadCount = 0;
 
-    // ログイン情報を取得
-    User loginUser =
-        (User) session.getAttribute("user");
-
-    Admin loginAdmin =
-        (Admin) session.getAttribute("admin");
+    User loginUser = (User) session.getAttribute("user");
+    Admin loginAdmin = (Admin) session.getAttribute("admin");
 
     try {
-        NotificationDAO notificationDAO =
-            new NotificationDAO();
+        NotificationDAO notificationDAO = new NotificationDAO();
 
-        // 一般ユーザーの場合
         if (loginUser != null) {
             notificationCount =
-                notificationDAO.countByUserId(
-                    loginUser.getUserId()
-                );
+                notificationDAO.countByUserId(loginUser.getUserId());
 
-        // 管理者の場合
+            ChatRoomDAO chatRoomDAO = new ChatRoomDAO();
+
+            chatUnreadCount =
+                chatRoomDAO.countUnreadMessages(loginUser.getUserId());
+
         } else if (loginAdmin != null) {
             notificationCount =
-                notificationDAO.countByAdminId(
-                    loginAdmin.getCpUserid()
-                );
+                notificationDAO.countByAdminId(loginAdmin.getCpUserid());
         }
 
     } catch (Exception e) {
         e.printStackTrace();
     }
 
-    // 通知件数の表示文字を設定
     String badgeText = "";
 
     if (notificationCount > 0) {
@@ -61,13 +54,11 @@
     }
 %>
 
-<%-- サイドバーCSS --%>
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/sidebar.css">
 
 <div class="side-menu">
 
-    <%-- ロゴエリア --%>
     <div class="sidebar-logo">
         <a href="${pageContext.request.contextPath}/servlet.PostServlet.action">
             <img
@@ -77,7 +68,6 @@
         </a>
     </div>
 
-    <%-- メニュー一覧 --%>
     <nav class="menu-list">
 
         <%-- 通知 --%>
@@ -103,12 +93,17 @@
         </a>
 
         <%-- チャット --%>
-        <%-- ChatListServletを経由してDBから一覧を取得する --%>
         <a href="${pageContext.request.contextPath}/servlet.ChatListServlet.action"
            class="menu-item">
 
             <span class="menu-icon">✉</span>
             <span>チャット</span>
+
+            <% if (chatUnreadCount > 0) { %>
+                <span class="chat-unread-badge">
+                    <%= chatUnreadCount %>
+                </span>
+            <% } %>
         </a>
 
         <%-- 検索 --%>
@@ -127,12 +122,10 @@
             <span>ギフト</span>
         </a>
 
-        <%-- 管理者の種類によって表示を切り替える --%>
         <c:choose>
 
             <c:when test="${sessionScope.admin.cpUserid == 'admin000'}">
 
-                <%-- 企業新規登録 --%>
                 <a href="${pageContext.request.contextPath}/company/company.jsp"
                    class="menu-item">
 
@@ -145,7 +138,6 @@
             <c:when test="${not empty sessionScope.admin.cpUserid
                             and fn:substring(sessionScope.admin.cpUserid, 2, 4) == 'ad'}">
 
-                <%-- ユーザー新規登録 --%>
                 <a href="${pageContext.request.contextPath}/register/register.jsp"
                    class="menu-item">
 
@@ -159,7 +151,6 @@
 
     </nav>
 
-    <%-- 一番下のマイページ --%>
     <div class="menu-bottom">
 
         <a href="${pageContext.request.contextPath}/mypage/mypage.jsp"
@@ -169,7 +160,6 @@
 
                 <c:when test="${not empty sessionScope.admin}">
 
-                    <%-- 管理者のプロフィール画像 --%>
                     <img
                         src="${empty sessionScope.admin.cpUserimg
                             or sessionScope.admin.cpUserimg eq 'default-profile.png'
@@ -182,7 +172,6 @@
 
                 <c:otherwise>
 
-                    <%-- 一般ユーザーのプロフィール画像 --%>
                     <img
                         src="${empty sessionScope.user.userImg
                             or sessionScope.user.userImg eq 'default-profile.png'
