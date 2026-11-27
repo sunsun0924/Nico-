@@ -32,7 +32,7 @@
         </header>
 
         <!-- 登録フォーム -->
-        <form action="${pageContext.request.contextPath}/servlet/UserLoginServlet.action"
+        <form action="${pageContext.request.contextPath}/servlet.UserLoginServlet.action"
               method="post"
               class="register-form">
 
