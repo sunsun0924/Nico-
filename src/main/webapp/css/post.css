@@ -14,16 +14,24 @@ body {
     color: #59483d;
 }
 
-/* ========================================
+/* =========================
    投稿画面全体
-======================================== */
+========================= */
 
 .home-header {
     width: calc(100% - 266px);
-    max-width: 1100px;
+    max-width: 900px;
     min-height: 90vh;
+
+    /* 中央寄せに変更 */
     margin: 20px 20px 20px 246px;
-    padding: 30px;
+
+    /* ここを変更 */
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateX(113px);
+
+    padding: 30px 36px;
     background-color: #fffdf8;
     border: 1px solid #eee4d8;
     border-radius: 22px;
@@ -35,10 +43,12 @@ body {
 ======================================== */
 
 .home-header h1 {
-    margin: 0 0 25px;
-    font-size: 36px;
-    font-weight: bold;
+    margin-top: 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
     color: #654b39;
+    text-align: left;
 }
 
 .home-header h3 {

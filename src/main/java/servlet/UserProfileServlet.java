@@ -188,7 +188,7 @@ public class UserProfileServlet extends Action {
 
                 // 画像の保存先
                 // Tomcatの管理フォルダではなくCドライブに保存する
-                String savePath = "C:\\NicoData\\images";
+                String savePath = "/var/lib/nico/profile-images";
 
                 File saveDirectory = new File(savePath);
 
