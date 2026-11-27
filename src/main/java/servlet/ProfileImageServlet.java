@@ -19,7 +19,7 @@ public class ProfileImageServlet extends HttpServlet {
 
     // 画像の保存先
     private static final Path IMAGE_DIRECTORY =
-            Paths.get("C:/NicoData/images")
+    		Paths.get("/var/lib/nico/profile-images")
                  .toAbsolutePath()
                  .normalize();
 
